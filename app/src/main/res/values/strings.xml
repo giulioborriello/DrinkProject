@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">DrinkProject</string>
+    <string name="login_activity_enter_username_and_password">Please enter username and password</string>
+    <string name="login_activity_password">Password</string>
+    <string name="login_activity_log_in_button">Log In</string>
+    <string name="login_activity_welcome">Welcome</string>
+    <string name="login_activity_username">username</string>
 </resources>
