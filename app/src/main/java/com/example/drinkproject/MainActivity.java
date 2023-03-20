@@ -4,9 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.biometric.BiometricPrompt;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.drinkproject.activities.DrinkActivity;
 
 import java.util.concurrent.Executor;
 
@@ -53,12 +58,22 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButtonText("Use account password")
                 .build();
 
-        // Prompt appears when user clicks "Log in".
-        // Consider integrating with the keystore to unlock cryptographic operations,
-        // if needed by your app.
         Button biometricLoginButton = findViewById(R.id.logInButton);
         biometricLoginButton.setOnClickListener(view -> {
             biometricPrompt.authenticate(promptInfo);
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        View testButton = findViewById(R.id.testButton);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
+                startActivity(intent);
+            }
         });
     }
 }
