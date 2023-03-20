@@ -5,10 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.example.drinkproject.R;
 import com.example.drinkproject.views.RecyclerVIewDrinkAdapter;
-import com.example.drinkproject.views.RecyclerViewDrinkHolder;
 import com.example.drinkproject.views.RecyclerViewDrinkItem;
 
 import java.util.ArrayList;
@@ -20,6 +21,12 @@ public class DrinkActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink);
+
+        Spinner dropDownFilterMenu = (Spinner) findViewById(R.id.dropDownMenu);
+        String[] filters = new String[]{"bitter", "sweet", "fruits", "very alcoholic"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
+        // TODO  la riga di sotto fa crashare il programma bisogna trovare una soluzione
+        dropDownFilterMenu.setAdapter(adapter);
 
         RecyclerView recyclerView = findViewById(R.id.drinkRecyclerView);
         List<RecyclerViewDrinkItem> drinks = new ArrayList<RecyclerViewDrinkItem>();

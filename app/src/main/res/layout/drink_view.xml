@@ -1,50 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="0dp">
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:spinnerMode="dropdown"
+        android:id="@+id/dropDownMenu"/>
+
+    <TextView
+        android:id="@+id/drinkName"
+        android:layout_below="@id/dropDownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/drinkImageView"
+        android:text="@string/drink_view_drink_name"
+        android:textColor="@color/black"
+        android:textSize="30dp" />
 
     <ImageView
+        android:layout_below="@id/dropDownMenu"
+        android:id="@+id/drinkImageView"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:id="@+id/drinkImageView"
-        android:layout_marginRight="10dp"
-        android:layout_centerVertical="true" />
+        android:layout_marginRight="10dp" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/drinkName"
-        android:layout_toEndOf="@id/drinkImageView"
-        android:textColor="@color/black"
-        android:textSize="30dp"
-        android:text="@string/drink_view_drink_name" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/drinkFlavour"
-        android:layout_toEndOf="@id/drinkImageView"
-        android:layout_below="@id/drinkName"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:text="@string/drink_view_flavour" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/drinkRecipe"
-        android:layout_toEndOf="@id/drinkImageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/drinkFlavour"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@id/drinkImageView"
+        android:text="@string/drink_view_recipe"
         android:textColor="@color/black"
-        android:textSize="15dp"
-        android:text="@string/drink_view_recipe" />
-
+        android:textSize="15dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_below="@id/drinkImageView"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="34dp"
         android:background="#8C7878" />
+
+    <TextView
+        android:id="@+id/drinkFlavour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/drinkName"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@id/drinkImageView"
+        android:text="@string/drink_view_flavour"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
+
+
 </RelativeLayout>
