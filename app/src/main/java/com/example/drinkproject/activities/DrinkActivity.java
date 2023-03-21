@@ -23,9 +23,8 @@ public class DrinkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_drink);
 
         Spinner dropDownFilterMenu = (Spinner) findViewById(R.id.dropDownMenu);
-        String[] filters = new String[]{"bitter", "sweet", "fruits", "very alcoholic"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
-        // TODO  la riga di sotto fa crashare il programma bisogna trovare una soluzione
+        String[] filters = new String[]{"smoothie", "cocktails","most sold", "bitter", "sweet", "very alcoholic"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, filters);
         dropDownFilterMenu.setAdapter(adapter);
 
         RecyclerView recyclerView = findViewById(R.id.drinkRecyclerView);

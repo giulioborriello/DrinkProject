@@ -11,5 +11,18 @@
         android:layout_height="match_parent"
         android:id="@+id/drinkRecyclerView"/>
 
+    <Spinner
+        android:id="@+id/dropDownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="1dp"
+        android:spinnerMode="dropdown" />
+
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+
 </RelativeLayout>
 

@@ -2,7 +2,7 @@
     <string name="app_name">DrinkProject</string>
     <string name="login_activity_enter_username_and_password">Please enter username and password</string>
     <string name="login_activity_password">Password</string>
-    <string name="login_activity_log_in_button">Log In</string>
+    <string name="login_activity_log_in_button">Fingerprint</string>
     <string name="login_activity_welcome">Welcome</string>
     <string name="login_activity_username">username</string>
     <string name="title_activity_drink">DrinkActivity</string>
@@ -27,7 +27,7 @@
 
         "The foundational elements of print based design typography, grids, space, scale, color, "
         "and use of imagery guide visual treatments. These elements do far more than please the "
-        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
+        "eye. They create hierarchy, meaning, and focus. DeliberatLoge color choices, edge to edge "
         "imagery, large scale typography, and intentional white space create a bold and graphic "
         "interface that immerse the user in the experience.\n"
         "An emphasis on user actions makes core functionality immediately apparent and provides "
@@ -104,4 +104,5 @@
     <string name="drink_view_flavour">flavour</string>
     <string name="drink_view_recipe">recipe</string>
     <string name="drink_view_drink_name">Name</string>
+    <string name="search_hint">Search ingredients</string>
 </resources>
