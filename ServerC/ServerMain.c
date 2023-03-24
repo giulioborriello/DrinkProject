@@ -8,7 +8,7 @@ int main() {
    PGresult *res;
    char *port;
    char *address, *user, *password, *database, *query, *insert_query;
-   
+   /*
     // Alloca la memoria per le stringhe
     address = (char *) malloc(100 * sizeof(char));   
    printf("Inserisci l'indirizzo del server PostgreSQL: ");
@@ -39,6 +39,8 @@ int main() {
       PQfinish(conn);
       exit(1);
    }
+   */
+  conn = PQsetdbLogin("localhost", "5432", NULL, NULL, "postgres", "postgres", "qwerty");
    
    // Query per stampare tutti i drink
    query = "SELECT id, nome FROM drink";
