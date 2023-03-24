@@ -16,6 +16,10 @@ import com.example.drinkproject.activities.DrinkActivity;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -38,13 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
         new Thread(new ClientThread()).start();
 
-
-
-
-
         executor = ContextCompat.getMainExecutor(this);
-        biometricPrompt = new BiometricPrompt(MainActivity.this,
-                executor, new BiometricPrompt.AuthenticationCallback() {
+        biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
 
             @Override
             public void onAuthenticationError(int errorCode,
@@ -107,23 +106,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        View classicLogInButton = findViewById(R.id.classicLogInButton);
         TextView passwordTextView = (TextView) findViewById(R.id.editTextPassword);
+        Button classicLogInButton = (Button) findViewById(R.id.classicLogInButton);
         classicLogInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (socket.isConnected() && passwordTextView.getText().toString().equals("password")) {
-                    Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
+                if (socket.isConnected() && passwordTextView.getText().toString().equals("a")) {
 
-                    try {
-                        FileWriter fileWriter = new FileWriter("communications.txt");
-                        fileWriter.write("hello");
-                        fileWriter.close();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                        Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
+                        //OutputStream outputStream = socket.getOutputStream();
+                        //PrintWriter printWriter = new PrintWriter(outputStream, false);
+                        //String message = "log in ok";
+                        //printWriter.println(message);
+                        startActivity(intent);
 
-                    startActivity(intent);
+
+
+
                 }
             }
         });
