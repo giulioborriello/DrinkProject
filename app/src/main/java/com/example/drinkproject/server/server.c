@@ -39,7 +39,7 @@ int main(int argc, char const* argv[])
         exit(EXIT_FAILURE);
     }
 
-    if(read(client_socket, buffer, BUFFER_SIZE) != 0) {
+    if(recv(client_socket, buffer, BUFFER_SIZE, 0) != 0) {
             perror("Accept error");
             exit(EXIT_FAILURE);
     }

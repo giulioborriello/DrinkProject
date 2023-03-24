@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.drinkproject.activities.DrinkActivity;
 
+import java.io.DataOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -111,18 +112,18 @@ public class MainActivity extends AppCompatActivity {
         classicLogInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (socket.isConnected() && passwordTextView.getText().toString().equals("a")) {
-
-                        Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
-                        //OutputStream outputStream = socket.getOutputStream();
-                        //PrintWriter printWriter = new PrintWriter(outputStream, false);
-                        //String message = "log in ok";
-                        //printWriter.println(message);
+                if (socket.isConnected()) {
+                    Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
+                    String message = "message";
+                    OutputStream outputStream = null;
+                    try {
+                        PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+                        printWriter.println(message);
+                        printWriter.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                         startActivity(intent);
-
-
-
-
                 }
             }
         });
