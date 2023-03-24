@@ -8,7 +8,7 @@ int main() {
    PGresult *res;
    char *port;
    char *address, *user, *password, *database, *query, *insert_query;
-   
+   /*
     // Alloca la memoria per le stringhe
     address = (char *) malloc(100 * sizeof(char));   
    printf("Inserisci l'indirizzo del server PostgreSQL: ");
@@ -39,9 +39,19 @@ int main() {
       PQfinish(conn);
       exit(1);
    }
-   
+   */
+  //conn = PQsetdbLogin("localhost", "5432", NULL, NULL, "postgres", "postgres", "qwerty");
+    conn = PQsetdbLogin("hattie.db.elephantsql.com", "5432", NULL, NULL, "belwxpmt", "belwxpmt", "XrwgzZ7ArJ9IHywR-xoWQAb1CGT-Govq");
+
+   if (PQstatus(conn) != CONNECTION_OK) {
+      printf("Errore di connessione: %s", PQerrorMessage(conn));
+      PQfinish(conn);
+      exit(1);
+   }
+
    // Query per stampare tutti i drink
-   query = "SELECT id, nome FROM drink";
+   query = "SELECT id, nome FROM public.drink";
+   //query= "SELECT * FROM pg_catalog.pg_tables";
    res = PQexec(conn, query);
    
    // Controllo la query
@@ -68,8 +78,9 @@ int main() {
    PQclear(res);
    
    // Query per l'istruzione di inserimento fornita dall'utente
+    insert_query = (char *) malloc(100 * sizeof(char));
    printf("\nInserisci la query per l'istruzione di inserimento: ");
-   scanf(" %[^\n]", insert_query);
+   scanf(" %s", insert_query);
    
    // Esegue l'istruzione di inserimento
    res = PQexec(conn, insert_query);
