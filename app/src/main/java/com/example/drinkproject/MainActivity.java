@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
                 if (socket.isConnected()) {
                     Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
                     String message = "message";
-                    OutputStream outputStream = null;
                     try {
                         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
                         printWriter.println(message);
