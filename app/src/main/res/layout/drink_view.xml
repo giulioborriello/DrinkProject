@@ -12,7 +12,7 @@
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@id/drinkImageView"
         android:text="@string/drink_view_drink_name"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="30dp" />
 
     <ImageView

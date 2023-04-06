@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.drinkproject.activities.DrinkActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.DataOutputStream;
 import java.io.FileWriter;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private Executor executor;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButtonText("Use account password")
                 .build();
 
-        Button biometricLoginButton = findViewById(R.id.biometricLogInButton);
+        FloatingActionButton biometricLoginButton = findViewById(R.id.biometricLogInButton);
         biometricLoginButton.setOnClickListener(view -> {
             biometricPrompt.authenticate(promptInfo);
         });
@@ -104,27 +106,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
-        TextView passwordTextView = (TextView) findViewById(R.id.editTextPassword);
-        Button classicLogInButton = (Button) findViewById(R.id.classicLogInButton);
-        classicLogInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (socket.isConnected()) {
-                    Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
-                    String message = "message";
-                    try {
-                        PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
-                        printWriter.println(message);
-                        printWriter.close();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                        startActivity(intent);
-                }
-            }
-        });
     }
+
 }
