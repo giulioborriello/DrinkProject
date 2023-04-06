@@ -38,6 +38,18 @@ CREATE TABLE drink_ordine (
   prezzo DECIMAL(10,2) NOT NULL
 );
 
+--creazione della tabella "Ingredienti"
+CREATE TABLE ingredienti(
+    nome VARCHAR(50) PRIMARY KEY,
+    origine VARCHAR(50) NOT NULL,
+    allergene BOOLEAN NOT NULL
+);
+
+create table if not exists Composizione(
+	drink_ID integer references drink(id),
+	ingrediente varchar(50) references ingredienti(nome),
+	quantita DECIMAL(10,2) NOT NULL
+);
 
 -- FUNCTION: public.raccomanda_drink(integer)
 
