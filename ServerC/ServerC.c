@@ -7,7 +7,7 @@
 #include <pthread.h> 
 
 //#include <libpq-fe.h>
-
+#include "Socket.h"
 #include "CodaConnessioni.h"
 
 #define PATH_MAX_LOCAL 1024
@@ -122,7 +122,7 @@ void* handle_connection(void* p_client_socket){
     int msgsize = 0;
     char actualpath[PATH_MAX_LOCAL+1];
 
-    //read client message -- the name pof the file to read
+    //read client message -- the name of the file to read
     while ((bytes_read= read(client_socket, buffer+msgsize, sizeof(buffer)-msgsize-1)) > 0){
         msgsize += bytes_read;
         if (msgsize > BUFSIZE-1 || buffer[msgsize-1] == '\n') break;

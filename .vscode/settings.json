@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "hattie.db.elephantsql.com",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "DrinkTest",
+            "database": "belwxpmt",
+            "username": "belwxpmt",
+            "password": "XrwgzZ7ArJ9IHywR-xoWQAb1CGT-Govq"
+        }
+    ]
+}
