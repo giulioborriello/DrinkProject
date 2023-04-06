@@ -1,8 +1,30 @@
+#include <libpq-fe.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <libpq-fe.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <stdbool.h>
+#include <pthread.h> 
+
+#include "CodaConnessioni.h"
+
+#define PATH_MAX_LOCAL 1024
+#define SERVERPORT 8989
+#define BUFSIZE 4096
+#define SOCKETERROR (-1)
+#define SERVER_BACKLOG 100
+#define THREAD_POOL_SIZE 20
+
+pthread_t thread_pool[THREAD_POOL_SIZE];
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER;
+
+typedef struct sockaddr_in SA_IN;
+typedef struct sockaddr SA;
 // sudo apt-get install libpq-dev
 // gcc Servermain.c -o pippo -I/usr/include/postgresql -lpq
+
 int main() {
    PGconn *conn;
    PGresult *res;
