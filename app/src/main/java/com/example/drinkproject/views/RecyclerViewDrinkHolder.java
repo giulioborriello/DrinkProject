@@ -14,9 +14,8 @@ public class RecyclerViewDrinkHolder extends RecyclerView.ViewHolder {
     TextView nameText, flavourText, recipeText;
     public RecyclerViewDrinkHolder(@NonNull View itemView) {
         super(itemView);
-        drinkImage = itemView.findViewById(R.id.drinkImageView);
+        drinkImage = itemView.findViewById(R.id.drinkImage);
         nameText = itemView.findViewById(R.id.drinkName);
-        flavourText = itemView.findViewById(R.id.drinkFlavour);
-        recipeText = itemView.findViewById(R.id.drinkRecipe);
+        recipeText = itemView.findViewById(R.id.drinkDescription);
     }
 }

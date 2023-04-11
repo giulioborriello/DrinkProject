@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.example.drinkproject.R;
+
 public class OrderSummaryActivity extends AppCompatActivity {
 
     @Override
