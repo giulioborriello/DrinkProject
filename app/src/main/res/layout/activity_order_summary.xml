@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,18 +7,52 @@
     android:background="@color/brick_red"
     tools:context=".activities.OrderSummaryActivity">
 
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewOrderSummary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="90sp"
         android:fontFamily="@font/calistoga"
         android:text="@string/order_summary_activity_order_summary"
         android:textColor="@color/white"
+        android:textSize="30sp" />
+
+
+    <EditText
+        android:id="@+id/editTextCreditCardPassword"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_below="@id/textViewCreditCardPassword"
+        android:inputType="textPassword" r/>
+
+
+    <TextView
+        android:id="@+id/textViewCreditCardPassword"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/summaryRecyclerView"
+        android:text="@string/order_summary_activity_text_view_credit_card_password"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.067" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:textAlignment="center"
+        android:textColor="@color/white"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@id/textViewOrderSummary"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:id="@+id/summaryRecyclerView" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/paymentButton"
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+        android:layout_toRightOf="@id/editTextCreditCardPassword"
+        android:layout_below="@+id/textViewCreditCardPassword"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="15dp"
+        app:srcCompat="@drawable/dollaricon" />
+
+
+</RelativeLayout>

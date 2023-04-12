@@ -20,4 +20,10 @@
     <string name="register_activity_fingerprint_text">Or use your fingerprint</string>
     <string name="register_activity_fingerprint_button">Fingerprint</string>
     <string name="order_summary_activity_order_summary">Order Summary</string>
+    <string name="drink_activity_select_your_favourite_drinks">Select your favourite drinks</string>
+    <string name="order_summary_activity_text_view_credit_card_password">Insert your credit card password</string>
+    <string name="registration_not_done_text">Registration not done</string>
+    <string name="registration_done_text">Registration done</string>
+    <string name="payment_not_made_text">Payment not made</string>
+    <string name="payment_made_text">Payment made</string>
 </resources>

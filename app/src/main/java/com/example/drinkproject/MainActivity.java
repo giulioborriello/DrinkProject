@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.drinkproject.activities.DrinkActivity;
+import com.example.drinkproject.activities.RegisterActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.DataOutputStream;
@@ -29,11 +30,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executor;
 
 public class MainActivity extends AppCompatActivity {
+    //TODO add logic for server connection
+    //private static final int SERVER_PORT = 5000;
+    //private static final String SERVER_IP = "10.0.2.2";
 
-    private static final int SERVER_PORT = 5000;
-    private static final String SERVER_IP = "10.0.2.2";
-
-    private Socket socket;
+    //private Socket socket;
     private Executor executor;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
@@ -44,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //new Thread(new ClientThread()).start();
+        executor = ContextCompat.getMainExecutor(this);
 
-        //executor = ContextCompat.getMainExecutor(this);
         biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
 
             @Override
@@ -77,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*
     class ClientThread implements Runnable {
-
         @Override
         public void run() {
             try {
@@ -91,14 +92,20 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
-
+ */
 
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        View registerButton = findViewById(R.id.registerUsernamePasswordButton);
+        registerButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+            startActivity(intent);
+        });
+
+        //TODO add logic for login button
     }
 
 }
