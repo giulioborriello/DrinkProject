@@ -24,7 +24,7 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_below="@id/textViewCreditCardPassword"
-        android:inputType="textPassword" r/>
+        android:inputType="textPassword" />
 
 
     <TextView

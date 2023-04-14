@@ -2,7 +2,6 @@ package com.example.drinkproject.views;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.drinkproject.R;
-import com.example.drinkproject.activities.OrderSummaryActivity;
+import com.example.drinkproject.activities.DrinkActivity;
 
 import java.util.List;
 
 public class RecyclerVIewDrinkAdapter extends RecyclerView.Adapter<RecyclerViewDrinkHolder> {
     Context context;
-    private final List<RecyclerViewDrinkItem> drinks;
+    private final List<DrinkItem> drinks;
     private final LayoutInflater inflater;
 
-
-    public RecyclerVIewDrinkAdapter(Context context, List<RecyclerViewDrinkItem> drinks) {
+    public RecyclerVIewDrinkAdapter(Context context, List<DrinkItem> drinks) {
         this.context = context;
         this.drinks = drinks;
         inflater = LayoutInflater.from(context);
@@ -35,27 +33,28 @@ public class RecyclerVIewDrinkAdapter extends RecyclerView.Adapter<RecyclerViewD
         return new RecyclerViewDrinkHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewDrinkHolder holder, int position) {
-        holder.nameText.setText(drinks.get(position).name);
-        holder.descriptionText.setText(drinks.get(position).description);
-        holder.drinkImage.setImageResource(drinks.get(position).image);
-        holder.drinkPrice.setText(drinks.get(position).price);
+        String name = drinks.get(position).name;
+        String description = drinks.get(position).description;
+        String price = drinks.get(position).price;
+        int image = drinks.get(position).image;
 
+        holder.nameText.setText(name);
+        holder.descriptionText.setText(description);
+        holder.drinkImage.setImageResource(image);
+        holder.drinkPrice.setText(price);
+
+        DrinkItem drink = new DrinkItem(name, description, price, image);
         holder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(context, OrderSummaryActivity.class);
-            intent.putExtra("name", drinks.get(position).name);
-            intent.putExtra("description", drinks.get(position).description);
-            intent.putExtra("image", drinks.get(position).image);
-            intent.putExtra("price", drinks.get(position).price);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+            DrinkActivity.DRINKSSELECTED.add(drink);
         });
     }
 
 
     public interface OnClickListener {
-        void onClick(int position, RecyclerViewDrinkItem drink);
+        void onClick(int position, DrinkItem drink);
     }
 
 

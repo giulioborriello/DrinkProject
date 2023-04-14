@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,8 +15,11 @@ import android.widget.PopupWindow;
 
 import com.example.drinkproject.R;
 import com.example.drinkproject.views.RecyclerVIewDrinkAdapter;
-import com.example.drinkproject.views.RecyclerViewDrinkItem;
+import com.example.drinkproject.views.DrinkItem;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +30,12 @@ public class OrderSummaryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_summary);
 
-
-
         RecyclerView recyclerView = findViewById(R.id.summaryRecyclerView);
-        List<RecyclerViewDrinkItem> drinks = new ArrayList<RecyclerViewDrinkItem>();
 
-        drinks.add(new RecyclerViewDrinkItem(getIntent().getExtras().getString("name"), getIntent().getExtras().getString("description"), getIntent().getExtras().getString("price"),getIntent().getExtras().getInt("image")));
+        List<DrinkItem> drinks = new ArrayList<>();
+        Type type = new TypeToken<List<DrinkItem>>(){}.getType();
+        drinks = new Gson().fromJson(getIntent().getStringExtra("selectedDrinks"), type);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(new RecyclerVIewDrinkAdapter(getApplicationContext(), drinks));
     }

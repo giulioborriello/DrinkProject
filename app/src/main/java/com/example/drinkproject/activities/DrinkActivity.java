@@ -4,21 +4,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.example.drinkproject.R;
-import com.example.drinkproject.databinding.ActivityMainBinding;
 import com.example.drinkproject.views.RecyclerVIewDrinkAdapter;
-import com.example.drinkproject.views.RecyclerViewDrinkItem;
+import com.example.drinkproject.views.DrinkItem;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DrinkActivity extends AppCompatActivity {
-    private ActivityMainBinding binding;
-
+    public static List<DrinkItem> DRINKSSELECTED = new ArrayList<DrinkItem>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +33,24 @@ public class DrinkActivity extends AppCompatActivity {
         dropDownFilterMenu.setAdapter(adapter);
 
         RecyclerView recyclerView = findViewById(R.id.drinkRecyclerView);
-        List<RecyclerViewDrinkItem> drinks = new ArrayList<RecyclerViewDrinkItem>();
+        List<DrinkItem> drinks = new ArrayList<DrinkItem>();
 
-
-        drinks.add(new RecyclerViewDrinkItem("Spritz the drinks god", "taste like zeus amatriciana", "500$",R.drawable.spritz));
+        drinks.add(new DrinkItem("Spritz the drinks god", "taste like zeus amatriciana", "500$",R.drawable.spritz));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(new RecyclerVIewDrinkAdapter(getApplicationContext(), drinks));
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        FloatingActionButton goToCartButton = findViewById(R.id.goToCartButton);
+        goToCartButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), OrderSummaryActivity.class);
+            intent.putExtra("selectedDrinks", new Gson().toJson(DRINKSSELECTED));
+            startActivity(intent);
+        });
     }
 }
