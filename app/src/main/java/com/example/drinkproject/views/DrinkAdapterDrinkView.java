@@ -14,12 +14,12 @@ import com.example.drinkproject.activities.DrinkActivity;
 
 import java.util.List;
 
-public class RecyclerVIewDrinkAdapter extends RecyclerView.Adapter<RecyclerViewDrinkHolder> {
+public class DrinkAdapterDrinkView extends RecyclerView.Adapter<DrinkHolderDrinkView> {
     Context context;
     private final List<DrinkItem> drinks;
     private final LayoutInflater inflater;
 
-    public RecyclerVIewDrinkAdapter(Context context, List<DrinkItem> drinks) {
+    public DrinkAdapterDrinkView(Context context, List<DrinkItem> drinks) {
         this.context = context;
         this.drinks = drinks;
         inflater = LayoutInflater.from(context);
@@ -28,14 +28,14 @@ public class RecyclerVIewDrinkAdapter extends RecyclerView.Adapter<RecyclerViewD
 
     @NonNull
     @Override
-    public RecyclerViewDrinkHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public DrinkHolderDrinkView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.drink_view,parent,false);
-        return new RecyclerViewDrinkHolder(view);
+        return new DrinkHolderDrinkView(view);
     }
 
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewDrinkHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DrinkHolderDrinkView holder, int position) {
         String name = drinks.get(position).name;
         String description = drinks.get(position).description;
         String price = drinks.get(position).price;

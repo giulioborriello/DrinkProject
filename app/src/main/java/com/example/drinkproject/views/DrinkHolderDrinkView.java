@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.drinkproject.R;
 
-public class RecyclerViewDrinkHolder extends RecyclerView.ViewHolder {
+public class DrinkHolderDrinkView extends RecyclerView.ViewHolder {
     public ImageView drinkImage;
     public TextView nameText, descriptionText, drinkPrice;
     public Context context;
 
-    public RecyclerViewDrinkHolder(@NonNull View itemView) {
+    public DrinkHolderDrinkView(@NonNull View itemView) {
         super(itemView);
         context = itemView.getContext();
 

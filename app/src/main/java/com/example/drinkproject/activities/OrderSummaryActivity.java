@@ -1,10 +1,10 @@
 package com.example.drinkproject.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.example.drinkproject.R;
-import com.example.drinkproject.views.RecyclerVIewDrinkAdapter;
+import com.example.drinkproject.views.DrinkAdapterDrinkView;
 import com.example.drinkproject.views.DrinkItem;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -37,7 +37,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
         drinks = new Gson().fromJson(getIntent().getStringExtra("selectedDrinks"), type);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.setAdapter(new RecyclerVIewDrinkAdapter(getApplicationContext(), drinks));
+        recyclerView.setAdapter(new DrinkAdapterDrinkView(getApplicationContext(), drinks));
     }
 
 
@@ -69,5 +69,12 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
     }
 }
