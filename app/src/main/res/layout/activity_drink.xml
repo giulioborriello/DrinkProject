@@ -10,7 +10,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@id/searchView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="550dp"
         android:id="@+id/drinkRecyclerView"/>
 
     <Spinner
@@ -28,13 +28,24 @@
         android:layout_height="40dp"
         android:layout_marginTop="50dp"/>
 
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:text="@string/drink_activity_select_your_favourite_drinks"
-    android:textSize="30sp"
-    android:textAlignment="center"
-    android:textColor="@color/white"
-    android:fontFamily="@font/calistoga"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/drink_activity_select_your_favourite_drinks"
+        android:textSize="30sp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:fontFamily="@font/calistoga"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/goToCartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/drinkRecyclerView"
+        android:layout_marginLeft="330dp"
+        android:clickable="true"
+        app:srcCompat="@drawable/shoppingcarticon" />
+
+
 </RelativeLayout>
 
