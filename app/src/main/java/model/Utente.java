@@ -14,6 +14,8 @@ public class Utente {
         this.cognome = cognomeInput;
         this.email = emailInput;
         this.password = passwordInput;
+        carrello = new Carello(this);
+
     }
 
     public void addDrink(Drink drinkInput, int quantitaInput) {
