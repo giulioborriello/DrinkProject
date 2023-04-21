@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import  model.*;
 public class Controller {
     private Utente utente=null;
-    private ArrayList<Drink> listaDeiDrink=null;
+    private ArrayList<Drink> listaDeiDrink=new ArrayList<Drink>();
 
+    public Controller (){};
     private byte[] getByteArray(){
         byte[] array=null;
         try {
-            array = Files.readAllBytes(Paths.get("/images.png"));
+            array = Files.readAllBytes(Paths.get("images.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -25,19 +26,19 @@ public class Controller {
                     "Mojito",
                     "Alcolici",
                     "\tUn cocktail a base di rum, lime, zucchero di canna, soda e foglie di menta",
-                    7.5,getByteArray()));
+                    7.5));
 
         listaDeiDrink.add(new Drink("2",
                 "Spritz",
                 "Alcolici",
                 "Un cocktail a base di prosecco, aperol e soda\t",
-                6.5,getByteArray()));
+                6.5));
 
         listaDeiDrink.add(new Drink("3",
                 "Acqua",
                 "Analcolici",
                 "Acqua naturale o frizzante",
-                1.5,getByteArray()));
+                1.5));
 
 
 
@@ -45,13 +46,13 @@ public class Controller {
                 "Coca-Cola",
                 "Analcolici",
                 "Bevanda gassata al gusto di cola\t",
-                2,getByteArray()));
+                2));
 
         listaDeiDrink.add(new Drink("5",
                 "Fullato di frutta",
                 "Frullati",
                 "Frullato di fragole, banane e yogurt\t",
-                4.5,getByteArray()));
+                4.5));
 
 
 
@@ -60,7 +61,7 @@ public class Controller {
         //TODO fare il dump dei drink
         fakeDump();
         System.out.println("drink 1: "+getDrink("1").toString());
-        System.out.println("");
+        System.out.println("drink 2: "+getDrink("2"));
     }
     public boolean login(String username, String password) {
         //check if username and password are valid
@@ -84,7 +85,7 @@ public class Controller {
     }
 
 
-    private Drink getDrink(String idDrink){
+    public Drink getDrink(String idDrink){
         for (Drink drink:listaDeiDrink
         ) {
             if(drink.getId().equals(idDrink)){

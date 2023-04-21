@@ -1,5 +1,7 @@
 package model;
 
+import androidx.annotation.NonNull;
+
 public class Drink {
     private String id;
     private String nome;
@@ -17,8 +19,19 @@ public class Drink {
         this.immagine = immagineInput;
     }
 
+    public Drink(String idInput, String nomeInput, String categoriaInput, String descrizioneInput, double prezzoInput){
+        this.id = idInput;
+        this.nome = nomeInput;
+        this.categoria = categoriaInput;
+        this.descrizione = descrizioneInput;
+        this.prezzo = prezzoInput;
+    }
 
-
+    @NonNull
+    @Override
+    public String toString() {
+        return id+" "+nome+" ";
+    }
 
     // Getters and Setters
     public String getId() {
