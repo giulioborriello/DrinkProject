@@ -52,6 +52,16 @@ create table if not exists Composizione(
 	quantita DECIMAL(10,2) NOT NULL
 );
 
+
+CREATE OR REPLACE VIEW public.frequenza_ingredienti as
+SELECT ing.nome as nome_ingrediente, storico.quantita as frequenza,
+ord.utente_id as compratore_id 
+from drink_ordine as storico 
+	join ordine as ord on storico.ordine_id=ord.id 
+	join drink on drink.id=storico.drink_id 
+	join composizione as comp on comp.drink_id=drink.id 
+	join ingredienti as ing on comp.ingrediente=ing.nome 
+order by storico.quantita;
 -- FUNCTION: public.raccomanda_drink(integer)
 
 -- DROP FUNCTION IF EXISTS public.raccomanda_drink(integer);
@@ -99,3 +109,19 @@ $BODY$;
 ALTER FUNCTION public.raccomanda_drink(integer)
     OWNER TO postgres;
 
+
+CREATE OR REPLACE FUNCTION public.racconada_drink_Ingrediente(IN id_utente integer)
+    RETURNS setof frequenza_ingredienti
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+    as $BODY$
+    DECLARE 
+        ingrediente_Candidato character varying;
+    BEGIN
+        SELECT nome_ingrediente INTO ingrediente_Candidato FROM frequenza_ingredienti WHERE compratore_id=id_utente;
+        RETURN QUery select * from drink join composizione on drink.id=composizione.drink_id order by random() limit 1;
+    END;
+    $BODY$;

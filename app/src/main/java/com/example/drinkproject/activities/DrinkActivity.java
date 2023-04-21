@@ -10,12 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.example.drinkproject.R;
-import com.example.drinkproject.views.RecyclerVIewDrinkAdapter;
+import com.example.drinkproject.views.DrinkAdapterDrinkView;
 import com.example.drinkproject.views.DrinkItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class DrinkActivity extends AppCompatActivity {
         drinks.add(new DrinkItem("Spritz the drinks god", "taste like zeus amatriciana", "500$",R.drawable.spritz));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.setAdapter(new RecyclerVIewDrinkAdapter(getApplicationContext(), drinks));
+        recyclerView.setAdapter(new DrinkAdapterDrinkView(getApplicationContext(), drinks));
     }
 
 
