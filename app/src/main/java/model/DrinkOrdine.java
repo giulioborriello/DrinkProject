@@ -1,11 +1,11 @@
 package  model;
 
-public class Drink_ordine {
+public class DrinkOrdine {
     private Drink drink;
     private int quantita;
     private double prezzo;
 
-    public Drink_ordine(Drink drinkInput, int quantitaInput){
+    public DrinkOrdine(Drink drinkInput, int quantitaInput){
         this.drink = drinkInput;
         this.quantita = quantitaInput;
         this.prezzo = drinkInput.getPrezzo() * quantitaInput;
@@ -26,9 +26,13 @@ public class Drink_ordine {
     public Drink getDrink() {
         return drink;
     }
+
+
     public void setDrink(Drink drink) {
         this.drink = drink;
     }
+
+
     public int getQuantita() {
         return quantita;
     }

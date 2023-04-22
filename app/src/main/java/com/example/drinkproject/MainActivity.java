@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     //private static final String SERVER_IP = "10.0.2.2";
 
     //private Socket socket;
-    private final Controller  controller= new Controller();
+    private final Controller  controller = Controller.getInstance();
     private Executor executor;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         //new Thread(new ClientThread()).start();
         executor = ContextCompat.getMainExecutor(this);
         System.out.println("CIAO MAMMA");
-        controller.dump();
         System.out.println("Prova Controller: "+controller.getDrink("1").toString());
         biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
 

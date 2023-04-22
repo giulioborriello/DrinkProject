@@ -14,44 +14,59 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.example.drinkproject.R;
-import com.example.drinkproject.views.DrinkAdapterDrinkView;
-import com.example.drinkproject.views.DrinkItem;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.example.drinkproject.views.CartAdapter;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
+import controller.Controller;
+import model.DrinkOrdine;
+
 public class OrderSummaryActivity extends AppCompatActivity {
+    private Controller controller = Controller.getInstance();
+    RecyclerView recyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_summary);
 
-        RecyclerView recyclerView = findViewById(R.id.summaryRecyclerView);
-
-        List<DrinkItem> drinks = new ArrayList<>();
-        Type type = new TypeToken<List<DrinkItem>>(){}.getType();
-        drinks = new Gson().fromJson(getIntent().getStringExtra("selectedDrinks"), type);
+        recyclerView = findViewById(R.id.recyclerViewOrderSummary);
+        List<DrinkOrdine> drinks = controller.getSummary();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.setAdapter(new DrinkAdapterDrinkView(getApplicationContext(), drinks));
+        recyclerView.setAdapter(new CartAdapter(getApplicationContext(), drinks));
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        boolean paymentWork = true;         //variable for testing
         //TODO: add logic for pay with credit card
         View paymentButton = findViewById(R.id.paymentButton);
-        paymentButton.setOnClickListener(this::onButtonShowPopupWindowClick);
+        paymentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (paymentWork) {
+                    CartAdapter cartAdapter = (CartAdapter) recyclerView.getAdapter();
+
+                    if (cartAdapter != null)
+                        cartAdapter.clear();
+
+                    cartAdapter.notifyDataSetChanged();
+                    recyclerView.removeAllViews();
+                    onButtonShowPopupWindowClickPaymentWorked(v);
+                } else {
+                    onButtonShowPopupWindowClickPaymentFailed(v);
+                }
+
+            }
+        });
     }
 
 
-    public void onButtonShowPopupWindowClick(View view) {
+    public void onButtonShowPopupWindowClickPaymentWorked(View view) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.payment_made_pop_up, null);
 
@@ -62,14 +77,31 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        popupView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                popupWindow.dismiss();
-                return true;
-            }
+        popupView.setOnTouchListener((v, event) -> {
+            popupWindow.dismiss();
+            return true;
         });
     }
+
+
+    public void onButtonShowPopupWindowClickPaymentFailed(View view) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.payment_not_made_pop_up, null);
+
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        popupView.setOnTouchListener((v, event) -> {
+            popupWindow.dismiss();
+            return true;
+        });
+    }
+
+
 
 
     @Override

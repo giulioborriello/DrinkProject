@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 public class Utente {
     private String id;
     private String nome;
@@ -28,6 +30,10 @@ public class Utente {
 
     public void updateQuantita(Drink drinkInput, int quantitaInput) {
         this.carrello.updateQuantita(drinkInput, quantitaInput);
+    }
+
+    public List<DrinkOrdine> getDrinkOrdineList() {
+        return this.carrello.getDrinkOrdineArrayList();
     }
 
 

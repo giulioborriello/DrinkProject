@@ -11,6 +11,7 @@
         android:layout_below="@id/searchView"
         android:layout_width="match_parent"
         android:layout_height="550dp"
+        android:layout_above="@id/goToCartButton"
         android:id="@+id/drinkRecyclerView"/>
 
     <Spinner
@@ -41,8 +42,9 @@
         android:id="@+id/goToCartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/drinkRecyclerView"
+        android:layout_above="@id/dropDownMenu"
         android:layout_marginLeft="330dp"
+        android:layout_alignParentBottom="false"
         android:clickable="true"
         app:srcCompat="@drawable/shoppingcarticon" />
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Carello {
     private Utente utente;
-    private ArrayList<Drink_ordine> drink_ordineArrayList =null;
+    private ArrayList<DrinkOrdine> drink_ordineArrayList = new ArrayList<>();
 
 
     public Carello(Utente utenteInput){
@@ -19,7 +19,7 @@ public class Carello {
         }
 
         //check if drink is already in the cart
-        for (Drink_ordine drink_ordine : this.drink_ordineArrayList) {
+        for (DrinkOrdine drink_ordine : this.drink_ordineArrayList) {
             if(drink_ordine.getDrink().getId().equals( drinkInput.getId())){
                 quantitaInput += drink_ordine.getQuantita();
                 drink_ordine.updateQuantita(quantitaInput);
@@ -27,13 +27,13 @@ public class Carello {
             }
         }
 
-        Drink_ordine drink_ordine = new Drink_ordine(drinkInput, quantitaInput);
+        DrinkOrdine drink_ordine = new DrinkOrdine(drinkInput, quantitaInput);
         this.drink_ordineArrayList.add(drink_ordine);
     }
 
 
     public void removeDrink(Drink drinkInput){
-        for (Drink_ordine drink_ordine : this.drink_ordineArrayList) {
+        for (DrinkOrdine drink_ordine : this.drink_ordineArrayList) {
             if(drink_ordine.getDrink().getId().equals( drinkInput.getId())){
                 drink_ordine.removeDrink();
                 return;
@@ -43,7 +43,7 @@ public class Carello {
 
 
     public void updateQuantita(Drink drinkInput, int quantitaInput){
-        for (Drink_ordine drink_ordine : this.drink_ordineArrayList) {
+        for (DrinkOrdine drink_ordine : this.drink_ordineArrayList) {
             if(drink_ordine.getDrink().getId().equals( drinkInput.getId())){
                 if (quantitaInput <= 0)
                     drink_ordine.removeDrink();
@@ -66,4 +66,7 @@ public class Carello {
 
     }
 
+    public ArrayList<DrinkOrdine> getDrinkOrdineArrayList() {
+        return drink_ordineArrayList;
+    }
 }

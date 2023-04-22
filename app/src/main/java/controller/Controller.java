@@ -1,27 +1,50 @@
 package controller;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import Dao.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 import  model.*;
 public class Controller {
-    private Utente utente=null;
-    private ArrayList<Drink> listaDeiDrink=new ArrayList<Drink>();
+    private static Controller controller;
+    private static Utente utente=null;
+    private static final ArrayList<Drink> listaDeiDrink=new ArrayList<Drink>();
 
-    public Controller (){};
+
+    private Controller (){
+        dump();
+    }
+
+
+    public static Controller getInstance(){
+        if(controller==null){
+            controller=new Controller();
+        }
+        return controller;
+    }
+
+
     private byte[] getByteArray(){
         byte[] array=null;
-        try {
-            array = Files.readAllBytes(Paths.get("images.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    return array;
+            try {
+                array = Files.readAllBytes(Paths.get("images.png"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        return array;
     }
+
+
     private void fakeDump(){
+        login("GLR","pass");
         listaDeiDrink.add(new Drink("1",
                     "Mojito",
                     "Alcolici",
@@ -53,16 +76,17 @@ public class Controller {
                 "Frullati",
                 "Frullato di fragole, banane e yogurt\t",
                 4.5));
-
-
-
     }
+
+
     public void dump(){
         //TODO fare il dump dei drink
         fakeDump();
         System.out.println("drink 1: "+getDrink("1").toString());
         System.out.println("drink 2: "+getDrink("2"));
     }
+
+
     public boolean login(String username, String password) {
         //check if username and password are valid
         //TODO verificare login in c e ricevere i suoi dati
@@ -80,6 +104,7 @@ public class Controller {
         return true;
     }
 
+
     public ArrayList<Drink> getDrinks(){
         return listaDeiDrink;
     }
@@ -95,6 +120,8 @@ public class Controller {
         }
         return null;
     }
+
+
     public boolean addDrink(String idDrinkOrdinato, int quantita){
         //controllo quantita '
         if(quantita<=0) return false;
@@ -107,6 +134,8 @@ public class Controller {
         utente.addDrink(drinkDaAggiungere,quantita);
         return true;
     }
+
+
     public boolean removeDrink(String idDrink){
         //recupera drink
         Drink idDrinkDaRimuovere=getDrink(idDrink);
@@ -116,9 +145,28 @@ public class Controller {
         utente.removeDrink(idDrinkDaRimuovere);
         return true;
     }
+
+
+    public String getIdDrinkByName(String name){
+        for (Drink drink:listaDeiDrink
+        ) {
+            if(drink.getNome().equals(name)){
+                return drink.getId();
+            }
+
+        }
+        return null;
+    }
+
+
     public boolean updateDrink(String idDrink, int quantita){
         Drink drinkDaAggiornare = getDrink(idDrink);
         utente.updateQuantita(drinkDaAggiornare,quantita);
     return true;
+    }
+
+
+    public List<DrinkOrdine> getSummary(){
+        return utente.getDrinkOrdineList();
     }
 }

@@ -1,75 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="220dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <ImageView
-        android:id="@+id/drinkImageOrderSummary"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_below="@+id/drinkNameOrderSummary"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="7dp"
-        app:srcCompat="@drawable/spritz" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <TextView
         android:id="@+id/drinkNameOrderSummary"
         android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:textSize="35sp"
-        android:layout_marginStart="20dp"
-        android:text=""
+        android:text="nome del drink"
         android:textColor="@color/white"
-        android:layout_marginEnd="20dp"
-        android:maxLines="1"
-        android:layout_marginTop="15dp"
-        android:layout_height="50dp"/>
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/drinkDescriptionOrderSummary"
         android:layout_width="300dp"
         android:layout_height="100dp"
-        android:text=""
+        android:layout_toRightOf="@id/drinkImageOrderSummary"
+        android:text="descrizione del drink"
         android:textColor="@color/white"
         android:textSize="15sp"
-        android:layout_below="@id/drinkNameOrderSummary"
-        android:layout_marginStart="10sp"
-        android:layout_marginTop="10sp"
-        android:layout_toEndOf="@id/drinkImageOrderSummary" />
+        android:layout_below="@id/drinkNameOrderSummary" />
 
     <TextView
-        android:id="@+id/drinkPriceOrderSummary"
-        android:layout_width="90dp"
-        android:layout_height="match_parent"
+        android:id="@+id/total"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_toEndOf="@id/drinkQuantityOrderSummary"
         android:layout_below="@id/drinkDescriptionOrderSummary"
-        android:layout_toEndOf="@id/drinkImageOrderSummary"
-        android:layout_marginTop="10sp"
-        android:textAlignment="center"
         android:textSize="30sp"
-        android:text=""
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:text="TOT:" />
 
     <TextView
-        android:id="@+id/tipsToTotal"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:layout_below="@id/drinkDescriptionOrderSummary"
-        android:layout_toRightOf="@id/drinkPriceOrderSummary"
-        android:layout_marginTop="10dp"
-        android:text="@string/drimk_view_summary_tip"
-        android:textSize="20sp"
+        android:id="@+id/totalPriceOrderSummary"
+        android:text="8$"
+        android:textSize="30sp"
+        android:textColor="@color/white"
         android:textAlignment="center"
-        android:textColor="@color/white"/>
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_toEndOf="@id/total"
+        android:layout_below="@id/drinkDescriptionOrderSummary" />
+
 
     <TextView
-        android:id="@+id/numberOfThisDrinkInTheCart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_toRightOf="@id/tipsToTotal"
+        android:id="@+id/drinkQuantityOrderSummary"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
         android:layout_below="@id/drinkDescriptionOrderSummary"
-        android:layout_marginTop="10dp" />
+        android:layout_toRightOf="@id/drinkImageOrderSummary"
+        android:text="42"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textAlignment="center"/>
 
 
-
+    <ImageView
+        android:id="@+id/drinkImageOrderSummary"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_below="@id/drinkNameOrderSummary"
+        android:src="@drawable/spritz"/>
 
 </RelativeLayout>

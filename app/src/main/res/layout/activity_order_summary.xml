@@ -22,37 +22,34 @@
     <EditText
         android:id="@+id/editTextCreditCardPassword"
         android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_below="@id/textViewCreditCardPassword"
+        android:layout_height="70dp"
+        android:layout_marginBottom="1dp"
+        android:layout_alignParentBottom="true"
         android:inputType="textPassword" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewOrderSummary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/textViewCreditCardPassword"
+        android:layout_below="@id/textViewOrderSummary" />
 
     <TextView
         android:id="@+id/textViewCreditCardPassword"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_below="@id/summaryRecyclerView"
+        android:layout_above="@id/editTextCreditCardPassword"
         android:text="@string/order_summary_activity_text_view_credit_card_password"
         android:textSize="30sp"
         android:textAlignment="center"
         android:textColor="@color/white"/>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@id/textViewOrderSummary"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:id="@+id/summaryRecyclerView" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/paymentButton"
-        android:layout_width="190dp"
-        android:layout_height="190dp"
-        android:layout_toRightOf="@id/editTextCreditCardPassword"
-        android:layout_below="@+id/textViewCreditCardPassword"
-        android:layout_marginLeft="45dp"
-        android:layout_marginTop="15dp"
-        app:srcCompat="@drawable/dollaricon" />
-
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/dollaricon"
+        android:layout_below="@id/textViewCreditCardPassword"
+        android:layout_toRightOf="@id/editTextCreditCardPassword"/>
 </RelativeLayout>
