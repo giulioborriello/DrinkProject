@@ -5,6 +5,10 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+
+//librerie proprietarie
+#include "PostgreSQLlib.h"
+
 #define PORT 8080
 
 int main(int argc, char const *argv[]) {
@@ -60,5 +64,30 @@ int main(int argc, char const *argv[]) {
     valread = read(new_socket, buffer, 1024);
     printf("Client message: %s\n", buffer);
 
+
+    //TODO: inizio della prova dump 
+    //inzio connessione database postgresql
+    connectSQL();
+    //
+    //INIZIO di un dump
+    printf("Dio MERDA");
+    int rows, cols;
+    char *** tabella;
+    querySQL("select nome, prezzo from drink",&tabella,&rows,&cols);
+
+    //stampa provaServerC di query drink;
+    for (int i = 0; i<rows; i++){
+        for (int j = 0; j<cols; j++){
+            printf("%s ",tabella[i][j]);
+        }
+        printf("\n");
+    }
+    
+
+
+
+
     return 0;
 }
+
+

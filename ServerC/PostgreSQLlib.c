@@ -3,10 +3,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+
+PGconn *conn;
+PGresult *res;
+
 void connectSQL(){
    
-   PGconn *conn;
-   PGresult *res;
+   
 	
    conn = PQsetdbLogin(SERVERSQL, PORTSQL, NULL, NULL, USERSQL, USERSQL, PASSWDSQL);
 

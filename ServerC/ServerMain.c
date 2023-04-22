@@ -6,6 +6,7 @@
 #include <arpa/inet.h>
 #include <stdbool.h>
 #include <pthread.h> 
+#include <string.h>
 
 #include "CodaConnessioni.h"
 
@@ -25,9 +26,52 @@ typedef struct sockaddr SA;
 // sudo apt-get install libpq-dev
 // gcc Servermain.c -o pippo -I/usr/include/postgresql -lpq
 
+PGconn *conn;
+PGresult *res;
+
+
+void querySQL (char *query, char ****results, int *rows, int *cols){
+	res = PQexec(conn, query);
+   
+   // Controllo la query
+   if (PQresultStatus(res) != PGRES_TUPLES_OK) {
+      printf("Errore nella query: %s", PQerrorMessage(conn));
+      PQclear(res);
+      PQfinish(conn);
+      exit(1);
+   }
+   
+   // Stampa i risultati 
+   //TODO rendere questi parametri di output
+    *rows = PQntuples(res);
+    *cols = PQnfields(res);
+   //allocazione matrice di stringhe
+   //allocazione matrice di stringhe  per i risultati
+   *results = (char ***) malloc(*rows * sizeof(char **));
+   for (int i = 0; i < *rows; i++) {
+      *results[i] = (char **) malloc(*cols * sizeof(char *));
+      for (int j = 0; j < *cols; j++) {
+         *results[i][j] = (char *) malloc(100 * sizeof(char));
+      }
+   }
+   
+
+   printf("\nRisultati della query:\n");
+   for (int i = 0; i < *rows; i++) {
+      for (int j = 0; j < *cols; j++) {
+         printf("%s\t", PQgetvalue(res, i, j));
+         strcpy(*results[i][j], PQgetvalue(res, i, j));
+      }
+      printf("\n");
+   }
+   
+   // Libera la memoria
+   PQclear(res);
+}
+
+
 int main() {
-   PGconn *conn;
-   PGresult *res;
+   
    char *port;
    char *address, *user, *password, *database, *query, *insert_query;
    /*
@@ -117,10 +161,46 @@ int main() {
    
    // Stampa il messaggio di conferma
    printf("\nIstruzione di inserimento eseguita con successo.\n");
-   
+ 
    // Libera la memoria
    PQclear(res);
-   
+
+
+
+
+{
+//INIZIO di un dump
+    printf("Dio MERDA");
+    int rows, cols;
+    char *** tabella;
+    querySQL("select nome, prezzo from drink",&tabella,&rows,&cols);
+
+    //stampa provaServerC di query drink;
+    for (int i = 0; i<rows; i++){
+        for (int j = 0; j<cols; j++){
+            printf("%s ",tabella[i][j]);
+        }
+        printf("\n");
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    // Chiude la connessione
    PQfinish(conn);
    

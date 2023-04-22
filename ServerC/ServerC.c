@@ -132,7 +132,8 @@ void* handle_connection(void* p_client_socket){
 
     printf("REQUEST: %s\n",buffer);
     fflush(stdout);
-
+    scanf("%s", buffer);
+    
     //validity check
     if (realpath(buffer, actualpath) == NULL)
     {
