@@ -169,4 +169,8 @@ public class Controller {
     public List<DrinkOrdine> getSummary(){
         return utente.getDrinkOrdineList();
     }
+
+    public String getPrezzoTotale(){
+        return String.valueOf(utente.getPrezzoTotale());
+    }
 }

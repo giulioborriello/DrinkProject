@@ -59,6 +59,14 @@ public class Carello {
         this.drink_ordineArrayList.clear();
     }
 
+    public double getPrezzoTotale(){
+        double prezzoTotale = 0;
+        for (DrinkOrdine drink_ordine : drink_ordineArrayList) {
+            prezzoTotale += (drink_ordine.getPrezzo());
+        }
+        return prezzoTotale;
+    }
+
 
     //getters and setters
     public Utente getUtente() {

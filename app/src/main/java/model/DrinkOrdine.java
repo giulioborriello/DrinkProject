@@ -43,7 +43,7 @@ public class DrinkOrdine {
         try{
             if (quantitaInput <= 0){
                 //invalid argument exception
-                throw  new IllegalArgumentException("Quantita non valida");
+                throw  new IllegalArgumentException("Quantità non valida");
 
             }
             this.prezzo = drink.getPrezzo() * quantitaInput;

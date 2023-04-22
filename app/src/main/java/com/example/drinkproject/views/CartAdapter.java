@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.drinkproject.R;
+import com.example.drinkproject.activities.OrderSummaryActivity;
 
 import java.util.List;
 
@@ -42,7 +43,6 @@ public class CartAdapter  extends RecyclerView.Adapter<CartHolder> {
         String name = drink.getNome();
         String description = drink.getDescrizione();
         double price = drink.getPrezzo();
-
         int quantity = drinks.get(position).getQuantita();
 
         holder.nameTextCart.setText(name);

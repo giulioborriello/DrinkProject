@@ -36,6 +36,9 @@ public class Utente {
         return this.carrello.getDrinkOrdineArrayList();
     }
 
+    public double getPrezzoTotale(){
+        return this.carrello.getPrezzoTotale();
+    }
 
     // Getters and Setters
     public String getId() {

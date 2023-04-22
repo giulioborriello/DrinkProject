@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.example.drinkproject.R;
 import com.example.drinkproject.views.CartAdapter;
@@ -25,7 +26,6 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private Controller controller = Controller.getInstance();
     RecyclerView recyclerView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +36,18 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(new CartAdapter(getApplicationContext(), drinks));
+
+
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
+        TextView totalCounter = (TextView) findViewById(R.id.totalCounter);
+        totalCounter.setText(controller.getPrezzoTotale());
+
+
         boolean paymentWork = true;         //variable for testing
         //TODO: add logic for pay with credit card
         View paymentButton = findViewById(R.id.paymentButton);
@@ -56,6 +62,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
                     cartAdapter.notifyDataSetChanged();
                     recyclerView.removeAllViews();
+                    totalCounter.setText("0.0");
+
                     onButtonShowPopupWindowClickPaymentWorked(v);
                 } else {
                     onButtonShowPopupWindowClickPaymentFailed(v);
