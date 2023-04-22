@@ -6,9 +6,12 @@
 #define USERSQL "belwxpmt"
 #define PASSWDSQL "XrwgzZ7ArJ9IHywR-xoWQAb1CGT-Govq"
 
+
+
 void connectSQL();
 void closeSQL();
 void insertSQL(char *query);
-void querySQL (char *query);
+void querySQL (char *query, char ****results, int *rows, int *cols);
+
 
 #endif
