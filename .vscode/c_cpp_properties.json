@@ -3,9 +3,15 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "C:\\Program Files\\PostgreSQL\\15\\include\\**"
             ],
-            "defines": []
+            "defines": [],
+            "compilerArgs": [
+                "-plq"
+            ],
+            "compilerPath": "C:/MinGW/bin/gcc.exe",
+            "cStandard": "c23",
+            "intelliSenseMode": "linux-clang-x64"
         }
     ],
     "version": 4

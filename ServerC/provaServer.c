@@ -72,16 +72,12 @@ int main(int argc, char const *argv[]) {
     //INIZIO di un dump
     printf("Dio MERDA");
     int rows, cols;
-    char *** tabella;
-    querySQL("select nome, prezzo from drink",&tabella,&rows,&cols);
-
-    //stampa provaServerC di query drink;
-    for (int i = 0; i<rows; i++){
-        for (int j = 0; j<cols; j++){
-            printf("%s ",tabella[i][j]);
-        }
-        printf("\n");
-    }
+    //char *** tabella;
+    int *resQuery;
+    querySQL("select nome, prezzo from drink", &rows, &cols, resQuery);
+    
+    printf("stringa %s",getValore(resQuery,0,0));
+  
     
 
 
