@@ -1,4 +1,3 @@
-#include <libpq-fe.h>
 #include <stdio.h>  
 #include <stdlib.h>
 #include <unistd.h>
@@ -10,14 +9,15 @@ PGresult *res;
 void connectSQL(){
    
    
-	
+   printf("inizio connessione\n");
    conn = PQsetdbLogin(SERVERSQL, PORTSQL, NULL, NULL, USERSQL, USERSQL, PASSWDSQL);
-
+   printf("Verifica connessione\n");
    if (PQstatus(conn) != CONNECTION_OK) {
       printf("Errore di connessione: %s", PQerrorMessage(conn));
       PQfinish(conn);
       exit(1);
    }
+   printf("Connessione avvenuta con successo\n");
 }
 
 void insertSQL(char *query){
@@ -36,7 +36,7 @@ void insertSQL(char *query){
    PQclear(res);
 }
 
-void querySQL (char *query,int *rows, int *cols,int *resQuery){
+void querySQL (char *query,int *rows, int *cols,PGresult *resQuery){
 	PGresult *res;
 	res = PQexec(conn, query);
    
@@ -66,7 +66,7 @@ void querySQL (char *query,int *rows, int *cols,int *resQuery){
 }
 
 
-char * getValore(int * res, int col, int row){
+char * getValore(PGresult * res, int col, int row){
    return PQgetvalue(res, col, row);
 }
 

@@ -5,8 +5,10 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-
+//gcc provaServer.c PostgreSQLlib.c -L/usr/lib/x86_64-linux-gnu -lpq -o provaServerc
 //librerie proprietarie
+
+
 #include "PostgreSQLlib.h"
 
 #define PORT 8080
@@ -56,13 +58,14 @@ int main(int argc, char const *argv[]) {
     printf("Client message: %s\n", buffer);
 
     // Invio di una seconda stringa al client
-    hello = "Another message from server";
+    hello = "Another message from server\n";
     send(new_socket, hello, strlen(hello), 0);
     printf("Another message sent %s \n",hello);
 
     // Ricezione di una seconda stringa dal client
     valread = read(new_socket, buffer, 1024);
     printf("Client message: %s\n", buffer);
+    printf("INzio dump\n");
 
 
     //TODO: inizio della prova dump 
@@ -73,16 +76,19 @@ int main(int argc, char const *argv[]) {
     printf("Dio MERDA");
     int rows, cols;
     //char *** tabella;
-    int *resQuery;
+    PGresult *resQuery;
     querySQL("select nome, prezzo from drink", &rows, &cols, resQuery);
     
+    printf("rows %d",rows);
+    printf("cols %d",cols);
+    printf("\n");
     printf("stringa %s",getValore(resQuery,0,0));
   
     
 
 
-
-
+    hello="hey bellezza ti invio qualcosa\n ";
+    send(new_socket, hello, strlen(hello), 0);    
     return 0;
 }
 

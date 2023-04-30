@@ -1,3 +1,6 @@
+#include "/usr/include/postgresql/libpq-fe.h"
+
+
 #ifndef PSQL_H
 #define PSQL_H
 
@@ -9,7 +12,7 @@
 void connectSQL();
 void closeSQL();
 void insertSQL(char *query);
-void querySQL (char *query, int *rows, int *cols, int *resQuery);
-char* getValore(int *resQuery, int col,int row);
+void querySQL (char *query, int *rows, int *cols, PGresult *resQuery);
+char* getValore(PGresult *resQuery, int col,int row);
 
 #endif
