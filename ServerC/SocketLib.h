@@ -5,13 +5,19 @@
 #define SOCKETERROR (-1)
 #define SEPARATOR "#"
 
+#define PATH_MAX_LOCAL 1024
+#define SERVERPORT 8989
+#define SOCKETERROR (-1)
+#define SERVER_BACKLOG 100
+#define THREAD_POOL_SIZE 20
+
+#define BUFSIZE 4096
+
 typedef struct sockaddr_in SA_IN;
 typedef struct sockaddr SA;
 
 void* handle_connection(void* client_socket_input);
 
 int check(int exp, const char *msg);
-
-void* thread_function(void* args);
 
 #endif

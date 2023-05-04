@@ -2,7 +2,7 @@
 #define PSQL_H
 
 #define SERVERSQL "hattie.db.elephantsql.com"
-#define HOSTSQL "5432"
+#define PORTSQL "5432"
 #define USERSQL "belwxpmt"
 #define PASSWDSQL "XrwgzZ7ArJ9IHywR-xoWQAb1CGT-Govq"
 

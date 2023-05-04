@@ -6,20 +6,7 @@
 #include <stdbool.h>
 #include <pthread.h> 
 #include "CodaConnessioni.h"
-
-#define PATH_MAX_LOCAL 1024
-#define SERVERPORT 8989
-#define SOCKETERROR (-1)
-#define SERVER_BACKLOG 100
-#define THREAD_POOL_SIZE 20
-
-#define BUFSIZE 4096
-
-pthread_t thread_pool[THREAD_POOL_SIZE];
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER;
-
-#define SOCKETERROR (-1)
+#include "SocketLib.h"
 
 /// @brief controlla se l'operazione causa errori
 /// @param exp operazione da controllare
@@ -82,23 +69,3 @@ void* handle_connection(void* client_socket_input){
     printf("Closing Connection.\n");
 }
 
-
-/// @brief funzione che accoda le connessioni per poi essere processate
-/// @param args argomenti della funzione 
-/// @return 
-void* thread_function(void* args){
-    while (true)
-    {
-        int *pclient;
-        pthread_mutex_lock(&mutex);
-        if( (pclient = decoda()) == NULL){
-            pthread_cond_wait(&condition_var, &mutex);
-            pclient = decoda();
-        }
-        pthread_mutex_unlock(&mutex);
-        
-        if(pclient != NULL){
-            handle_connection(pclient);
-        }
-    }
-}
