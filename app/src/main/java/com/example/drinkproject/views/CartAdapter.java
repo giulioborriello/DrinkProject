@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,19 +13,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.drinkproject.R;
 import com.example.drinkproject.activities.OrderSummaryActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import controller.Controller;
 import model.Drink;
 import model.DrinkOrdine;
 
 public class CartAdapter  extends RecyclerView.Adapter<CartHolder> {
     Context context;
-    private final List<DrinkOrdine> drinks;
+    private List<DrinkOrdine> drinks;
     private final LayoutInflater inflater;
 
     public CartAdapter(Context context, List<DrinkOrdine> drinks) {
-        this.drinks = drinks;
         this.context = context;
+        this.drinks = drinks;
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -70,4 +74,9 @@ public class CartAdapter  extends RecyclerView.Adapter<CartHolder> {
         drinks.clear();
         notifyItemRangeRemoved(0, size);
     }
+
+
+
+
+
 }

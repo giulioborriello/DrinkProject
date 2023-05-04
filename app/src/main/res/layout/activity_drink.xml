@@ -47,7 +47,5 @@
         android:layout_alignParentBottom="false"
         android:clickable="true"
         app:srcCompat="@drawable/shoppingcarticon" />
-
-
 </RelativeLayout>
 

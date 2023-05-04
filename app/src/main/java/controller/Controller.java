@@ -135,7 +135,7 @@ public class Controller {
         }
         return null;
     }
-    ArrayList<Drink> cercaDrink(String parolaCercata){
+    public ArrayList<Drink> cercaDrink(String parolaCercata){
         ArrayList<Drink> listaDeiDrinkCercati = new ArrayList<>();
         parolaCercata=parolaCercata.toLowerCase();
 
@@ -147,7 +147,7 @@ public class Controller {
     return listaDeiDrinkCercati;
     }
 
-    ArrayList<Drink> FiltraDrinkPerCategoria(String categoriaSelezionata){
+    public ArrayList<Drink> FiltraDrinkPerCategoria(String categoriaSelezionata){
             ArrayList<Drink> listaDeiDrinkCercati = new ArrayList<>();
             categoriaSelezionata= categoriaSelezionata.toLowerCase();
             for (Drink drink: listaDeiDrink

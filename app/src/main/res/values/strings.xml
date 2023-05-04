@@ -29,4 +29,5 @@
     <string name="drimk_view_summary_tip">TOT:</string>
     <string name="registerNameHint">Name</string>
     <string name="registerSurnameHint">Surname</string>
+    <string name="image_of_the_drink">image of the drink</string>
 </resources>
