@@ -13,7 +13,7 @@ public class Controller {
     private static Controller controller;
     private static Utente utente=null;
     private static final ArrayList<Drink> listaDeiDrink= new ArrayList<>();
-
+    private static final ArrayList<String> categorie= new ArrayList<>();
 
     private Controller (){
         dump();
@@ -72,6 +72,10 @@ public class Controller {
                 "Frullati",
                 "Frullato di fragole, banane e yogurt\t",
                 4.5));
+
+        categorie.add("FrFrullatiullati");
+        categorie.add("Alcolici");
+        categorie.add("Analcolici");
     }
 
 
@@ -227,5 +231,7 @@ public class Controller {
 
         return true;
     }
-
+    public ArrayList<String> getCategorie(){
+        return categorie;
+    }
 }
