@@ -66,7 +66,57 @@ void querySQL (char *query, PGconn *conn){
    PQclear(res);
 }
 
+/**
+ * @brief Esegue una query di cancellazione nel database
+ * 
+ * @param query istruzione in sql
+ * @param conn connnessione stabilita con il database
+ */
+void deleteSQL(char *query, PGconn *conn){
+   PGresult *res;
+   res = PQexec(conn, query);
+   
+   // Controllo la query
+   if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+      printf("Errore nella query: %s", PQerrorMessage(conn));
+      PQclear(res);
+      PQfinish(conn);
+      exit(1);
+   }
+   printf("\nIstruzione di cancellazione eseguita con successo.\n");
+   
+   // Libera la memoria
+   PQclear(res);
+}
 
+/**
+ * @brief Esegue una query di aggiornamento nel database
+ * 
+ * @param query istruzione in sql
+ * @param conn connessione stabilita con il database
+ */
+void updateSQL(char *query, PGconn *conn){
+   PGresult *res;
+   res = PQexec(conn, query);
+   
+   // Controllo la query
+   if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+      printf("Errore nella query: %s", PQerrorMessage(conn));
+      PQclear(res);
+      PQfinish(conn);
+      exit(1);
+   }
+   printf("\nIstruzione di aggiornamento eseguita con successo.\n");
+   
+   // Libera la memoria
+   PQclear(res);
+}
+
+/**
+ * @brief Chiude la connessione con il database
+ * 
+ * @param conn connessione stabilita con il database
+ */
 void closeSQL(PGconn *conn){
 	PQfinish(conn);
 }

@@ -7,6 +7,7 @@
 #include <pthread.h> 
 #include "CodaConnessioni.h"
 #include "SocketLib.h"
+#include "PostgreSQLlib.h"
 
 /// @brief controlla se l'operazione causa errori
 /// @param exp operazione da controllare
@@ -24,6 +25,7 @@ int check(int exp, const char *msg) {
 
 
 void* handle_connection(void* client_socket_input){
+    char * token;
     int client_socket = *((int *)client_socket_input);
     free(client_socket_input);
     char buffer[BUFSIZ];
@@ -41,31 +43,35 @@ void* handle_connection(void* client_socket_input){
 
     printf("REQUEST: %s\n",buffer);
     fflush(stdout);
-	
-    //validity check
-    if (realpath(buffer, actualpath) == NULL)
-    {
-        printf("ERROR(Bad path): %s\n", buffer);
-        close(client_socket);
-        return NULL;
-    }
-    
-    //read file and send its contents to client 
-    FILE *fp = fopen(actualpath, "r");
-    if (fp == NULL)
-    {
-        printf("ERROR(open): %s\n",buffer);
-        close(client_socket);
-        return NULL;
+	char * SQLrequest = strtok(string, SEPARATOR);
+   // loop through the string to extract all other tokens
+    while( token != NULL ) {
+        printf( " %s\n", token ); //printing each token
+        token = strtok(NULL, SEPARATOR); //ora token contiene la query SQL e SQLrequest il tipo di query
     }
 
-    while ((bytes_read = fread(buffer, 1, BUFSIZE, fp)) > 0)
+    conn = connectSQL();
+    
+    switch (SQLrequest)
     {
-        printf("Sending %zu bytes\n",bytes_read);
-        write(client_socket, buffer, bytes_read);
+    case "select":
+        querySQL(token, conn);
+        break;
+    case "insert":
+        insertSQL(token, conn);
+        break;
+    case "update":
+        updateSQL(token, conn);
+        break;
+    case "delete":
+        deleteSQL(token, conn);
+        break;    
+    default:
+        break;
     }
+
+    closeSQL(conn);
     close(client_socket);
-    fclose(fp);
     printf("Closing Connection.\n");
 }
 
