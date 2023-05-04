@@ -1,10 +1,4 @@
 package controller;
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
-
-import Dao.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,10 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import  model.*;
+
+@SuppressWarnings("unused")
 public class Controller {
     private static Controller controller;
     private static Utente utente=null;
-    private static final ArrayList<Drink> listaDeiDrink=new ArrayList<Drink>();
+    private static final ArrayList<Drink> listaDeiDrink= new ArrayList<>();
 
 
     private Controller (){
@@ -33,7 +29,7 @@ public class Controller {
 
 
     private byte[] getByteArray(){
-        byte[] array=null;
+        byte[] array;
             try {
                 array = Files.readAllBytes(Paths.get("images.png"));
             } catch (IOException e) {
@@ -90,7 +86,8 @@ public class Controller {
     public boolean login(String username, String password) {
         //check if username and password are valid
         //TODO verificare login in c e ricevere i suoi dati
-        /*Connessione conn = null;
+        /* noinspection
+        Connessione conn = null;
         try {
             conn = Connessione.getInstance();
         } catch (IOException e) {
@@ -136,29 +133,40 @@ public class Controller {
     }
     ArrayList<Drink> cercaDrink(String parolaCercata){
         ArrayList<Drink> listaDeiDrinkCercati = new ArrayList<>();
-        parolaCercata= "*"+parolaCercata+"*";
+        parolaCercata=parolaCercata.toLowerCase();
+
         for (Drink drink: listaDeiDrink
              ) {
-                if ( drink.getNome().matches(parolaCercata)) listaDeiDrinkCercati.add(drink);
+                if ( drink.getNome().toLowerCase().contains(parolaCercata)|| drink.getCategoria().toLowerCase().contains(parolaCercata)) listaDeiDrinkCercati.add(drink);
         }
 
     return listaDeiDrinkCercati;
     }
 
+    ArrayList<Drink> FiltraDrinkPerCategoria(String categoriaSelezionata){
+            ArrayList<Drink> listaDeiDrinkCercati = new ArrayList<>();
+            categoriaSelezionata= categoriaSelezionata.toLowerCase();
+            for (Drink drink: listaDeiDrink
+            ) {
+                if ( drink.getCategoria().contains(categoriaSelezionata)) listaDeiDrinkCercati.add(drink);
+            }
+
+            return listaDeiDrinkCercati;
+    }
 
 
 
-    public boolean addDrink(String idDrinkOrdinato, int quantita){
+
+    public void addDrink(String idDrinkOrdinato, int quantita){
         //controllo quantita '
-        if(quantita<=0) return false;
+        if(quantita<=0) return;
 
         //recupera drink
         Drink drinkDaAggiungere=getDrink(idDrinkOrdinato);
 
-        if(drinkDaAggiungere==null) return false;
+        if(drinkDaAggiungere==null) return;
 
         utente.addDrink(drinkDaAggiungere,quantita);
-        return true;
     }
 
 
@@ -199,4 +207,25 @@ public class Controller {
     public String getPrezzoTotale(){
         return String.valueOf(utente.getPrezzoTotale());
     }
+    boolean EffettuaPagamento(){
+        String queryClone="INSERT INTO public.drink_ordine(\n" +
+                "\t drink_id, ordine_id, quantita, prezzo)\n"+
+                "\tVALUES\n";
+                //"\tVALUES ( ?, ?, ?, ?) "
+        StringBuilder query= new StringBuilder();
+        ArrayList<DrinkOrdine> carello = (ArrayList<DrinkOrdine>) utente.getDrinkOrdineList();
+        for (DrinkOrdine drinkOrdinato: carello) {
+            String drink_id=drinkOrdinato.getDrink().getId();
+            String drink_ordine="0";//TODO crea la query per creare ordine cosi da avere id del ordine
+            int quantita= drinkOrdinato.getQuantita();
+            double prezzo= drinkOrdinato.getPrezzo();
+            String value= "\t(" + drink_id + ","+drink_ordine+"," + quantita + "," + prezzo + ");\n";
+            query.append(queryClone).append(value);
+        }
+        System.out.println("sono nel metodo Controller.EffettuaPagamento()\n la query creata è:\n"+query);
+        //TODO inserire logica comunicazione server c ;
+
+        return true;
+    }
+
 }
