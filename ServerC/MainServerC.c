@@ -11,16 +11,6 @@
 #include "PostgreSQLlib.h"
 #include "CodaConnessioni.h"
 
-#define PATH_MAX_LOCAL 1024
-#define SERVERPORT 8989
-#define BUFSIZE 4096
-#define SOCKETERROR (-1)
-#define SERVER_BACKLOG 100
-#define THREAD_POOL_SIZE 20
-
-pthread_t thread_pool[THREAD_POOL_SIZE];
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER;
 
 int main (int argc , char **argv)
 {
