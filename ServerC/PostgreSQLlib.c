@@ -1,26 +1,27 @@
+#include <libpq-fe.h>
 #include <stdio.h>  
 #include <stdlib.h>
 #include <unistd.h>
 #include "PostgreSQLlib.h"
 
+/**
 PGconn *conn;
 PGresult *res;
+*/
+PGconn * connectSQL(){
+	PGconn *conn;
+	conn = PQsetdbLogin(SERVERSQL, PORTSQL, NULL, NULL, USERSQL, USERSQL, PASSWDSQL);
 
-void connectSQL(){
-   
-   
-   printf("inizio connessione\n");
-   conn = PQsetdbLogin(SERVERSQL, PORTSQL, NULL, NULL, USERSQL, USERSQL, PASSWDSQL);
-   printf("Verifica connessione\n");
    if (PQstatus(conn) != CONNECTION_OK) {
       printf("Errore di connessione: %s", PQerrorMessage(conn));
       PQfinish(conn);
       exit(1);
    }
-   printf("Connessione avvenuta con successo\n");
+   return conn;
 }
 
-void insertSQL(char *query){
+void insertSQL(char *query, PGconn *conn){
+	PGresult *res;
 	res = PQexec(conn, query);
    
    // Controllo la query
@@ -36,7 +37,7 @@ void insertSQL(char *query){
    PQclear(res);
 }
 
-void querySQL (char *query,int *rows, int *cols,PGresult *resQuery){
+void querySQL (char *query, PGconn *conn){
 	PGresult *res;
 	res = PQexec(conn, query);
    
@@ -50,12 +51,12 @@ void querySQL (char *query,int *rows, int *cols,PGresult *resQuery){
    
    // Stampa i risultati 
    //TODO rendere questi parametri di output
-   * rows = PQntuples(res);
-   * cols = PQnfields(res);
-   resQuery = res;
+   int rows = PQntuples(res);
+   int cols = PQnfields(res);
+   
    printf("\nRisultati della query:\n");
-   for (int i = 0; i < *rows; i++) {
-      for (int j = 0; j < *cols; j++) {
+   for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
          printf("%s\t", PQgetvalue(res, i, j));
       }
       printf("\n");
@@ -66,11 +67,6 @@ void querySQL (char *query,int *rows, int *cols,PGresult *resQuery){
 }
 
 
-char * getValore(PGresult * res, int col, int row){
-   return PQgetvalue(res, col, row);
-}
-
-
-void closeSQL(){
+void closeSQL(PGconn *conn){
 	PQfinish(conn);
 }

@@ -3,13 +3,44 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <stdbool.h>
+#include <pthread.h> 
+#include "CodaConnessioni.h"
+
+#define PATH_MAX_LOCAL 1024
+#define SERVERPORT 8989
+#define SOCKETERROR (-1)
+#define SERVER_BACKLOG 100
+#define THREAD_POOL_SIZE 20
+
+#define BUFSIZE 4096
+
+pthread_t thread_pool[THREAD_POOL_SIZE];
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER;
 
 #define SOCKETERROR (-1)
 
-void* handle_connection(void* client_socket){
-    int client_socket = *((int *)p_client_socket);
-    free(p_client_socket);
+/// @brief controlla se l'operazione causa errori
+/// @param exp operazione da controllare
+/// @param msg messaggio di errore in caso di fallimento
+/// @return 
+int check(int exp, const char *msg) {
+    if (exp == SOCKETERROR)
+    {
+        perror(msg);
+        exit(1);
+    }
+
+    return exp;
+}
+
+
+void* handle_connection(void* client_socket_input){
+    int client_socket = *((int *)client_socket_input);
+    free(client_socket_input);
     char buffer[BUFSIZ];
+    char actualpath[BUFSIZ];
     size_t bytes_read;
     int msgsize = 0;
 
@@ -23,7 +54,7 @@ void* handle_connection(void* client_socket){
 
     printf("REQUEST: %s\n",buffer);
     fflush(stdout);
-
+	
     //validity check
     if (realpath(buffer, actualpath) == NULL)
     {
@@ -51,19 +82,6 @@ void* handle_connection(void* client_socket){
     printf("Closing Connection.\n");
 }
 
-/// @brief controlla se l'operazione causa errori
-/// @param exp operazione da controllare
-/// @param msg messaggio di errore in caso di fallimento
-/// @return 
-int check(int exp, const char *msg) {
-    if (exp == SOCKETERROR)
-    {
-        perror(msg);
-        exit(1);
-    }
-
-    return exp;
-}
 
 /// @brief funzione che accoda le connessioni per poi essere processate
 /// @param args argomenti della funzione 

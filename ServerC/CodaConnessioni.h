@@ -9,6 +9,6 @@ struct nodo{
 typedef struct nodo nodo_coda;
 
 void accoda(int *client_socket);
-int * decoda();
+int* decoda();
 
 #endif
