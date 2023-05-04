@@ -11,6 +11,12 @@
 #include "PostgreSQLlib.h"
 #include "CodaConnessioni.h"
 
+void* thread_function(void* args);
+
+
+pthread_t thread_pool[THREAD_POOL_SIZE];
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER;
 
 int main (int argc , char **argv)
 {
@@ -22,7 +28,7 @@ int main (int argc , char **argv)
     */
    
     SA_IN server_addr, client_addr;
-
+	
     for (int i = 0; i < THREAD_POOL_SIZE; i++)
     {
         pthread_create(&thread_pool[i], NULL, thread_function, NULL);
@@ -42,10 +48,8 @@ int main (int argc , char **argv)
         printf("Aspettando connessione...\n");
         
         addr_size = sizeof(SA_IN);
-        check(client_socket = 
-                accept(server_socket, (SA*)&client_addr, (socklen_t*)&addr_size),
-                "accept failed");
-                printf("Connected!\n");
+        check(client_socket =  accept(server_socket, (SA*)&client_addr, (socklen_t*)&addr_size), "accept failed");
+        printf("Connected!\n");
                 //processa connessione
         int *pclient = malloc(sizeof(int));
         *pclient = client_socket;
@@ -55,8 +59,31 @@ int main (int argc , char **argv)
          accoda(pclient);
          pthread_cond_signal(&condition_var);
         pthread_mutex_unlock(&mutex);
+        
+        
 
     }//fine while
     
     return 0;
+}
+
+
+/// @brief funzione che accoda le connessioni per poi essere processate
+/// @param args argomenti della funzione 
+/// @return 
+void* thread_function(void* args){
+    while (true)
+    {
+        int *pclient;
+        pthread_mutex_lock(&mutex);
+        if( (pclient = decoda()) == NULL){
+            pthread_cond_wait(&condition_var, &mutex);
+            pclient = decoda();
+        }
+        pthread_mutex_unlock(&mutex);
+        
+        if(pclient != NULL){
+            handle_connection(pclient);
+        }
+    }
 }
