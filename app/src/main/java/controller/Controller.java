@@ -123,6 +123,7 @@ public class Controller {
     }
 
 
+
     public Drink getDrink(String idDrink){
         for (Drink drink:listaDeiDrink
         ) {
@@ -133,6 +134,18 @@ public class Controller {
         }
         return null;
     }
+    ArrayList<Drink> cercaDrink(String ParolaCercata){
+        ArrayList<Drink> listaDeiDrinkCercati = new ArrayList<>();
+
+        for (Drink drink: listaDeiDrink
+             ) {
+                if ( true) listaDeiDrinkCercati.add(drink);
+        }
+
+    return listaDeiDrinkCercati;
+    }
+
+
 
 
     public boolean addDrink(String idDrinkOrdinato, int quantita){
