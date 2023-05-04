@@ -4,7 +4,7 @@
     <string name="login_activity_password">Password</string>
     <string name="login_activity_log_in_button">Log in with fingerprint</string>
     <string name="login_activity_welcome">Welcome</string>
-    <string name="login_activity_username">username</string>
+    <string name="login_activity_username">Username</string>
     <string name="title_activity_drink">DrinkActivity</string>
     <string name="action_settings">Settings</string>
     <string name="drink_view_flavour">flavour</string>
@@ -27,4 +27,6 @@
     <string name="payment_not_made_text">Payment not made</string>
     <string name="payment_made_text">Payment made</string>
     <string name="drimk_view_summary_tip">TOT:</string>
+    <string name="registerNameHint">Name</string>
+    <string name="registerSurnameHint">Surname</string>
 </resources>

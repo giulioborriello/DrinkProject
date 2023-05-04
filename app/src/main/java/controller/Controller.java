@@ -105,6 +105,19 @@ public class Controller {
     }
 
 
+    public boolean signIn(String name, String surname, String username, String password){
+        //TODO fare il signin
+        return true;
+    }
+
+
+    public boolean logout(){
+        //TODO fare il logout
+        utente=null;
+        return true;
+    }
+
+
     public ArrayList<Drink> getDrinks(){
         return listaDeiDrink;
     }

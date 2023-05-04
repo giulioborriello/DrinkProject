@@ -109,7 +109,18 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        //TODO add logic for login button
+        View logInButton = findViewById(R.id.loginButton);
+        logInButton.setOnClickListener(v -> {
+            String username = ((TextView) findViewById(R.id.editTextUsername)).getText().toString();
+            String password = ((TextView) findViewById(R.id.editTextPassword)).getText().toString();
+
+            if(controller.login(username, password)) {
+                Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
