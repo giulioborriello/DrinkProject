@@ -1,7 +1,9 @@
 #include <stdio.h>  
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/socket.h>
+#include <libpq-fe.h>
 #include <arpa/inet.h>
 #include <stdbool.h>
 #include <pthread.h> 
@@ -25,6 +27,9 @@ int check(int exp, const char *msg) {
 
 
 void* handle_connection(void* client_socket_input){
+	PGconn *conn;
+	PGresult *res;
+	char * message;
     char * token;
     int client_socket = *((int *)client_socket_input);
     free(client_socket_input);
@@ -42,28 +47,29 @@ void* handle_connection(void* client_socket_input){
     buffer[msgsize-1] = 0; //null termina il messaggio e rimuove \name
 
     printf("REQUEST: %s\n",buffer);
+    message = buffer;
     fflush(stdout);
-	char * SQLrequest = strtok(string, SEPARATOR);
+	char * SQLrequest = strsep(&message, SEPARATOR);
    // loop through the string to extract all other tokens
     while( token != NULL ) {
         printf( " %s\n", token ); //printing each token
-        token = strtok(NULL, SEPARATOR); //ora token contiene la query SQL e SQLrequest il tipo di query
+        token = strsep(&message, SEPARATOR); //ora token contiene la query SQL e SQLrequest il tipo di query
     }
 
     conn = connectSQL();
-    
-    switch (SQLrequest)
+
+    switch (atoi(SQLrequest))
     {
-    case "select":
+    case 0: //"select"
         querySQL(token, conn);
         break;
-    case "insert":
+    case 1: //"insert"
         insertSQL(token, conn);
         break;
-    case "update":
+    case 2: //"update"
         updateSQL(token, conn);
         break;
-    case "delete":
+    case 3: //"delete"
         deleteSQL(token, conn);
         break;    
     default:
@@ -74,4 +80,3 @@ void* handle_connection(void* client_socket_input){
     close(client_socket);
     printf("Closing Connection.\n");
 }
-

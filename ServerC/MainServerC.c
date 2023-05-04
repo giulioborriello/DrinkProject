@@ -20,13 +20,9 @@ pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER;
 
 int main (int argc , char **argv)
 {
+	PGconn *conn;
+	PGresult *res;
     int server_socket, client_socket, addr_size;
-    
-    /** 
-     * PGconn *conn;
-     * PGresult *res;
-    */
-   
     SA_IN server_addr, client_addr;
 	
     for (int i = 0; i < THREAD_POOL_SIZE; i++)
