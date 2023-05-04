@@ -3,14 +3,17 @@ package Dao;
 
 import java.net.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
+@SuppressWarnings("unused")
 public class Connessione {
     private static Connessione istanza = null;
     private static final String indirizzoServer = "localhost"; // Indirizzo IP o nome del server
     private static final int portaServer = 8080; // Porta del server
-    private Socket socket = null;
-    private PrintWriter out = null;
-    private BufferedReader in = null;
+    private final Socket socket;
+    private final PrintWriter out;
+    private final BufferedReader in;
 
 
 
@@ -29,6 +32,8 @@ public class Connessione {
         return istanza;
     }
 
+
+
     // Metodo per inviare un messaggio al server
     public void sendMessage(String message) {
         out.println(message);
@@ -38,6 +43,15 @@ public class Connessione {
     public String readResponse() throws IOException {
         return in.readLine();
     }
+    // Metodo per leggere tutti i messaggi inviati dal server
+    public List<String> readAllResponses() throws IOException {
+        List<String> responses = new ArrayList<>();
+        String response;
+        while ((response = in.readLine()) != null) {
+            responses.add(response);
+        }
+        return responses;
+    }
 
     // Metodo per chiudere la connessione al server
     public void close() throws IOException {
@@ -45,4 +59,5 @@ public class Connessione {
         out.close();
         socket.close();
     }
+
 }
