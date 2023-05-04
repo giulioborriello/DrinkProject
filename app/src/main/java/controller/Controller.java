@@ -134,12 +134,12 @@ public class Controller {
         }
         return null;
     }
-    ArrayList<Drink> cercaDrink(String ParolaCercata){
+    ArrayList<Drink> cercaDrink(String parolaCercata){
         ArrayList<Drink> listaDeiDrinkCercati = new ArrayList<>();
-
+        parolaCercata= "*"+parolaCercata+"*";
         for (Drink drink: listaDeiDrink
              ) {
-                if ( true) listaDeiDrinkCercati.add(drink);
+                if ( drink.getNome().matches(parolaCercata)) listaDeiDrinkCercati.add(drink);
         }
 
     return listaDeiDrinkCercati;
