@@ -25,16 +25,16 @@ int check(int exp, const char *msg) {
     return exp;
 }
 
-
 void* handle_connection(void* client_socket_input){
 	PGconn *conn;
 	PGresult *res;
-	char * message;
     char * token;
+    char * SQLrequest;
     int client_socket = *((int *)client_socket_input);
     free(client_socket_input);
-    char buffer[BUFSIZ];
-    char actualpath[BUFSIZ];
+    char buffer[BUFSIZE];
+    char message[BUFSIZE];
+    //char actualpath[BUFSIZE];
     size_t bytes_read;
     int msgsize = 0;
 
@@ -47,21 +47,30 @@ void* handle_connection(void* client_socket_input){
     buffer[msgsize-1] = 0; //null termina il messaggio e rimuove \name
 
     printf("REQUEST: %s\n",buffer);
-    message = buffer;
+    printf("Flag 1\n");
+    strcpy(message,buffer);
     fflush(stdout);
-	char * SQLrequest = strsep(&message, SEPARATOR);
-   // loop through the string to extract all other tokens
-    while( token != NULL ) {
-        printf( " %s\n", token ); //printing each token
-        token = strsep(&message, SEPARATOR); //ora token contiene la query SQL e SQLrequest il tipo di query
-    }
-
+    char* rest = message;
+    char * domanda;
+ 	SQLrequest = strtok_r(rest, SEPARATOR, &rest);
+ 	printf ("%s\n",SQLrequest);
+    while ((token = strtok_r(rest, SEPARATOR, &rest))){
+    	printf("%s\n", token);
+    	
+    	strcpy(domanda,token);
+	}
+        
+    //TODO sistemare errore SIGSEGV
+	
     conn = connectSQL();
 
     switch (atoi(SQLrequest))
     {
     case 0: //"select"
-        querySQL(token, conn);
+    	printf("Query da svolgere: %s\n",domanda);
+        PGresult *table = querySQL(domanda, conn);
+        sendDataTable(table, client_socket);
+        PQclear(table);
         break;
     case 1: //"insert"
         insertSQL(token, conn);
@@ -79,4 +88,20 @@ void* handle_connection(void* client_socket_input){
     closeSQL(conn);
     close(client_socket);
     printf("Closing Connection.\n");
+}
+
+void sendDataTable(PGresult *table, int client_socket){
+    char buffer[BUFSIZE];
+    char *field;
+    //size_t bytes_read;
+    int rows = PQntuples(table);
+    int columns = PQnfields(table);
+    
+    for(int i=0;i<=rows;i++){
+    	for(int j=0;j<=columns;j++){
+    		strcpy(field, PQgetvalue(table,i,j) );
+    		strcpy(buffer, field);
+    		write(client_socket,buffer,strlen(field));
+		}
+	}
 }
