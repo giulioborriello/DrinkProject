@@ -55,7 +55,7 @@
         android:id="@+id/minusDrinkButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:background="@drawable/round_button"
+        android:background="@drawable/blackminus"
         android:layout_toEndOf="@id/drinkPrice"
         android:layout_below="@id/drinkDescription"
         android:layout_marginTop="10dp"/>
@@ -74,7 +74,9 @@
         android:layout_width="100dp"
         android:layout_height="match_parent"
         android:layout_toEndOf="@+id/minusDrinkButton"
-        android:layout_below="@id/drinkDescription" />
+        android:layout_below="@id/drinkDescription"
+        android:textAlignment="center"
+        android:inputType="number"/>
 
 
 </RelativeLayout>

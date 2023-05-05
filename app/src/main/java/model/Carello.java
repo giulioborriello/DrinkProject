@@ -20,6 +20,7 @@ public class Carello {
 
         //check if drink is already in the cart
         for (DrinkOrdine drink_ordine : this.drink_ordineArrayList) {
+            if (drink_ordine.getDrink() == null) break;
             if(drink_ordine.getDrink().getId().equals( drinkInput.getId())){
                 quantitaInput += drink_ordine.getQuantita();
                 drink_ordine.updateQuantita(quantitaInput);
@@ -35,12 +36,20 @@ public class Carello {
     public void removeDrink(Drink drinkInput){
         for (DrinkOrdine drink_ordine : this.drink_ordineArrayList) {
             if(drink_ordine.getDrink().getId().equals( drinkInput.getId())){
-                drink_ordine.removeDrink();
+                drink_ordineArrayList.remove(drink_ordine);
                 return;
             }
         }
     }
 
+    public void removeDrink(Drink drinkInput, int quantitaInput){
+        for (DrinkOrdine drink_ordine : this.drink_ordineArrayList) {
+            if(drink_ordine.getDrink().getId().equals( drinkInput.getId())){
+                drink_ordine.setQuantita(drink_ordine.getQuantita()-quantitaInput);
+                return;
+            }
+        }
+    }
 
     public void updateQuantita(Drink drinkInput, int quantitaInput){
         for (DrinkOrdine drink_ordine : this.drink_ordineArrayList) {

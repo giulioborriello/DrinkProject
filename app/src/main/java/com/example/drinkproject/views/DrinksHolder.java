@@ -10,29 +10,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.drinkproject.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DrinksHolder extends RecyclerView.ViewHolder {
-    public ImageView drinkImage;
-    public TextView nameText, descriptionText, drinkPrice;
+    public ImageView immagine;
+    public TextView nome, descrizione, prezzo;
     public Context context;
-    public EditText drinkQuantity;
-    public Button addOneDrink;
-    public Button removeOneDrink;
+    public EditText quantita;
+    public Button aggiungiUnDrink, rimuoviUnDrink;
     public String id;
 
 
     public DrinksHolder(@NonNull View itemView) {
         super(itemView);
         context = itemView.getContext();
-
-        itemView.setClickable(true);
-        drinkPrice = itemView.findViewById(R.id.drinkPrice);
-        drinkImage = itemView.findViewById(R.id.drinkImage);
-        nameText = itemView.findViewById(R.id.drinkName);
-        descriptionText = itemView.findViewById(R.id.drinkDescription);
-        drinkQuantity = itemView.findViewById(R.id.drinkQuantity);
-        addOneDrink = itemView.findViewById(R.id.plusDrinkButton);
-        removeOneDrink = itemView.findViewById(R.id.minusDrinkButton);
+        prezzo = itemView.findViewById(R.id.drinkPrice);
+        immagine = itemView.findViewById(R.id.drinkImage);
+        nome = itemView.findViewById(R.id.drinkName);
+        descrizione = itemView.findViewById(R.id.drinkDescription);
+        quantita = itemView.findViewById(R.id.drinkQuantity);
+        aggiungiUnDrink = itemView.findViewById(R.id.plusDrinkButton);
+        rimuoviUnDrink = itemView.findViewById(R.id.minusDrinkButton);
     }
 }

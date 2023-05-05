@@ -28,6 +28,10 @@ public class Utente {
         this.carrello.removeDrink(drinkInput);
     }
 
+    public void removeDrink(Drink drinkInput, int quantitaInput) {
+        this.carrello.removeDrink(drinkInput, quantitaInput);
+    }
+
     public void updateQuantita(Drink drinkInput, int quantitaInput) {
         this.carrello.updateQuantita(drinkInput, quantitaInput);
     }
