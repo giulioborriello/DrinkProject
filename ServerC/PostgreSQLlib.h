@@ -9,7 +9,7 @@
 PGconn * connectSQL();
 void closeSQL(PGconn *conn);
 void insertSQL(char *query, PGconn *conn);
-void querySQL (char *query, PGconn *conn);
+PGresult * querySQL (char *query, PGconn *conn)
 void updateSQL(char *query, PGconn *conn);
 void deleteSQL(char *query, PGconn *conn);
 

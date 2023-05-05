@@ -37,7 +37,7 @@ void insertSQL(char *query, PGconn *conn){
    PQclear(res);
 }
 
-void querySQL (char *query, PGconn *conn){
+PGresult * querySQL (char *query, PGconn *conn){
 	PGresult *res;
 	res = PQexec(conn, query);
    
@@ -61,9 +61,9 @@ void querySQL (char *query, PGconn *conn){
       }
       printf("\n");
    }
-   
+   return res;
    // Libera la memoria
-   PQclear(res);
+   //PQclear(res);
 }
 
 /**
