@@ -16,13 +16,13 @@ import com.example.drinkproject.R;
 
 import controller.Controller;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegistrazioneActivity extends AppCompatActivity {
     Controller controller = Controller.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_registrazione);
     }
 
 

@@ -2,6 +2,8 @@
 
 
     import android.content.Context;
+    import android.text.Editable;
+    import android.text.TextWatcher;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
@@ -18,7 +20,6 @@
 
     import controller.Controller;
     import model.Drink;
-    import model.DrinkOrdine;
 
     public class DrinksAdapter extends RecyclerView.Adapter<DrinksHolder> implements Filterable {
         Context context;
@@ -56,28 +57,50 @@
 
             //Bitmap bitmap = BitmapFactory.decodeByteArray(drinks.get(position).getImmagine(), 0, drinks.get(position).getImmagine().length);
 
-            holder.nameText.setText(name);
-            holder.descriptionText.setText(description);
-            holder.drinkPrice.setText(price);
-            holder.drinkImage.setImageResource(R.drawable.spritz);
+            holder.nome.setText(name);
+            holder.descrizione.setText(description);
+            holder.prezzo.setText(price);
+            holder.immagine.setImageResource(R.drawable.spritz);
             holder.id = filteredDrinks.get(position).getId();
-            holder.drinkQuantity.setText("0");
-            holder.addOneDrink.setOnClickListener(v -> {
-                int quantity = Integer.parseInt(holder.drinkQuantity.getText().toString());
-                quantity++;
-                holder.drinkQuantity.setText(String.valueOf(quantity));
-                controller.addDrink(filteredDrinks.get(position).getId(), 1);
-            });
+            //holder.drinkQuantity.setText(controller.getQuantitàOrdinata(filteredDrinks.get(position).getId()));
 
-            holder.removeOneDrink.setOnClickListener(v -> {
-                int quantity = Integer.parseInt(holder.drinkQuantity.getText().toString());
-                if (quantity > 0) {
-                    quantity--;
-                    holder.drinkQuantity.setText(String.valueOf(quantity));
+            holder.aggiungiUnDrink.setOnClickListener(v -> {
+                if(holder.quantita.getText().toString().equals("")) {
+                    holder.quantita.setText("1");
+                } else {
+                    int quantity = Integer.parseInt(holder.quantita.getText().toString());
+                    quantity++;
+                    holder.quantita.setText(String.valueOf(quantity));
                 }
             });
 
+            holder.rimuoviUnDrink.setOnClickListener(v -> {
+                if(!holder.quantita.getText().toString().equals("")) {
+                    int quantity = Integer.parseInt(holder.quantita.getText().toString());
+                    if (quantity > 0) {
+                        quantity--;
+                        holder.quantita.setText(String.valueOf(quantity));
+                    }
+                }
+            });
 
+            holder.quantita.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    //non serve
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    //non serve
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if(s!=null && !s.toString().equals(""))
+                        controller.updateDrink(filteredDrinks.get(position).getId(), Integer.parseInt(s.toString()));
+                }
+            });
         }
 
 

@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/brick_red"
-    tools:context=".activities.OrderSummaryActivity">
+    tools:context=".activities.CarrelloActivity">
 
 
     <TextView
         android:id="@+id/textViewOrderSummary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="90sp"
+        android:layout_marginStart="150sp"
         android:fontFamily="@font/calistoga"
         android:text="@string/order_summary_activity_order_summary"
         android:textColor="@color/white"
@@ -40,7 +40,7 @@
         android:layout_height="100dp"
         android:layout_above="@id/editTextCreditCardPassword"
         android:text="@string/order_summary_activity_text_view_credit_card_password"
-        android:textSize="30sp"
+        android:textSize="28sp"
         android:textAlignment="center"
         android:textColor="@color/white"/>
 

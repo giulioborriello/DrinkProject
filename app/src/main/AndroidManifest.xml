@@ -15,10 +15,10 @@
         android:theme="@style/Theme.DrinkProject"
         tools:targetApi="31">
         <activity
-            android:name=".activities.OrderSummaryActivity"
+            android:name=".activities.CarrelloActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.RegisterActivity"
+            android:name=".activities.RegistrazioneActivity"
             android:exported="false" />
         <activity
             android:name=".activities.DrinkActivity"

@@ -8,25 +8,13 @@ import androidx.biometric.BiometricPrompt;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.drinkproject.activities.DrinkActivity;
-import com.example.drinkproject.activities.RegisterActivity;
+import com.example.drinkproject.activities.RegistrazioneActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.DataOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executor;
 
 import controller.Controller;
@@ -105,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
         View registerButton = findViewById(R.id.registerUsernamePasswordButton);
         registerButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+            Intent intent = new Intent(getApplicationContext(), RegistrazioneActivity.class);
             startActivity(intent);
         });
 

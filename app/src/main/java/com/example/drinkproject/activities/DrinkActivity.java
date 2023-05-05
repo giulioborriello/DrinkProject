@@ -6,19 +6,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.drinkproject.R;
 import com.example.drinkproject.views.DrinksAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import controller.Controller;
@@ -35,7 +33,7 @@ public class DrinkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_drink);
         //TODO add logic for filter menu and query to db
         Spinner dropDownFilterMenu = (Spinner) findViewById(R.id.dropDownMenu);
-        ArrayList<String> filters = controller.getCategorie();
+        String[] filters = controller.getCategorie();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, filters);
         dropDownFilterMenu.setAdapter(adapter);
 
@@ -51,14 +49,17 @@ public class DrinkActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        EditText drinkQuantity = findViewById(R.id.drinkQuantity);
         FloatingActionButton goToCartButton = findViewById(R.id.goToCartButton);
         goToCartButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), OrderSummaryActivity.class);
-            startActivity(intent);
+            if(!controller.ilCarrelloéVuoto()) {
+                Intent intent = new Intent(getApplicationContext(), CarrelloActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(getApplicationContext(), "Il carrello è vuoto", Toast.LENGTH_SHORT).show();
+            }
         });
 
-       Spinner dropDownFilterMenu = (Spinner) findViewById(R.id.dropDownMenu);
+        Spinner dropDownFilterMenu = (Spinner) findViewById(R.id.dropDownMenu);
         dropDownFilterMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
