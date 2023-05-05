@@ -23,12 +23,12 @@ public class DrinksHolder extends RecyclerView.ViewHolder {
     public DrinksHolder(@NonNull View itemView) {
         super(itemView);
         context = itemView.getContext();
-        prezzo = itemView.findViewById(R.id.drinkPrice);
-        immagine = itemView.findViewById(R.id.drinkImage);
+        prezzo = itemView.findViewById(R.id.prezzoDrinkCarrello);
+        immagine = itemView.findViewById(R.id.immagineDrinkCarrello);
         nome = itemView.findViewById(R.id.drinkName);
-        descrizione = itemView.findViewById(R.id.drinkDescription);
-        quantita = itemView.findViewById(R.id.drinkQuantity);
-        aggiungiUnDrink = itemView.findViewById(R.id.plusDrinkButton);
-        rimuoviUnDrink = itemView.findViewById(R.id.minusDrinkButton);
+        descrizione = itemView.findViewById(R.id.descrizioneDrinkCarrello);
+        quantita = itemView.findViewById(R.id.quantitaDrink);
+        aggiungiUnDrink = itemView.findViewById(R.id.bottonePiuCarrello);
+        rimuoviUnDrink = itemView.findViewById(R.id.bottoneMenoCarrello);
     }
 }

@@ -31,7 +31,7 @@ public class CarrelloActivity extends AppCompatActivity {
         List<DrinkOrdine> drinks = controller.getSummary();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.setAdapter(new CarrelloAdapter(getApplicationContext(), drinks));
+        recyclerView.setAdapter(new CarrelloAdapter(getApplicationContext(), drinks, findViewById(R.id.totalCounter)));
 
 
     }
@@ -42,7 +42,6 @@ public class CarrelloActivity extends AppCompatActivity {
         super.onResume();
         TextView totalCounter = (TextView) findViewById(R.id.totalCounter);
         totalCounter.setText(controller.getPrezzoTotale());
-
 
         boolean paymentWork = true;         //variable for testing
         //TODO: add logic for pay with credit card

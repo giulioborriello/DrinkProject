@@ -1,7 +1,6 @@
 package com.example.drinkproject.views;
 
 import android.content.Context;
-import android.service.controls.Control;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +22,13 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
     private List<DrinkOrdine> drinks;
     private final LayoutInflater inflater;
     private Controller controller = Controller.getInstance();
+    private TextView totale;
 
-    public CarrelloAdapter(Context context, List<DrinkOrdine> drinks) {
+    public CarrelloAdapter(Context context, List<DrinkOrdine> drinks,TextView totale) {
         this.context = context;
         this.drinks = drinks;
         this.inflater = LayoutInflater.from(context);
+        this.totale = totale;
     }
 
 
@@ -66,6 +67,7 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
                 String nuovoPrezzo = String.valueOf(price * newQuantity);
                 holder.prezzo.setText(nuovoPrezzo);
                 controller.updateDrink(drink.getId(), newQuantity);
+                totale.setText(controller.getPrezzoTotale());
             }
         });
 
@@ -77,10 +79,12 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
                     holder.quantita.setText(String.valueOf(newQuantity));
                     holder.prezzo.setText(String.valueOf(price*newQuantity));
                     controller.updateDrink(drink.getId(), newQuantity);
+                    totale.setText(controller.getPrezzoTotale());
                 } else if (newQuantity == 1) {
                     drinks.remove(position);
                     controller.updateDrink(drink.getId(), 0);
                     notifyItemRemoved(position);
+                    totale.setText("0");
                 }
             }
         });
