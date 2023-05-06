@@ -30,4 +30,10 @@
     <string name="registerNameHint">Nome</string>
     <string name="registerSurnameHint">Cognome</string>
     <string name="image_of_the_drink">Immagine del drink</string>
+    <string name="payment_button">button for payment</string>
+    <string name="title_activity_payment">PaymentActivity</string>
+    <string name="credit_card_name">Numero Carta</string>
+    <string name="cvv">CVV</string>
+    <string name="card_expiration">Scadenza carta</string>
+    <string name="name">Nome</string>
 </resources>

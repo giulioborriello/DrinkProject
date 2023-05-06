@@ -49,7 +49,11 @@ public class CarrelloActivity extends AppCompatActivity {
         paymentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (paymentWork) {
+
+
+
+
+                /*if (paymentWork) {
                     CarrelloAdapter carrelloAdapter = (CarrelloAdapter) recyclerView.getAdapter();
 
                     if (carrelloAdapter != null)
@@ -62,7 +66,7 @@ public class CarrelloActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Pagamento effettuato", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pagamento non effettuato", Toast.LENGTH_SHORT).show();
-                }
+                } */
 
             }
         });

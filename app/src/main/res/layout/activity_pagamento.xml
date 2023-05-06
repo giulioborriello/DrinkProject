@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/brick_red"
+    tools:context=".activities.PagamentoActivity">
+
+    <TextView
+        android:id="@+id/titoloPagamento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/calistoga"
+        android:text="Per piacere inserisci i dati della tua carta di credito"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/numeroCarta"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="100dp"
+        android:layout_below="@id/titoloPagamento"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/credit_card_name"
+        android:autofillHints="creditCardNumber"
+        android:background="@drawable/rectangle_edit_text"
+        style="@style/hintCenterInputLeft"/>
+
+    <EditText
+        android:id="@+id/scadenzaCarta"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/numeroCarta"
+        android:layout_alignStart="@+id/numeroCarta"
+        android:background="@drawable/rectangle_edit_text"
+        android:layout_marginTop="10sp"
+        android:hint="@string/card_expiration"/>
+
+    <EditText
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:background="@drawable/rectangle_edit_text"
+        android:hint="@string/cvv"
+        android:layout_alignEnd="@id/numeroCarta"
+        android:layout_alignTop="@id/scadenzaCarta"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/NomeProprietarioCarta"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/scadenzaCarta"
+        android:background="@drawable/rectangle_edit_text"
+        android:layout_alignStart="@id/scadenzaCarta"
+        android:layout_marginTop="10sp"
+        android:hint="@string/name" />
+
+    <EditText
+        android:id="@+id/CognomeProprietarioCarta"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/NomeProprietarioCarta"
+        android:layout_alignStart="@id/NomeProprietarioCarta"
+        android:background="@drawable/rectangle_edit_text"
+        android:layout_marginTop="10sp"
+        android:hint="Cognome" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/ok"
+        android:layout_below="@id/CognomeProprietarioCarta"
+        android:layout_alignEnd="@id/CognomeProprietarioCarta"
+        android:layout_marginTop="10sp"/>
+
+
+</RelativeLayout>

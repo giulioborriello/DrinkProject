@@ -20,10 +20,9 @@ public class Controller {
     }
 
     public boolean ilCarrelloéVuoto(){
-        if(utente.getDrinkOrdineList().get(0).getDrink() == null)
+        if(utente.getDrinkOrdineList().size() == 0)
             return true;
-        else
-            return false;
+        return utente.getDrinkOrdineList().get(0).getDrink() == null;
     }
 
 

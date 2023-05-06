@@ -15,6 +15,14 @@
         android:theme="@style/Theme.DrinkProject"
         tools:targetApi="31">
         <activity
+            android:name=".activities.PagamentoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.PaymentActivity"
+            android:exported="false"
+            android:label="@string/title_activity_payment"
+            android:theme="@style/Theme.DrinkProject" />
+        <activity
             android:name=".activities.CarrelloActivity"
             android:exported="false" />
         <activity

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="hintCenterInputLeft" parent="Widget.AppCompat.EditText">
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:hint">@string/credit_card_name</item>
+    </style>
+</resources>
