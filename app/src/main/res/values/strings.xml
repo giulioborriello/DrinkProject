@@ -18,7 +18,7 @@
     <string name="login_activity_register_button_with_fingerprint">With fingerprint</string>
     <string name="login_activity_message_register">Sei nuovo qui? Registrati!</string>
     <string name="register_activity_fingerprint_text">O usa la tua impronta</string>
-    <string name="register_activity_fingerprint_button">Fingerprint</string>
+    <string name="register_activity_fingerprint_button">Impronta</string>
     <string name="order_summary_activity_order_summary">Carrello</string>
     <string name="drink_activity_select_your_favourite_drinks">Seleziona i tuoi drink</string>
     <string name="order_summary_activity_text_view_credit_card_password">Inserisci la password della tua carta di credito</string>
@@ -36,4 +36,5 @@
     <string name="cvv">CVV</string>
     <string name="card_expiration">Scadenza carta</string>
     <string name="name">Nome</string>
+    <string name="select_month">Seleziona il mese\n</string>
 </resources>

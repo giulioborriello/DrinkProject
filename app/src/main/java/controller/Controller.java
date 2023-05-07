@@ -20,9 +20,7 @@ public class Controller {
     }
 
     public boolean ilCarrelloéVuoto(){
-        if(utente.getDrinkOrdineList().size() == 0)
-            return true;
-        return utente.getDrinkOrdineList().get(0).getDrink() == null;
+        return utente.getDrinkOrdineList().isEmpty();
     }
 
 
@@ -131,7 +129,6 @@ public class Controller {
     }
 
 
-
     public Drink getDrink(String idDrink){
         for (Drink drink:listaDeiDrink
         ) {
@@ -142,17 +139,19 @@ public class Controller {
         }
         return null;
     }
+
+
     public ArrayList<Drink> cercaDrink(String parolaCercata){
         ArrayList<Drink> listaDeiDrinkCercati = new ArrayList<>();
         parolaCercata=parolaCercata.toLowerCase();
 
-        for (Drink drink: listaDeiDrink
-             ) {
-                if ( drink.getNome().toLowerCase().contains(parolaCercata)|| drink.getCategoria().toLowerCase().contains(parolaCercata)) listaDeiDrinkCercati.add(drink);
+        for (Drink drink: listaDeiDrink) {
+                if (drink.getNome().toLowerCase().contains(parolaCercata)|| drink.getCategoria().toLowerCase().contains(parolaCercata)) listaDeiDrinkCercati.add(drink);
         }
 
     return listaDeiDrinkCercati;
     }
+
 
     public ArrayList<Drink> FiltraDrinkPerCategoria(String categoriaSelezionata){
             ArrayList<Drink> listaDeiDrinkCercati = new ArrayList<>();
@@ -164,8 +163,6 @@ public class Controller {
 
             return listaDeiDrinkCercati;
     }
-
-
 
 
     public void addDrink(String idDrinkOrdinato, int quantita){
@@ -199,8 +196,10 @@ public class Controller {
         if(idDrinkDaRimuovere==null) return false;
 
         utente.removeDrink(idDrinkDaRimuovere,quantity);
+
         return true;
     }
+
 
     public String getIdDrinkByName(String name){
         for (Drink drink:listaDeiDrink
@@ -213,6 +212,7 @@ public class Controller {
         return null;
     }
 
+
     public boolean updateDrink(String idDrink, int quantita){
         Drink drinkDaAggiornare = getDrink(idDrink);
         if(!esisteIlDrinkNelCarrello(idDrink))
@@ -222,6 +222,7 @@ public class Controller {
         return true;
     }
 
+
     private boolean esisteIlDrinkNelCarrello(String idDrink) {
         for (DrinkOrdine drinkOrdine: utente.getDrinkOrdineList()) {
             if(drinkOrdine.getDrink() == null) break;
@@ -230,14 +231,23 @@ public class Controller {
         return false;
     }
 
+
     public List<DrinkOrdine> getSummary(){
         return utente.getDrinkOrdineList();
     }
 
+
+    public void svuotaCarrello(){
+        utente.svuotaCarrello();
+    }
+
+
     public String getPrezzoTotale(){
         return String.valueOf(utente.getPrezzoTotale());
     }
-    boolean EffettuaPagamento(){
+
+
+    public boolean effettuaPagamento(String nome, String cognome, String numeroCarta, String dataScadenza, String cvv){
         String queryClone="INSERT INTO public.drink_ordine(\n" +
                 "\t drink_id, ordine_id, quantita, prezzo)\n"+
                 "\tVALUES\n";
@@ -266,6 +276,7 @@ public class Controller {
         }
         return categorieArray;
     }
+
 
     public String getQuantitàOrdinata(String id) {
         return "0";

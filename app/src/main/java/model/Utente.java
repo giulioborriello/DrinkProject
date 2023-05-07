@@ -81,4 +81,7 @@ public class Utente {
         return password;
     }
 
+    public void svuotaCarrello() {
+        this.carrello.svuotaCarrello();
+    }
 }

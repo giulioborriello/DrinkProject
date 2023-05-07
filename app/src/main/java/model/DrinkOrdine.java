@@ -11,10 +11,7 @@ public class DrinkOrdine {
         this.prezzo = drinkInput.getPrezzo() * quantitaInput;
     }
 
-    public void updateQuantita(int quantitaInput){
-        this.quantita = quantitaInput;
-        this.prezzo = drink.getPrezzo() * quantitaInput;
-    }
+
     public void removeDrink(){
         this.drink = null;
         this.quantita = 0;
@@ -22,39 +19,29 @@ public class DrinkOrdine {
     }
 
 
-    //getters and setters
-    public Drink getDrink() {
-        return drink;
-    }
-
-
-    public void setDrink(Drink drink) {
-        this.drink = drink;
-    }
-
-
-    public int getQuantita() {
-        return quantita;
-    }
-
-
-    public void setQuantita(int quantitaInput) {
-        this.quantita = quantita;
+    public void updateQuantitaEPrezzo(int quantitaInput) {
+        this.quantita = quantitaInput;
         try{
             if (quantitaInput <= 0){
-                //invalid argument exception
                 throw  new IllegalArgumentException("Quantità non valida");
-
             }
             this.prezzo = drink.getPrezzo() * quantitaInput;
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
     }
+
+
+    public Drink getDrink() {
+        return drink;
+    }
+    public void setDrink(Drink drink) {
+        this.drink = drink;
+    }
+    public int getQuantita() {
+        return quantita;
+    }
     public double getPrezzo() {
         return prezzo;
     }
-
-
-
 }

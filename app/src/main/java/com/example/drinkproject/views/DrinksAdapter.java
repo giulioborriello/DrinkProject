@@ -1,6 +1,5 @@
     package com.example.drinkproject.views;
 
-
     import android.content.Context;
     import android.text.Editable;
     import android.text.TextWatcher;
