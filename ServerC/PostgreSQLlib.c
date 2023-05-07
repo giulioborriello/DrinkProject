@@ -38,7 +38,7 @@ void insertSQL(char *query, PGconn *conn){
    PQclear(res);
 }
 
-PGresult * querySQL (char *query, PGconn *conn,int *rowsOut,int *colsOut){
+PGresult * querySQL (char *query, PGconn *conn){
 	PGresult *res;
 	res = PQexec(conn, query);
    
@@ -54,8 +54,6 @@ PGresult * querySQL (char *query, PGconn *conn,int *rowsOut,int *colsOut){
    //TODO rendere questi parametri di output
    int rows = PQntuples(res);
    int cols = PQnfields(res);
-   *rowsOut = rows;
-   *colsOut = cols;
    printf("\nRisultati della query:\n");
    for (int i = 0; i < rows; i++) {
       for (int j = 0; j < cols; j++) {
