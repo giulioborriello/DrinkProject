@@ -4,8 +4,10 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <libpq-fe.h>
 
-//gcc provaServer.c PostgreSQLlib.c -L/usr/lib/x86_64-linux-gnu -lpq -o provaServerc
+
+//gcc provaServer.c PostgreSQLlib.c -I/usr/include/postgresql  -lpq -o provaServerc
 //librerie proprietarie
 
 
@@ -65,24 +67,26 @@ int main(int argc, char const *argv[]) {
     // Ricezione di una seconda stringa dal client
     valread = read(new_socket, buffer, 1024);
     printf("Client message: %s\n", buffer);
-    printf("INzio dump\n");
+    
 
 
     //TODO: inizio della prova dump 
     //inzio connessione database postgresql
-    connectSQL();
-    //
+    printf("Inizio connessione...\n");
+    PGconn *con=connectSQL();
+    printf("Connessione effettuata\n");
     //INIZIO di un dump
-    printf("Dio MERDA");
     int rows, cols;
     //char *** tabella;
     PGresult *resQuery;
-    querySQL("select nome, prezzo from drink", &rows, &cols, resQuery);
-    
+   printf("invio Query...\n");
+   resQuery= querySQL("select nome, prezzo from drink", con, &rows, &cols);
+    printf("inizio stampa...\n");
+
     printf("rows %d",rows);
     printf("cols %d",cols);
     printf("\n");
-    printf("stringa %s",getValore(resQuery,0,0));
+    printf("stringa %s",PQgetvalue(resQuery,0,0));
   
     
 
