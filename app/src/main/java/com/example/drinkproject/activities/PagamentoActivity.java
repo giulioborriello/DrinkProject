@@ -2,9 +2,18 @@ package com.example.drinkproject.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.widget.DatePicker;
+import android.widget.EditText;
 
 import com.example.drinkproject.R;
+
+import java.util.Calendar;
 
 public class PagamentoActivity extends AppCompatActivity {
 
@@ -17,6 +26,12 @@ public class PagamentoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        MonthY
+        EditText dataScadenza = (EditText) findViewById(R.id.scadenzaCarta);
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+               //    dataScadenza.setText(String.format(());
+            }
+        };
     }
 }

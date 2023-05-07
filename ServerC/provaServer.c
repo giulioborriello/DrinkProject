@@ -89,10 +89,20 @@ int main(int argc, char const *argv[]) {
     printf("stringa %s",PQgetvalue(resQuery,0,0));
   
     
+	for(int i=0;i<rows;i++){
+		for(int j=0;j<cols;j++){
+			hello=PQgetvalue(resQuery,i,j);
+			send(new_socket, hello, strlen(hello), 0);
+            hello = " ";
+			send(new_socket, hello, strlen(hello), 0);
+		}
+        hello = "\n";
+		send(new_socket, hello, strlen(hello), 0);
+	}
 
+    hello=PQgetvalue(resQuery,0,0);
+    send(new_socket, hello, strlen(hello), 0); 
 
-    hello="hey bellezza ti invio qualcosa\n ";
-    send(new_socket, hello, strlen(hello), 0);    
     return 0;
 }
 

@@ -46,13 +46,15 @@
         android:hint="@string/card_expiration"/>
 
     <EditText
+        android:id="@+id/cvvCarta"
         android:layout_width="70dp"
         android:layout_height="40dp"
         android:background="@drawable/rectangle_edit_text"
         android:hint="@string/cvv"
         android:layout_alignEnd="@id/numeroCarta"
         android:layout_alignTop="@id/scadenzaCarta"
-        android:inputType="number" />
+        android:inputType="number"
+        android:maxLength="3"/>
 
     <EditText
         android:id="@+id/NomeProprietarioCarta"
