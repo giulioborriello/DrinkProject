@@ -10,6 +10,7 @@ PGresult *res;
 */
 PGconn * connectSQL(){
 	PGconn *conn;
+   printf("Sono dentro alla funzione connectSQL; sto per usare il metodo PQsetdbLogin\n");
 	conn = PQsetdbLogin(SERVERSQL, PORTSQL, NULL, NULL, USERSQL, USERSQL, PASSWDSQL);
 
    if (PQstatus(conn) != CONNECTION_OK) {
@@ -37,7 +38,7 @@ void insertSQL(char *query, PGconn *conn){
    PQclear(res);
 }
 
-PGresult * querySQL (char *query, PGconn *conn){
+PGresult * querySQL (char *query, PGconn *conn,int *rowsOut,int *colsOut){
 	PGresult *res;
 	res = PQexec(conn, query);
    
@@ -53,7 +54,8 @@ PGresult * querySQL (char *query, PGconn *conn){
    //TODO rendere questi parametri di output
    int rows = PQntuples(res);
    int cols = PQnfields(res);
-   
+   *rowsOut = rows;
+   *colsOut = cols;
    printf("\nRisultati della query:\n");
    for (int i = 0; i < rows; i++) {
       for (int j = 0; j < cols; j++) {

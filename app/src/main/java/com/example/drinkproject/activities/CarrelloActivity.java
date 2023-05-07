@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -46,29 +47,26 @@ public class CarrelloActivity extends AppCompatActivity {
         boolean paymentWork = true;         //variable for testing
         //TODO: add logic for pay with credit card
         View paymentButton = findViewById(R.id.paymentButton);
-        paymentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        paymentButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), PagamentoActivity.class);
+            startActivity(intent);
 
 
+            /*if (paymentWork) {
+                CarrelloAdapter carrelloAdapter = (CarrelloAdapter) recyclerView.getAdapter();
 
+                if (carrelloAdapter != null)
+                    carrelloAdapter.clear();
 
-                /*if (paymentWork) {
-                    CarrelloAdapter carrelloAdapter = (CarrelloAdapter) recyclerView.getAdapter();
+                carrelloAdapter.notifyDataSetChanged();
+                recyclerView.removeAllViews();
+                totalCounter.setText("0.0");
 
-                    if (carrelloAdapter != null)
-                        carrelloAdapter.clear();
+                Toast.makeText(getApplicationContext(), "Pagamento effettuato", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Pagamento non effettuato", Toast.LENGTH_SHORT).show();
+            } */
 
-                    carrelloAdapter.notifyDataSetChanged();
-                    recyclerView.removeAllViews();
-                    totalCounter.setText("0.0");
-
-                    Toast.makeText(getApplicationContext(), "Pagamento effettuato", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Pagamento non effettuato", Toast.LENGTH_SHORT).show();
-                } */
-
-            }
         });
     }
 
