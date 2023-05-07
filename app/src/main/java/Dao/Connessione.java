@@ -14,7 +14,13 @@ public class Connessione {
     private final Socket socket;
     private final PrintWriter out;
     private final BufferedReader in;
-
+    private final String SEPARATORE = "#";
+    private final String SUCCESS = "SUCCESS";
+    public static final String FAILURE = "FAILURE";
+    private final String ERROR = "ERROR";
+    private final String INVALID_MESSAGE = "INVALID_MESSAGE";
+    private final String TIMEOUT = "TIMEOUT";
+    private final String CONNECTION_ERROR = "CONNECTION_ERROR";
 
 
     // Costruttore privato per impedire la creazione di oggetti Connessione
@@ -33,7 +39,6 @@ public class Connessione {
     }
 
 
-
     // Metodo per inviare un messaggio al server
     public void sendMessage(String message) {
         out.println(message);
@@ -43,6 +48,7 @@ public class Connessione {
     public String readResponse() throws IOException {
         return in.readLine();
     }
+
     // Metodo per leggere tutti i messaggi inviati dal server
     public List<String> readAllResponses() throws IOException {
         List<String> responses = new ArrayList<>();
@@ -59,5 +65,55 @@ public class Connessione {
         out.close();
         socket.close();
     }
+
+    /*
+    0 SELECT
+    1 INSERT
+    2 UPDATE
+    3 delete
+     */
+    public List<String> sendSelect(String query) throws IOException {
+        sendMessage("0" + SEPARATORE + query);
+        return readAllResponses();
+    }
+
+    public boolean sendInsert(String query) {
+        sendMessage("1" + SEPARATORE + query);
+        String risposta;
+        try {
+            risposta = readResponse();
+        } catch (IOException e) {
+            return false;
+        }
+        return risposta.equals(SUCCESS);
+
+
+    }
+
+    public boolean sendUpdate(String query) {
+        sendMessage("2" + SEPARATORE + query);
+        String risposta;
+        try {
+            risposta = readResponse();
+        } catch (IOException e) {
+            return false;
+        }
+        return risposta.equals(SUCCESS);
+
+    }
+
+    public boolean sendDelete(String query) {
+        sendMessage("3" + SEPARATORE + query);
+        String risposta;
+        try {
+            risposta = readResponse();
+        } catch (IOException e) {
+            return false;
+        }
+        return risposta.equals(SUCCESS);
+
+
+    }
+
 
 }

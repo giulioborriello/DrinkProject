@@ -74,12 +74,18 @@ void* handle_connection(void* client_socket_input){
         break;
     case 1: //"insert"
         insertSQL(token, conn);
+        char * message = "Inserimento avvenuto con successo";
+        sendDataString(client_socket, message);
         break;
     case 2: //"update"
         updateSQL(token, conn);
+        char * message = "Aggiornamento avvenuto con successo";
+        sendDataString(client_socket, message);
         break;
     case 3: //"delete"
         deleteSQL(token, conn);
+        char * message = "Cancellazione avvenuta con successo";
+        sendDataString(client_socket, message);
         break;    
     default:
         break;
@@ -105,3 +111,10 @@ void sendDataTable(PGresult *table, int client_socket){
 		}
 	}
 }
+
+void sendDataString(int client_socket, char* string){
+    char buffer[BUFSIZE];
+    strcpy(buffer, string);
+    write(client_socket,buffer,strlen(string));
+}
+
