@@ -27,8 +27,9 @@ public class DrinkActivity extends AppCompatActivity {
     List<Drink> drinks = controller.getDrinks();
     DrinksAdapter myAdapter;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink);
         //TODO add logic for filter menu and query to db
@@ -47,8 +48,11 @@ public class DrinkActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onResume() {
+    protected void onResume(){
         super.onResume();
+
+        myAdapter.setda
+
         FloatingActionButton goToCartButton = findViewById(R.id.goToCartButton);
         goToCartButton.setOnClickListener(v -> {
             if(!controller.ilCarrelloéVuoto()) {
@@ -83,6 +87,7 @@ public class DrinkActivity extends AppCompatActivity {
                 return true;
             }
         });
-
     }
+
+
 }

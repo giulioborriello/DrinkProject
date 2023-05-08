@@ -31,19 +31,19 @@
         android:layout_below="@id/titoloPagamento"
         android:layout_centerHorizontal="true"
         android:hint="@string/credit_card_name"
+        android:textColorHint="@color/white"
         android:autofillHints="creditCardNumber"
         android:background="@drawable/rectangle_edit_text"
+        android:inputType="number"
+        android:textColor="@color/white"
+        android:maxLength="19"
+        android:textAlignment="center"
         style="@style/hintCenterInputLeft"/>
 
-    <EditText
-        android:id="@+id/scadenzaCarta"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_below="@id/numeroCarta"
-        android:layout_alignStart="@+id/numeroCarta"
-        android:background="@drawable/rectangle_edit_text"
-        android:layout_marginTop="10sp"
-        android:hint="@string/card_expiration"/>
+
+
+
+
 
     <EditText
         android:id="@+id/cvvCarta"
@@ -51,40 +51,85 @@
         android:layout_height="40dp"
         android:background="@drawable/rectangle_edit_text"
         android:hint="@string/cvv"
+        android:textColorHint="@color/white"
         android:layout_alignEnd="@id/numeroCarta"
-        android:layout_alignTop="@id/scadenzaCarta"
+        android:layout_alignTop="@id/meseScadenza"
         android:inputType="number"
+        android:textAlignment="center"
+        android:textColor="@color/white"
         android:maxLength="3"/>
 
     <EditText
-        android:id="@+id/NomeProprietarioCarta"
+        android:id="@+id/nomeProprietarioCarta"
         android:layout_width="350dp"
         android:layout_height="40dp"
-        android:layout_below="@id/scadenzaCarta"
+        android:layout_below="@id/numeroCarta"
         android:background="@drawable/rectangle_edit_text"
-        android:layout_alignStart="@id/scadenzaCarta"
+        android:layout_alignStart="@id/meseScadenza"
         android:layout_marginTop="10sp"
-        android:hint="@string/name" />
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:inputType="textPersonName"
+        android:hint="@string/name"
+        android:textColorHint="@color/white"/>
 
     <EditText
-        android:id="@+id/CognomeProprietarioCarta"
+        android:id="@+id/cognomeProprietarioCarta"
         android:layout_width="350dp"
         android:layout_height="40dp"
-        android:layout_below="@id/NomeProprietarioCarta"
-        android:layout_alignStart="@id/NomeProprietarioCarta"
+        android:layout_below="@id/nomeProprietarioCarta"
+        android:layout_alignStart="@id/nomeProprietarioCarta"
         android:background="@drawable/rectangle_edit_text"
         android:layout_marginTop="10sp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:inputType="textPersonName"
         android:hint="Cognome" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
+        android:id="@+id/confermaDati"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
         app:srcCompat="@drawable/ok"
-        android:layout_below="@id/CognomeProprietarioCarta"
-        android:layout_alignEnd="@id/CognomeProprietarioCarta"
+        android:layout_below="@id/cvvCarta"
+        android:layout_alignEnd="@id/cognomeProprietarioCarta"
         android:layout_marginTop="10sp"/>
+
+    <Spinner
+        android:id="@+id/meseScadenza"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cognomeProprietarioCarta"
+        android:layout_alignStart="@id/numeroCarta"
+        android:layout_marginTop="40sp"
+        android:spinnerMode="dropdown"
+        android:prompt="@string/select_month"
+        android:background="@color/sky_blue"/>
+
+    <Spinner
+        android:id="@+id/annoScadenza"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cognomeProprietarioCarta"
+        android:layout_toEndOf="@id/meseScadenza"
+        android:layout_marginTop="40sp"
+        android:spinnerMode="dropdown"
+        android:background="@color/sky_blue"
+        android:layout_marginLeft="5sp"/>
+
+    <TextView
+        android:id="@+id/scadenza"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cognomeProprietarioCarta"
+        android:layout_alignStart="@id/numeroCarta"
+        android:layout_marginTop="10sp"
+        android:textColor="@color/white"
+        android:text="Scadenza" />
+
+
 
 
 </RelativeLayout>

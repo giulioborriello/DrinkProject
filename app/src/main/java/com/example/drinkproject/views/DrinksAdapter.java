@@ -1,6 +1,5 @@
     package com.example.drinkproject.views;
 
-
     import android.content.Context;
     import android.text.Editable;
     import android.text.TextWatcher;
@@ -86,14 +85,10 @@
 
             holder.quantita.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    //non serve
-                }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    //non serve
-                }
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
                 @Override
                 public void afterTextChanged(Editable s) {

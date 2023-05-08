@@ -23,7 +23,7 @@ public class Carello {
             if (drink_ordine.getDrink() == null) break;
             if(drink_ordine.getDrink().getId().equals( drinkInput.getId())){
                 quantitaInput += drink_ordine.getQuantita();
-                drink_ordine.updateQuantita(quantitaInput);
+                drink_ordine.updateQuantitaEPrezzo(quantitaInput);
                 return;
             }
         }
@@ -45,19 +45,22 @@ public class Carello {
     public void removeDrink(Drink drinkInput, int quantitaInput){
         for (DrinkOrdine drink_ordine : this.drink_ordineArrayList) {
             if(drink_ordine.getDrink().getId().equals( drinkInput.getId())){
-                drink_ordine.setQuantita(drink_ordine.getQuantita()-quantitaInput);
+                drink_ordine.updateQuantitaEPrezzo(drink_ordine.getQuantita()-quantitaInput);
                 return;
             }
         }
     }
 
-    public void updateQuantita(Drink drinkInput, int quantitaInput){
-        for (DrinkOrdine drink_ordine : this.drink_ordineArrayList) {
-            if(drink_ordine.getDrink().getId().equals( drinkInput.getId())){
-                if (quantitaInput <= 0)
-                    drink_ordine.removeDrink();
-                else
-                    drink_ordine.updateQuantita(quantitaInput);
+
+    public void updateQuantita(Drink drinkInput, int quantitaInput) {
+        for (int i = 0; i < this.drink_ordineArrayList.size(); i++) {
+            DrinkOrdine drinkOrdine = this.drink_ordineArrayList.get(i);
+            if (drinkOrdine.getDrink().getId().equals(drinkInput.getId())) {
+                if (quantitaInput <= 0) {
+                    this.drink_ordineArrayList.remove(i);
+                } else {
+                    drinkOrdine.updateQuantitaEPrezzo(quantitaInput);
+                }
                 return;
             }
         }
@@ -67,6 +70,7 @@ public class Carello {
     public void svuotaCarello(){
         this.drink_ordineArrayList.clear();
     }
+
 
     public double getPrezzoTotale(){
         double prezzoTotale = 0;
@@ -85,5 +89,9 @@ public class Carello {
 
     public ArrayList<DrinkOrdine> getDrinkOrdineArrayList() {
         return drink_ordineArrayList;
+    }
+
+    public void svuotaCarrello() {
+        this.drink_ordineArrayList.clear();
     }
 }
