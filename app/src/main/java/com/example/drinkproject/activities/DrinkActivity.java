@@ -50,6 +50,9 @@ public class DrinkActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
+
+        myAdapter.setda
+
         FloatingActionButton goToCartButton = findViewById(R.id.goToCartButton);
         goToCartButton.setOnClickListener(v -> {
             if(!controller.ilCarrelloéVuoto()) {
@@ -85,4 +88,6 @@ public class DrinkActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

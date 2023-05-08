@@ -127,7 +127,7 @@ public class Controller {
         //check if username and password are valid
         //TODO verificare login in c e ricevere i suoi dati
 
-
+        /*
         Connessione conn;
         try {
             conn = Connessione.getInstance();
@@ -147,12 +147,13 @@ public class Controller {
             return false;
         }
         //TODO DATO LA LISTA PRENDERE I VALORI AL SUO INTERNO e creare oggetto utente
-
+*/
         utente = new Utente("0", "GLR", "LSO", "GLR.unina.it", "pass");
 
-        return true;
-    }
 
+        return true;
+
+    }
 
     public boolean signIn(String name, String surname, String username, String password) {
         //TODO fare il signin
@@ -160,7 +161,7 @@ public class Controller {
         INSERT INTO public.utente(
 	        id, nome, cognome, email, password, "dati_Biometrici")
 	        VALUES (?, ?, ?, ?, ?, ?);
-         */
+
         String queryInsertUtente = "INSERT INTO utente" +
                 "(nome, cognome email, password)" +
                 "VALUES (" +
@@ -179,6 +180,8 @@ public class Controller {
         }
 
 */
+
+        utente = new Utente("0", name, surname, username, password);
         return true;
     }
 
@@ -189,15 +192,12 @@ public class Controller {
         return true;
     }
 
-
     public ArrayList<Drink> getDrinks() {
         return listaDeiDrink;
     }
 
-
     public Drink getDrink(String idDrink) {
-        for (Drink drink : listaDeiDrink
-        ) {
+        for (Drink drink : listaDeiDrink) {
             if (drink.getId().equals(idDrink)) {
                 return drink;
             }
@@ -205,6 +205,7 @@ public class Controller {
         }
         return null;
     }
+
 
     public ArrayList<Drink> cercaDrink(String parolaCercata) {
         ArrayList<Drink> listaDeiDrinkCercati = new ArrayList<>();
@@ -218,6 +219,7 @@ public class Controller {
 
         return listaDeiDrinkCercati;
     }
+
 
     public ArrayList<Drink> FiltraDrinkPerCategoria(String categoriaSelezionata) {
         ArrayList<Drink> listaDeiDrinkCercati = new ArrayList<>();
@@ -266,6 +268,7 @@ public class Controller {
         return true;
     }
 
+
     public String getIdDrinkByName(String name) {
         for (Drink drink : listaDeiDrink
         ) {
@@ -277,6 +280,7 @@ public class Controller {
         return null;
     }
 
+
     public boolean updateDrink(String idDrink, int quantita) {
         Drink drinkDaAggiornare = getDrink(idDrink);
         if (!esisteIlDrinkNelCarrello(idDrink))
@@ -285,6 +289,7 @@ public class Controller {
             utente.updateQuantita(drinkDaAggiornare, quantita);
         return true;
     }
+
 
     private boolean esisteIlDrinkNelCarrello(String idDrink) {
         for (DrinkOrdine drinkOrdine : utente.getDrinkOrdineList()) {
@@ -298,11 +303,13 @@ public class Controller {
         return utente.getDrinkOrdineList();
     }
 
+
     public String getPrezzoTotale() {
         return String.valueOf(utente.getPrezzoTotale());
     }
 
-    boolean EffettuaPagamento() {
+he ha una ArrayL
+    public boolean effettuaPagamento(String nome, String cognome, String numerocarta, String dataScadenza, String cvv) {
         String queryClone = "INSERT INTO public.drink_ordine(\n" +
                 "\t drink_id, ordine_id, quantita, prezzo)\n" +
                 "\tVALUES\n";
@@ -333,7 +340,13 @@ public class Controller {
         return categorieArray;
     }
 
+
     public String getQuantitàOrdinata(String id) {
         return "0";
+    }
+
+
+    public void svuotaCarrello() {
+        utente.svuotaCarrello();
     }
 }

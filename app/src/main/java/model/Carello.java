@@ -50,19 +50,8 @@ public class Carello {
             }
         }
     }
-/*
-    public void updateQuantita(Drink drinkInput, int quantitaInput){
-        for (DrinkOrdine drink_ordine : this.drink_ordineArrayList) {
-            if(drink_ordine.getDrink().getId().equals(drinkInput.getId())){
-                if (quantitaInput <= 0)
-                    drink_ordine.removeDrink();
-                else
-                    drink_ordine.updateQuantitaEPrezzo(quantitaInput);
-                return;
-            }
-        }
-    }
-*/
+
+
     public void updateQuantita(Drink drinkInput, int quantitaInput) {
         for (int i = 0; i < this.drink_ordineArrayList.size(); i++) {
             DrinkOrdine drinkOrdine = this.drink_ordineArrayList.get(i);
@@ -78,12 +67,10 @@ public class Carello {
     }
 
 
-
-
-
     public void svuotaCarello(){
         this.drink_ordineArrayList.clear();
     }
+
 
     public double getPrezzoTotale(){
         double prezzoTotale = 0;
