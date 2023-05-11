@@ -6,9 +6,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Drink;
-import model.DrinkOrdine;
-import model.Utente;
+import Dao.Connessione;
+import model.*;
 
 @SuppressWarnings("unused")
 public class Controller {
@@ -24,10 +23,10 @@ public class Controller {
         dumpEseguito=true;
     }
 
-    public boolean ilCarrelloeVuoto() {
+    public boolean ilCarrelloéVuoto() {
         if (utente.getDrinkOrdineList().size() == 0)
-            return false;
-        return utente.getDrinkOrdineList().get(0).getDrink() != null;
+            return true;
+        return utente.getDrinkOrdineList().get(0).getDrink() == null;
     }
 
 
@@ -149,7 +148,7 @@ public class Controller {
                 "FROM utente" +
                 "WHERE email=' " + username + "' AND" +
                 "password ='" + password + "'";
-        List<String> utenteRes ;
+        List<String> utenteRes;
         try {
             utenteRes = conn.sendSelect(querySelectUtente);
             //TODO estrapolare parametri e salvali nell'attributo utente
@@ -164,7 +163,7 @@ public class Controller {
             System.err.println("Non sono riuscito a fare il login");
             return false;
         }
-        return true;
+        //TODO DATO LA LISTA PRENDERE I VALORI AL SUO INTERNO e creare oggetto utente
 */
         utente = new Utente("0", "GLR", "LSO", "GLR.unina.it", "pass");
 
@@ -192,8 +191,8 @@ public class Controller {
                 utente = new Utente("0",name,surname,username,password);
 
             }else{
-         
-         
+
+
                 return false;
             }
         } catch (IOException e) {
@@ -360,15 +359,20 @@ public class Controller {
     }
 
 
-    public String getQuantitaOrdinata(String id) {
-        return "0";
-    }
+        public String getQuantitàOrdinata (String id){
+            for (DrinkOrdine drinkOrdine : utente.getDrinkOrdineList()) {
+                if (drinkOrdine.getDrink().getId().equals(id)) {
+                    return String.valueOf(drinkOrdine.getQuantita());
+                }
+            }
+            return "0";
+        }
 
 
-    public void svuotaCarrello() {
-        utente.svuotaCarrello();
-    }
-    
+        public void svuotaCarrello () {
+            utente.svuotaCarrello();
+        }
 
-    
+
+
 }

@@ -25,15 +25,25 @@ int check(int exp, const char *msg) {
     return exp;
 }
 
+void dividi_stringa(char * stringa, char * stringa1, char * stringa2){
+	char * token;
+	token = strtok(stringa, SEPARATOR);
+	strcpy(stringa1, token);
+	token = strtok(NULL, SEPARATOR);
+	strcpy(stringa2, token);
+}
+		
+
 void* handle_connection(void* client_socket_input){
 	PGconn *conn;
 	PGresult *res;
-    char * token;
-    char * SQLrequest;
+    char * SQLrequest = malloc(sizeof(char) * 10);
     int client_socket = *((int *)client_socket_input);
     free(client_socket_input);
     char buffer[BUFSIZE];
-    char message[BUFSIZE];
+    char * message = malloc(sizeof(buffer) + 1);
+	char * token = malloc(sizeof(buffer) + 1);
+	char * domanda = malloc(sizeof(buffer) + 1);
     //char actualpath[BUFSIZE];
     size_t bytes_read;
     int msgsize = 0;
@@ -46,24 +56,25 @@ void* handle_connection(void* client_socket_input){
     check(bytes_read, "recv error");
     buffer[msgsize-1] = 0; //null termina il messaggio e rimuove \name
 
-    printf("REQUEST: %s\n",buffer);
+    printf("REQUEST: %s\n", buffer);
     printf("Flag 1\n");
     strcpy(message,buffer);
+	printf("REQUEST: %s\n", message);
+	printf("Flag 2\n");
     fflush(stdout);
-    char* rest = message;
-    char * domanda;
- 	SQLrequest = strtok_r(rest, SEPARATOR, &rest);
- 	printf ("%s\n",SQLrequest);
-    while ((token = strtok_r(rest, SEPARATOR, &rest))){
-    	printf("%s\n", token);
-    	
-    	strcpy(domanda,token);
-	}
-        
-    //TODO sistemare errore SIGSEGV
-	
-    conn = connectSQL();
+    //char* rest = message;   
+ 	//SQLrequest = strtok_r(rest, SEPARATOR, &rest);
+ 	//printf ("%s\n",SQLrequest); 
+    dividi_stringa(message, SQLrequest, token);
+	printf("Richiesta: %s\n", SQLrequest);
 
+    printf("Domanda: %s\n", token);
+
+    //TODO sistemare errore SIGSEGV
+    printf("%s\n", domanda);
+	char * notaOut;
+    conn = connectSQL();
+	
     switch (atoi(SQLrequest))
     {
     case 0: //"select"
@@ -74,17 +85,17 @@ void* handle_connection(void* client_socket_input){
         break;
     case 1: //"insert"
         insertSQL(token, conn);
-        char * message = "Inserimento avvenuto con successo";
+        notaOut = "Inserimento avvenuto con successo";
         sendDataString(client_socket, message);
         break;
     case 2: //"update"
         updateSQL(token, conn);
-        char * message = "Aggiornamento avvenuto con successo";
+        notaOut = "Aggiornamento avvenuto con successo";
         sendDataString(client_socket, message);
         break;
     case 3: //"delete"
         deleteSQL(token, conn);
-        char * message = "Cancellazione avvenuta con successo";
+        notaOut = "Cancellazione avvenuta con successo";
         sendDataString(client_socket, message);
         break;    
     default:
@@ -92,6 +103,10 @@ void* handle_connection(void* client_socket_input){
     }
 
     closeSQL(conn);
+	free(SQLrequest);
+	free(message);
+	free(token);
+	free(domanda);
     close(client_socket);
     printf("Closing Connection.\n");
 }
@@ -99,6 +114,7 @@ void* handle_connection(void* client_socket_input){
 void sendDataTable(PGresult *table, int client_socket){
     char buffer[BUFSIZE];
     char *field;
+    printf("flag2");
     //size_t bytes_read;
     int rows = PQntuples(table);
     int columns = PQnfields(table);

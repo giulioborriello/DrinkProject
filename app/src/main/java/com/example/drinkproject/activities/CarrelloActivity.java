@@ -24,8 +24,6 @@ import model.DrinkOrdine;
 public class CarrelloActivity extends AppCompatActivity {
     private Controller controller = Controller.getInstance();
     RecyclerView recyclerView;
-    LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-    View view = inflater.inflate(R.layout.drink_view,parent,false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +34,7 @@ public class CarrelloActivity extends AppCompatActivity {
         List<DrinkOrdine> drinks = controller.getSummary();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.setAdapter(new CarrelloAdapter(getApplicationContext(), drinks, findViewById(R.id.totalCounter), new DrinksHolder()));
+        recyclerView.setAdapter(new CarrelloAdapter(getApplicationContext(), drinks, findViewById(R.id.totalCounter)));
 
 
     }
@@ -81,6 +79,15 @@ public class CarrelloActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
+        finish();
 
     }
 }
