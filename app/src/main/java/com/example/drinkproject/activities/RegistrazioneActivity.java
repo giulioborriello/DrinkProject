@@ -2,7 +2,9 @@ package com.example.drinkproject.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -39,6 +41,11 @@ public class RegistrazioneActivity extends AppCompatActivity {
             String password = findViewById(R.id.registerPassword).toString();
 
             if(controller.signIn(name, surname, username, password)) {
+                SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("email", username);
+                editor.putString("password", password);
+                editor.apply();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             } else {

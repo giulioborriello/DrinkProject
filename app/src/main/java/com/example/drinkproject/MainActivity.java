@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.biometric.BiometricPrompt;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -20,13 +22,10 @@ import java.util.concurrent.Executor;
 import controller.Controller;
 
 public class MainActivity extends AppCompatActivity {
-    //TODO add logic for server connection
-    //private static final int SERVER_PORT = 5000;
-    //private static final String SERVER_IP = "10.0.2.2";
+
 
     //private Socket socket;
-    private final Controller  controller = Controller.getInstance();
-    private Executor executor;
+    private Controller  controller=null;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
 
@@ -35,10 +34,51 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //new Thread(new ClientThread()).start();
-        executor = ContextCompat.getMainExecutor(this);
-        System.out.println("CIAO MAMMA");
-        System.out.println("Prova Controller: "+controller.getDrink("1").toString());
+        // Ottenere l'executor dell'UI thread
+        Executor executor = ContextCompat.getMainExecutor(this);
+
+// Postare un messaggio sulla coda dell'UI thread
+        //TODO USARE MEtodo della prof
+        // public void onClick(View v) {
+        //    // Crea un nuovo thread
+        //    new Thread(() -> {
+        //        // Carica un'immagine da una sorgente remota
+        //        final Bitmap b = caricaDaRete();
+        //        // Imposta l'immagine caricata nella ImageView sulla UI thread
+        //        iv.post(() -> {
+        //            iv.setImageBitmap(b);
+        //        });
+        //    }).start();
+        //}
+        executor.execute(() -> {
+            // dump dati
+            controller = Controller.getInstance();
+        });
+
+        SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
+        if(sharedPreferences.contains("email") && sharedPreferences.contains("password")) {
+            // Le credenziali dell'utente sono state salvate in precedenza
+            TextView textViewUsername =((TextView) findViewById(R.id.editTextUsername));
+            String email = sharedPreferences.getString("email", "");
+
+            textViewUsername.setText(email);
+            //abilito bottone dei dati biometrici
+            {
+                FloatingActionButton biometricLoginButton = findViewById(R.id.biometricLogInButton);
+                biometricLoginButton.setClickable(true);
+            }
+
+        } else {
+            // Non ci sono credenziali salvate
+            // disabilita bottone login dei dati biometrici
+            {
+                FloatingActionButton biometricLoginButton = findViewById(R.id.biometricLogInButton);
+                biometricLoginButton.setClickable(false);
+            }
+        }
+
+
+
         biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
 
             @Override
@@ -65,26 +105,8 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButtonText("Use account password")
                 .build();
         FloatingActionButton biometricLoginButton = findViewById(R.id.biometricLogInButton);
-        biometricLoginButton.setOnClickListener(view -> {
-            biometricPrompt.authenticate(promptInfo);
-        });
+        biometricLoginButton.setOnClickListener(view -> biometricPrompt.authenticate(promptInfo));
     }
-
-    /*
-    class ClientThread implements Runnable {
-        @Override
-        public void run() {
-            try {
-                InetAddress serverAddr = InetAddress.getByName(SERVER_IP);
-
-                socket = new Socket(serverAddr, SERVER_PORT);
-
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        }
-    }
- */
 
 
     @Override
@@ -103,6 +125,11 @@ public class MainActivity extends AppCompatActivity {
             String password = ((TextView) findViewById(R.id.editTextPassword)).getText().toString();
 
             if(controller.login(username, password)) {
+                SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("email", username);
+                editor.putString("password", password);
+                editor.apply();
                 Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
                 startActivity(intent);
             } else {

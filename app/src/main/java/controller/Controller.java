@@ -6,24 +6,28 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import Dao.Connessione;
-import model.*;
+import model.Drink;
+import model.DrinkOrdine;
+import model.Utente;
 
 @SuppressWarnings("unused")
 public class Controller {
+    private static volatile boolean dumpEseguito;
     private static Controller controller;
-    private static Utente utente = null;
+    private Utente utente = null;
     private static final ArrayList<Drink> listaDeiDrink = new ArrayList<>();
     private static final ArrayList<String> categorie = new ArrayList<>();
 
     private Controller() {
+        dumpEseguito=false;
         dump();
+        dumpEseguito=true;
     }
 
-    public boolean ilCarrelloéVuoto() {
+    public boolean ilCarrelloeVuoto() {
         if (utente.getDrinkOrdineList().size() == 0)
-            return true;
-        return utente.getDrinkOrdineList().get(0).getDrink() == null;
+            return false;
+        return utente.getDrinkOrdineList().get(0).getDrink() != null;
     }
 
 
@@ -31,9 +35,15 @@ public class Controller {
         if (controller == null) {
             controller = new Controller();
         }
+        waitdDump();
         return controller;
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
+    private static void waitdDump() {
+        while(!dumpEseguito);
+
+    }
 
     private byte[] getByteArray() {
         byte[] array;
@@ -139,14 +149,22 @@ public class Controller {
                 "FROM utente" +
                 "WHERE email=' " + username + "' AND" +
                 "password ='" + password + "'";
-        List<String> utenteRes;
+        List<String> utenteRes ;
         try {
             utenteRes = conn.sendSelect(querySelectUtente);
+            //TODO estrapolare parametri e salvali nell'attributo utente
+              String id;
+             String nome;
+              String cognome;
+            String email;
+            String password;
+            utente = new Utente(id,nome,cognome,email,password);
+
         } catch (IOException e) {
             System.err.println("Non sono riuscito a fare il login");
             return false;
         }
-        //TODO DATO LA LISTA PRENDERE I VALORI AL SUO INTERNO e creare oggetto utente
+        return true;
 */
         utente = new Utente("0", "GLR", "LSO", "GLR.unina.it", "pass");
 
@@ -172,7 +190,10 @@ public class Controller {
             if( (Connessione.getInstance().sendInsert(queryInsertUtente)) ){
                 return true;
                 utente = new Utente("0",name,surname,username,password);
+
             }else{
+         
+         
                 return false;
             }
         } catch (IOException e) {
@@ -281,13 +302,12 @@ public class Controller {
     }
 
 
-    public boolean updateDrink(String idDrink, int quantita) {
+    public void updateDrink(String idDrink, int quantita) {
         Drink drinkDaAggiornare = getDrink(idDrink);
         if (!esisteIlDrinkNelCarrello(idDrink))
             addDrink(idDrink, quantita);
         else
             utente.updateQuantita(drinkDaAggiornare, quantita);
-        return true;
     }
 
 
@@ -308,7 +328,7 @@ public class Controller {
         return String.valueOf(utente.getPrezzoTotale());
     }
 
-he ha una ArrayL
+
     public boolean effettuaPagamento(String nome, String cognome, String numerocarta, String dataScadenza, String cvv) {
         String queryClone = "INSERT INTO public.drink_ordine(\n" +
                 "\t drink_id, ordine_id, quantita, prezzo)\n" +
@@ -326,9 +346,8 @@ he ha una ArrayL
         }
         System.out.println("sono nel metodo Controller.EffettuaPagamento()\n la query creata è:\n" + query);
         //TODO inserire logica comunicazione server c ;
-        boolean pagamentoEffettuato = true;//da cambiare in base all'esito del server
 
-        return pagamentoEffettuato;
+        return true;
     }
 
 
@@ -341,7 +360,7 @@ he ha una ArrayL
     }
 
 
-    public String getQuantitàOrdinata(String id) {
+    public String getQuantitaOrdinata(String id) {
         return "0";
     }
 
@@ -349,4 +368,7 @@ he ha una ArrayL
     public void svuotaCarrello() {
         utente.svuotaCarrello();
     }
+    
+
+    
 }

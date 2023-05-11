@@ -8,7 +8,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class Connessione {
-/*
+
     private static Connessione istanza = null;
     private static final String indirizzoServer = "localhost"; // Indirizzo IP o nome del server
     private static final int portaServer = 8080; // Porta del server
@@ -68,12 +68,12 @@ public class Connessione {
         socket.close();
     }
 
-    /*
+   /*
     0 SELECT
     1 INSERT
     2 UPDATE
     3 delete
-
+*/
     public List<String> sendSelect(String query) throws IOException {
         sendMessage("0" + SEPARATORE + query);
         return readAllResponses();
@@ -117,6 +117,6 @@ public class Connessione {
 
     }
 
-*/
+
 }
 
