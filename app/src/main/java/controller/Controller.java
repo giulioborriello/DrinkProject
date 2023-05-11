@@ -11,13 +11,16 @@ import model.*;
 
 @SuppressWarnings("unused")
 public class Controller {
+    private static volatile boolean dumpEseguito;
     private static Controller controller;
-    private static Utente utente = null;
+    private Utente utente = null;
     private static final ArrayList<Drink> listaDeiDrink = new ArrayList<>();
     private static final ArrayList<String> categorie = new ArrayList<>();
 
     private Controller() {
+        dumpEseguito=false;
         dump();
+        dumpEseguito=true;
     }
 
     public boolean ilCarrelloéVuoto() {
@@ -31,9 +34,15 @@ public class Controller {
         if (controller == null) {
             controller = new Controller();
         }
+        waitdDump();
         return controller;
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
+    private static void waitdDump() {
+        while(!dumpEseguito);
+
+    }
 
     private byte[] getByteArray() {
         byte[] array;
@@ -142,6 +151,14 @@ public class Controller {
         List<String> utenteRes;
         try {
             utenteRes = conn.sendSelect(querySelectUtente);
+            //TODO estrapolare parametri e salvali nell'attributo utente
+              String id;
+             String nome;
+              String cognome;
+            String email;
+            String password;
+            utente = new Utente(id,nome,cognome,email,password);
+
         } catch (IOException e) {
             System.err.println("Non sono riuscito a fare il login");
             return false;
@@ -172,7 +189,10 @@ public class Controller {
             if( (Connessione.getInstance().sendInsert(queryInsertUtente)) ){
                 return true;
                 utente = new Utente("0",name,surname,username,password);
+
             }else{
+
+
                 return false;
             }
         } catch (IOException e) {
@@ -281,13 +301,12 @@ public class Controller {
     }
 
 
-    public boolean updateDrink(String idDrink, int quantita) {
+    public void updateDrink(String idDrink, int quantita) {
         Drink drinkDaAggiornare = getDrink(idDrink);
         if (!esisteIlDrinkNelCarrello(idDrink))
             addDrink(idDrink, quantita);
         else
             utente.updateQuantita(drinkDaAggiornare, quantita);
-        return true;
     }
 
 
@@ -308,6 +327,7 @@ public class Controller {
         return String.valueOf(utente.getPrezzoTotale());
     }
 
+
     public boolean effettuaPagamento(String nome, String cognome, String numerocarta, String dataScadenza, String cvv) {
         String queryClone = "INSERT INTO public.drink_ordine(\n" +
                 "\t drink_id, ordine_id, quantita, prezzo)\n" +
@@ -325,9 +345,8 @@ public class Controller {
         }
         System.out.println("sono nel metodo Controller.EffettuaPagamento()\n la query creata è:\n" + query);
         //TODO inserire logica comunicazione server c ;
-        boolean pagamentoEffettuato = true;//da cambiare in base all'esito del server
 
-        return pagamentoEffettuato;
+        return true;
     }
 
 
@@ -340,17 +359,20 @@ public class Controller {
     }
 
 
-    public String getQuantitàOrdinata(String id) {
-        for (DrinkOrdine drinkOrdine : utente.getDrinkOrdineList()) {
-            if (drinkOrdine.getDrink().getId().equals(id)) {
-                return String.valueOf(drinkOrdine.getQuantita());
+        public String getQuantitàOrdinata (String id){
+            for (DrinkOrdine drinkOrdine : utente.getDrinkOrdineList()) {
+                if (drinkOrdine.getDrink().getId().equals(id)) {
+                    return String.valueOf(drinkOrdine.getQuantita());
+                }
             }
+            return "0";
         }
-        return "0";
-    }
 
 
-    public void svuotaCarrello() {
-        utente.svuotaCarrello();
-    }
+        public void svuotaCarrello () {
+            utente.svuotaCarrello();
+        }
+
+
+
 }
