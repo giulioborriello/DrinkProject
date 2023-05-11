@@ -24,14 +24,13 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
     private final LayoutInflater inflater;
     private final Controller controller = Controller.getInstance();
     private final TextView totale;
-    private final DrinksHolder drinksHolder;
 
-    public CarrelloAdapter(Context context, List<DrinkOrdine> drinks, TextView totale,  DrinksHolder totaleSchermataDrink) {
+
+    public CarrelloAdapter(Context context, List<DrinkOrdine> drinks, TextView totale) {
         this.context = context;
         this.drinks = drinks;
         this.inflater = LayoutInflater.from(context);
         this.totale = totale;
-        this.drinksHolder = totaleSchermataDrink;
     }
 
 
@@ -68,7 +67,6 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
                 int newQuantity = Integer.parseInt(holder.quantita.getText().toString());
                 newQuantity++;
                 holder.quantita.setText(String.valueOf(newQuantity));
-                drinksHolder.quantita.setText(String.valueOf(newQuantity));
 
                 String nuovoPrezzo = String.valueOf(price * newQuantity);
                 holder.prezzo.setText(nuovoPrezzo);
@@ -85,14 +83,12 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
                     newQuantity--;
                     holder.quantita.setText(String.valueOf(newQuantity));
                     holder.prezzo.setText(String.valueOf(price*newQuantity));
-                    drinksHolder.quantita.setText(String.valueOf(newQuantity));
 
                     controller.updateDrink(drink.getId(), newQuantity);
                     totale.setText(controller.getPrezzoTotale());
                 } else if (newQuantity == 1) {
                     drinks.remove(position);
                     controller.updateDrink(drink.getId(), 0);
-                    drinksHolder.quantita.setText("");
 
                     notifyItemRemoved(position);
                     totale.setText("0");

@@ -308,7 +308,6 @@ public class Controller {
         return String.valueOf(utente.getPrezzoTotale());
     }
 
-he ha una ArrayL
     public boolean effettuaPagamento(String nome, String cognome, String numerocarta, String dataScadenza, String cvv) {
         String queryClone = "INSERT INTO public.drink_ordine(\n" +
                 "\t drink_id, ordine_id, quantita, prezzo)\n" +
@@ -342,6 +341,11 @@ he ha una ArrayL
 
 
     public String getQuantitàOrdinata(String id) {
+        for (DrinkOrdine drinkOrdine : utente.getDrinkOrdineList()) {
+            if (drinkOrdine.getDrink().getId().equals(id)) {
+                return String.valueOf(drinkOrdine.getQuantita());
+            }
+        }
         return "0";
     }
 

@@ -1,5 +1,7 @@
 package com.example.drinkproject.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +18,6 @@ import android.widget.Toast;
 import com.example.drinkproject.R;
 import com.example.drinkproject.views.DrinksAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.List;
 
 import controller.Controller;
@@ -51,13 +52,13 @@ public class DrinkActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
 
-        myAdapter.setda
+
 
         FloatingActionButton goToCartButton = findViewById(R.id.goToCartButton);
         goToCartButton.setOnClickListener(v -> {
             if(!controller.ilCarrelloéVuoto()) {
                 Intent intent = new Intent(getApplicationContext(), CarrelloActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             } else {
                 Toast.makeText(getApplicationContext(), "Il carrello è vuoto", Toast.LENGTH_SHORT).show();
             }
@@ -90,4 +91,12 @@ public class DrinkActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1 && resultCode == RESULT_OK) {
+            myAdapter.notifyDataSetChanged();
+        }
+    }
 }

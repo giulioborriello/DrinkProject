@@ -19,5 +19,7 @@ typedef struct sockaddr SA;
 void* handle_connection(void* client_socket_input);
 int check(int exp, const char *msg);
 void sendDataTable(PGresult *table, int client_socket);
+void sendDataString(int client_socket, char* string);
+void dividi_stringa(char * stringa, char * stringa1, char * stringa2);
 
 #endif
