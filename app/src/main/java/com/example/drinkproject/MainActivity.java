@@ -56,18 +56,42 @@ public class MainActivity extends AppCompatActivity {
         });
 
         SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
-        if(sharedPreferences.contains("email") && sharedPreferences.contains("password")) {
+        if (sharedPreferences.contains("email") && sharedPreferences.contains("password")) {
             // Le credenziali dell'utente sono state salvate in precedenza
-            TextView textViewUsername =((TextView) findViewById(R.id.editTextUsername));
+            TextView textViewUsername = ((TextView) findViewById(R.id.editTextUsername));
             String email = sharedPreferences.getString("email", "");
 
             textViewUsername.setText(email);
             //abilito bottone dei dati biometrici
             {
-                FloatingActionButton biometricLoginButton = findViewById(R.id.biometricLogInButton);
-                biometricLoginButton.setClickable(true);
-            }
+                biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
 
+                    @Override
+                    public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                        super.onAuthenticationError(errorCode, errString);
+                        Toast.makeText(getApplicationContext(), "Authentication error: " + errString, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                        super.onAuthenticationSucceeded(result);
+                        Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onAuthenticationFailed() {
+                        super.onAuthenticationFailed();
+                        Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle("Biometric login for my app").setSubtitle("Log in using your biometric credential")
+                        .setNegativeButtonText("Use account password")
+                        .build();
+                FloatingActionButton biometricLoginButton = findViewById(R.id.biometricLogInButton);
+                biometricLoginButton.setOnClickListener(view -> biometricPrompt.authenticate(promptInfo));
+            }
         } else {
             // Non ci sono credenziali salvate
             // disabilita bottone login dei dati biometrici
@@ -76,38 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 biometricLoginButton.setClickable(false);
             }
         }
-
-
-
-        biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
-
-            @Override
-            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                super.onAuthenticationError(errorCode, errString);
-                Toast.makeText(getApplicationContext(), "Authentication error: " + errString, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                super.onAuthenticationSucceeded(result);
-                Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onAuthenticationFailed() {
-                super.onAuthenticationFailed();
-                Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle("Biometric login for my app").setSubtitle("Log in using your biometric credential")
-                .setNegativeButtonText("Use account password")
-                .build();
-        FloatingActionButton biometricLoginButton = findViewById(R.id.biometricLogInButton);
-        biometricLoginButton.setOnClickListener(view -> biometricPrompt.authenticate(promptInfo));
     }
-
 
     @Override
     protected void onResume() {

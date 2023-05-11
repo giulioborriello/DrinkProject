@@ -10,8 +10,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.drinkproject.MainActivity;
@@ -35,10 +37,15 @@ public class RegistrazioneActivity extends AppCompatActivity {
         View registerButton = findViewById(R.id.submitRegistrationWithUsernameAndPassword);
 
         registerButton.setOnClickListener(v -> {
-            String name = findViewById(R.id.registerName).toString();
-            String surname = findViewById(R.id.registerSurname).toString();
-            String username = findViewById(R.id.registerUsername).toString();
-            String password = findViewById(R.id.registerPassword).toString();
+            EditText nomeEditText = findViewById(R.id.registerName);
+            EditText cognomeEditText = findViewById(R.id.registerSurname);
+            EditText usernameEditText = findViewById(R.id.registerUsername);
+            EditText passwordEditText = findViewById(R.id.registerPassword);
+
+            String name = nomeEditText.getText().toString();
+            String surname = cognomeEditText.getText().toString();
+            String username = usernameEditText.getText().toString();
+            String password = passwordEditText.getText().toString();
 
             if(controller.signIn(name, surname, username, password)) {
                 SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
