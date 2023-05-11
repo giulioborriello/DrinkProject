@@ -78,9 +78,11 @@ void* handle_connection(void* client_socket_input){
     switch (atoi(SQLrequest))
     {
     case 0: //"select"
-    	printf("Query da svolgere: %s\n",domanda);
-        PGresult *table = querySQL(domanda, conn);
+    	printf("Query da svolgere: %s\n",token);
+        PGresult *table;
+        querySQL(token, conn, &table);
         sendDataTable(table, client_socket);
+        printf("flag3");
         PQclear(table);
         break;
     case 1: //"insert"
@@ -113,7 +115,7 @@ void* handle_connection(void* client_socket_input){
 
 void sendDataTable(PGresult *table, int client_socket){
     char buffer[BUFSIZE];
-    char *field;
+    char *field = malloc(sizeof(buffer) + 1);
     printf("flag2");
     //size_t bytes_read;
     int rows = PQntuples(table);
@@ -126,6 +128,7 @@ void sendDataTable(PGresult *table, int client_socket){
     		write(client_socket,buffer,strlen(field));
 		}
 	}
+	free(field);
 }
 
 void sendDataString(int client_socket, char* string){
