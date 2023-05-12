@@ -6,7 +6,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import Dao.Connessione;
 import model.*;
 
 @SuppressWarnings("unused")
@@ -23,10 +22,10 @@ public class Controller {
         dumpEseguito=true;
     }
 
-    public boolean ilCarrelloéVuoto() {
+    public boolean ilCarrelloeVuoto() {
         if (utente.getDrinkOrdineList().size() == 0)
-            return true;
-        return utente.getDrinkOrdineList().get(0).getDrink() == null;
+            return false;
+        return utente.getDrinkOrdineList().get(0).getDrink() != null;
     }
 
 
@@ -97,7 +96,8 @@ public class Controller {
 
     public void dump() {
         //TODO fare il dump dei drink
-/*      Connessione con;
+/*
+  Connessione con;
         try {
             con = Connessione.getInstance();
             String querySelectForDrink = "SELECT * " +
@@ -171,7 +171,31 @@ public class Controller {
         return true;
 
     }
+    public ArrayList<Drink> getSugeritiInbaseAiTuoiGusti(){
+        int idUtente= Integer.parseInt(utente.getId());
+        //funzione di lorenzo che sceglie in base agli ingredienti
+        /*
+        SELECT public.raccomanda_drink_ingrediente(<id_utente integer>)
+         */
+        //fake
 
+        ArrayList<Drink> listaSuggerita=new ArrayList<>();
+        listaSuggerita.add(listaDeiDrink.get(1));
+
+        return  listaSuggerita;
+    }
+    public ArrayList<Drink> getSugerimentiNuoviInBaseAiTuoiGusti(){
+        //funzione di Rai
+        int idUtente= Integer.parseInt(utente.getId());
+        /*
+            SELECT public.raccomada_drink(<id_utente integer>)
+         */
+        //fake
+        ArrayList<Drink> listaSuggerita=new ArrayList<>();
+        listaSuggerita.add(listaDeiDrink.get(1));
+
+        return  listaSuggerita;
+    }
     public boolean signIn(String name, String surname, String username, String password) {
         //TODO fare il signin
         /*
@@ -359,7 +383,7 @@ public class Controller {
     }
 
 
-        public String getQuantitàOrdinata (String id){
+        public String getQuantitaOrdinata(String id){
             for (DrinkOrdine drinkOrdine : utente.getDrinkOrdineList()) {
                 if (drinkOrdine.getDrink().getId().equals(id)) {
                     return String.valueOf(drinkOrdine.getQuantita());

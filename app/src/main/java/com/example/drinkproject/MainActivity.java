@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
         if (sharedPreferences.contains("email") && sharedPreferences.contains("password")) {
             // Le credenziali dell'utente sono state salvate in precedenza
-            TextView textViewUsername = ((TextView) findViewById(R.id.editTextUsername));
+            TextView textViewUsername = findViewById(R.id.editTextUsername);
             String email = sharedPreferences.getString("email", "");
 
             textViewUsername.setText(email);
@@ -100,7 +101,31 @@ public class MainActivity extends AppCompatActivity {
                 biometricLoginButton.setClickable(false);
             }
         }
+
+
+
+
+
+
     }
+
+    private  boolean doubleBackToExitPressedOnce=false;
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "premi ancora per uscire", Toast.LENGTH_SHORT).show();
+
+        //noinspection deprecation
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
+    }
+
+
+
 
     @Override
     protected void onResume() {
