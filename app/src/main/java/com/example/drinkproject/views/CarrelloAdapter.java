@@ -111,13 +111,6 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
                 } else if (newQuantity == 1) {
                     controller.removeDrink(drink.getId());
                     controller.updateDrink(drink.getId(), 0);
-                    if (getItemCount() == 1) {
-                        removeItem(position);
-                        totale.setText("0");
-                    } else {
-                        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this);
-                        swipeToDeleteCallback.onSwiped(holder.itemView, ItemTouchHelper.RIGHT);
-                    }
                     removeItem(position);
                     totale.setText("0");
                 }
