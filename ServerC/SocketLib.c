@@ -79,20 +79,29 @@ void* handle_connection(void* client_socket_input){
     	printf("Query da svolgere: %s\n",token);
         PGresult *table;
         querySQL(token, conn, &table);
-        sendDataTable(table, client_socket);
+        if (table!= NULL){
+        	sendDataTable(table, client_socket);	
+		}else{
+			message="FAILIURE";
+			sendDataString(client_socket, message);
+		}
+        
         printf("flag3\n");
         PQclear(table);
         break;
     case 1: //"insert"
         insertSQL(token, conn);
+        message="Insert avvenuto con successo.";
         sendDataString(client_socket, message);
         break;
     case 2: //"update"
         updateSQL(token, conn);
+        message="Update avvenuto con successo.";
         sendDataString(client_socket, message);
         break;
     case 3: //"delete"
         deleteSQL(token, conn);
+        message="Delete avvenuto con successo.";
         sendDataString(client_socket, message);
         break;    
     default:

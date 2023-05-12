@@ -6,7 +6,7 @@
 #define SEPARATOR "#"
 
 #define PATH_MAX_LOCAL 1024
-#define SERVERPORT 8989
+#define SERVERPORT 8080
 #define SOCKETERROR (-1)
 #define SERVER_BACKLOG 100
 #define THREAD_POOL_SIZE 20

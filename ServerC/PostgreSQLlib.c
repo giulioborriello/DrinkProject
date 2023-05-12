@@ -56,13 +56,22 @@ void querySQL (char *query, PGconn *conn, PGresult **res){
    int cols = PQnfields(*res);
    printf("Colonne: %d\n",cols);
    
-   printf("\nRisultati della query:\n");
-   for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < cols; j++) {
-         printf("%s\t", PQgetvalue(*res, i, j));
+   if(rows != 0){
+   		printf("\nRisultati della query:\n");
+   		for (int i = 0; i < rows; i++) {
+      		for (int j = 0; j < cols; j++) {
+      			printf("| ");
+        		printf("%s\t", PQgetvalue(*res, i, j));
+         		printf(" |");
       }
       printf("\n");
-   }
+      printf("--------------------------------------------------------------------------");
+      printf("\n");
+   	  }
+	}else{
+		res = NULL;
+	}
+   
    printf("Fine tabella\n");
 }
 
