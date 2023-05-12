@@ -180,7 +180,7 @@ public class Controller {
         //fake
 
         ArrayList<Drink> listaSuggerita=new ArrayList<>();
-        listaSuggerita.add(listaDeiDrink.get(1));
+        listaSuggerita.add(listaDeiDrink.get(2));
 
         return  listaSuggerita;
     }
