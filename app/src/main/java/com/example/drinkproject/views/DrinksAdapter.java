@@ -1,6 +1,8 @@
     package com.example.drinkproject.views;
 
     import android.content.Context;
+    import android.graphics.Bitmap;
+    import android.graphics.BitmapFactory;
     import android.text.Editable;
     import android.text.TextWatcher;
     import android.view.LayoutInflater;
@@ -54,12 +56,12 @@
             Double aDouble = filteredDrinks.get(position).getPrezzo();
             String price = aDouble.toString();
 
-            //Bitmap bitmap = BitmapFactory.decodeByteArray(drinks.get(position).getImmagine(), 0, drinks.get(position).getImmagine().length);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(drinks.get(position).getImmagine(), 0, drinks.get(position).getImmagine().length);
 
             holder.nome.setText(name);
             holder.descrizione.setText(description);
             holder.prezzo.setText(price);
-            holder.immagine.setImageResource(R.drawable.spritz);
+            holder.immagine.setImageBitmap(bitmap);
             holder.id = filteredDrinks.get(position).getId();
             holder.quantita.setText(controller.getQuantitàOrdinata(filteredDrinks.get(position).getId()));
 

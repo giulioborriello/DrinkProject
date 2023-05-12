@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -92,6 +94,24 @@ public class Controller {
         categorie.add("Frullati");
         categorie.add("Alcolici");
         categorie.add("Analcolici");
+
+        for (Drink drink : listaDeiDrink) {
+            try {
+                drink.setImmagine(restituisciImmagineFake("/home/giulio/images/ImmaginiProgettoLSO/cocktail.jpg"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+
+    public byte[] restituisciImmagineFake(String pathImmagine) throws IOException{
+        File file = new File(pathImmagine);
+        byte[] contenutoFile = new byte[(int) file.length()];
+        try (FileInputStream inputStream = new FileInputStream(file)) {
+            inputStream.read(contenutoFile);
+        }
+        return contenutoFile;
     }
 
 
