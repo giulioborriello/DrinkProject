@@ -61,7 +61,7 @@
             holder.prezzo.setText(price);
             holder.immagine.setImageResource(R.drawable.spritz);
             holder.id = filteredDrinks.get(position).getId();
-            holder.quantita.setText(controller.getQuantitàOrdinata(filteredDrinks.get(position).getId()));
+            holder.quantita.setText(controller.getQuantitaOrdinata(filteredDrinks.get(position).getId()));
 
             holder.aggiungiUnDrink.setOnClickListener(v -> {
                 if(holder.quantita.getText().toString().equals("")) {
