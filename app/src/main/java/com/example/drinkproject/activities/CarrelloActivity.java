@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.example.drinkproject.R;
 import com.example.drinkproject.views.CarrelloAdapter;
-import com.example.drinkproject.views.DrinksHolder;
 
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class CarrelloActivity extends AppCompatActivity {
         //TODO: add logic for pay with credit card
         View paymentButton = findViewById(R.id.paymentButton);
         paymentButton.setOnClickListener(v -> {
-            if(!controller.ilCarrelloéVuoto()) {
+            if(controller.ilCarrelloeVuoto()) {
                 Intent intent = new Intent(getApplicationContext(), PagamentoActivity.class);
                 startActivity(intent);
             } else {

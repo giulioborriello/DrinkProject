@@ -1,13 +1,14 @@
 package com.example.drinkproject.activities;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,7 +25,7 @@ import controller.Controller;
 import model.Drink;
 
 public class DrinkActivity extends AppCompatActivity {
-    private Controller controller = Controller.getInstance();
+    private final Controller controller = Controller.getInstance();
     List<Drink> drinks = controller.getDrinks();
     DrinksAdapter myAdapter;
 
@@ -34,7 +35,7 @@ public class DrinkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink);
         //TODO add logic for filter menu and query to db
-        Spinner dropDownFilterMenu = (Spinner) findViewById(R.id.dropDownMenu);
+        Spinner dropDownFilterMenu = findViewById(R.id.dropDownMenu);
         String[] filters = controller.getCategorie();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, filters);
         dropDownFilterMenu.setAdapter(adapter);
@@ -48,6 +49,8 @@ public class DrinkActivity extends AppCompatActivity {
     }
 
 
+
+    @SuppressWarnings("deprecation")
     @Override
     protected void onResume(){
         super.onResume();
@@ -56,7 +59,7 @@ public class DrinkActivity extends AppCompatActivity {
 
         FloatingActionButton goToCartButton = findViewById(R.id.goToCartButton);
         goToCartButton.setOnClickListener(v -> {
-            if(!controller.ilCarrelloéVuoto()) {
+            if(controller.ilCarrelloeVuoto()) {
                 Intent intent = new Intent(getApplicationContext(), CarrelloActivity.class);
                 startActivityForResult(intent,1);
             } else {
@@ -64,7 +67,7 @@ public class DrinkActivity extends AppCompatActivity {
             }
         });
 
-        Spinner dropDownFilterMenu = (Spinner) findViewById(R.id.dropDownMenu);
+        Spinner dropDownFilterMenu = findViewById(R.id.dropDownMenu);
         dropDownFilterMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -91,6 +94,39 @@ public class DrinkActivity extends AppCompatActivity {
     }
 
 
+
+
+    private  boolean doubleBackToExitPressedOnce=false;
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+
+            finishAffinity();
+            System.exit(0);
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "premi ancora per uscire", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

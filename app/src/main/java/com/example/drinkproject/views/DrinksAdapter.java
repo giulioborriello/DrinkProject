@@ -63,7 +63,7 @@
             holder.prezzo.setText(price);
             holder.immagine.setImageBitmap(bitmap);
             holder.id = filteredDrinks.get(position).getId();
-            holder.quantita.setText(controller.getQuantitàOrdinata(filteredDrinks.get(position).getId()));
+            holder.quantita.setText(controller.getQuantitaOrdinata(filteredDrinks.get(position).getId()));
 
             holder.aggiungiUnDrink.setOnClickListener(v -> {
                 if(holder.quantita.getText().toString().equals("")) {
