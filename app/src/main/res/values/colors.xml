@@ -11,4 +11,5 @@
     <color name="persian_blue">#11518a</color>
     <color name="orange">#ff9401</color>
     <color name="sky_blue">#33ccff</color>
+    <color name="backgroud_recyclerview_item">#3B3B3B</color>
 </resources>

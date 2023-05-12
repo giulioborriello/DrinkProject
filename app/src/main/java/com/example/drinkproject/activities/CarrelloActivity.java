@@ -2,6 +2,7 @@ package com.example.drinkproject.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,12 +31,9 @@ public class CarrelloActivity extends AppCompatActivity {
         setContentView(R.layout.activity_carrello);
 
         recyclerView = findViewById(R.id.recyclerViewOrderSummary);
-        List<DrinkOrdine> drinks = controller.getSummary();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.setAdapter(new CarrelloAdapter(getApplicationContext(), drinks, findViewById(R.id.totalCounter)));
-
-
+        recyclerView.setAdapter(new CarrelloAdapter(getApplicationContext(), findViewById(R.id.totalCounter), recyclerView));
     }
 
 

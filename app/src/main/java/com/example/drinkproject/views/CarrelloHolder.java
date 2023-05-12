@@ -17,13 +17,13 @@ public class CarrelloHolder extends RecyclerView.ViewHolder {
 
     public CarrelloHolder(@NonNull View itemView) {
         super(itemView);
-        nome = (TextView) itemView.findViewById(R.id.nomeDrinkCarrello);
-        descrizione = (TextView) itemView.findViewById(R.id.descrizioneDrinkCarrello);
-        quantita = (TextView) itemView.findViewById(R.id.quantitaDrink);
-        immagine = (ImageView) itemView.findViewById(R.id.immagineDrinkCarrello);
-        aggiungiUnDrink = (Button) itemView.findViewById(R.id.bottonePiuCarrello);
-        rimuoviUnDrink = (Button) itemView.findViewById(R.id.bottoneMenoCarrello);
-        prezzo = (TextView) itemView.findViewById(R.id.prezzoDrinkCarrello);
+        nome = (TextView) itemView.findViewById(R.id.nomeDrink);
+        descrizione = (TextView) itemView.findViewById(R.id.descrizioneDrink);
+        quantita = (TextView) itemView.findViewById(R.id.quantitaDrinkCarrello);
+        immagine = (ImageView) itemView.findViewById(R.id.immagineDrink);
+        aggiungiUnDrink = (Button) itemView.findViewById(R.id.pulsantePiu);
+        rimuoviUnDrink = (Button) itemView.findViewById(R.id.pulsanteMeno);
+        prezzo = (TextView) itemView.findViewById(R.id.prezzoDrink);
         totale = (TextView) itemView.findViewById(R.id.totalCounter);
     }
 }

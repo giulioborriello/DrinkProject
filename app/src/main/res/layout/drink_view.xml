@@ -2,20 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="220dp"
+    android:background="@drawable/rectangle_recyclerview_item"
+    android:layout_marginBottom="25dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
-        android:id="@+id/immagineDrinkCarrello"
+        android:id="@+id/immagineDrink"
         android:layout_width="140dp"
         android:layout_height="140dp"
-        android:layout_below="@+id/drinkName"
+        android:layout_below="@+id/nomeDrink"
         android:layout_marginStart="20dp"
         android:layout_marginTop="7dp"
         app:srcCompat="@drawable/spritz"
         android:contentDescription="@string/image_of_the_drink" />
 
     <TextView
-        android:id="@+id/drinkName"
+        android:id="@+id/nomeDrink"
         android:layout_width="match_parent"
         android:textSize="35sp"
         android:layout_marginStart="20dp"
@@ -27,56 +29,58 @@
         android:layout_height="50dp"/>
 
     <TextView
-        android:id="@+id/descrizioneDrinkCarrello"
+        android:id="@+id/descrizioneDrink"
         android:layout_width="300dp"
         android:layout_height="100dp"
         android:text=""
         android:textColor="@color/white"
         android:textSize="15sp"
-        android:layout_below="@id/drinkName"
+        android:layout_below="@id/nomeDrink"
         android:layout_marginStart="10sp"
         android:layout_marginTop="10sp"
-        android:layout_toEndOf="@id/immagineDrinkCarrello" />
+        android:layout_toEndOf="@id/immagineDrink" />
 
     <TextView
-        android:id="@+id/prezzoDrinkCarrello"
+        android:id="@+id/prezzoDrink"
         android:layout_width="70dp"
         android:layout_height="match_parent"
-        android:layout_below="@id/descrizioneDrinkCarrello"
-        android:layout_toEndOf="@id/immagineDrinkCarrello"
+        android:layout_below="@id/descrizioneDrink"
+        android:layout_toEndOf="@id/immagineDrink"
         android:layout_marginTop="10sp"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:text=""
         android:textColor="@color/white" />
 
 
     <Button
-        android:id="@+id/bottoneMenoCarrello"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:id="@+id/pulsanteMeno"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:background="@drawable/blackminus"
-        android:layout_toEndOf="@id/prezzoDrinkCarrello"
-        android:layout_below="@id/descrizioneDrinkCarrello"
-        android:layout_marginTop="10dp"/>
+        android:layout_toEndOf="@id/prezzoDrink"
+        android:layout_below="@id/descrizioneDrink"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10sp"/>
 
     <Button
-        android:id="@+id/bottonePiuCarrello"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:id="@+id/pulsantePiu"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:background="@drawable/blackcross"
-        android:layout_toEndOf="@id/quantitaDrink"
-        android:layout_below="@id/descrizioneDrinkCarrello"
+        android:layout_toEndOf="@id/quantitaDrinkCarrello"
+        android:layout_below="@id/descrizioneDrink"
         android:layout_marginTop="10dp"/>
 
     <EditText
-        android:id="@+id/quantitaDrink"
-        android:layout_width="100dp"
+        android:id="@+id/quantitaDrinkCarrello"
+        android:layout_width="70dp"
         android:layout_height="match_parent"
-        android:layout_toEndOf="@+id/bottoneMenoCarrello"
-        android:layout_below="@id/descrizioneDrinkCarrello"
+        android:layout_toEndOf="@+id/pulsanteMeno"
+        android:layout_below="@id/descrizioneDrink"
         android:textAlignment="center"
-        android:inputType="number"/>
+        android:inputType="number"
+        android:textColor="@color/white"/>
 
 
 </RelativeLayout>

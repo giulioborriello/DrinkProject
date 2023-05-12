@@ -8,20 +8,22 @@
     tools:context=".activities.DrinkActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@id/searchView"
-        android:layout_width="match_parent"
-        android:layout_height="550dp"
-        android:layout_above="@id/goToCartButton"
-        android:id="@+id/drinkRecyclerView"/>
+        android:id="@+id/drinkRecyclerView"
+        android:layout_width="370dp"
+        android:layout_height="match_parent"
+        android:layout_below="@id/dropDownMenu"
+        android:layout_centerInParent="true" />
 
     <Spinner
         android:id="@+id/dropDownMenu"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/searchView"
         android:layout_marginBottom="1dp"
         android:tooltipText="Filters"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        android:background="@drawable/rectangle_spinner"
+        android:popupBackground="@drawable/rectangle_spinner" />
 
     <SearchView
         android:id="@+id/searchView"
@@ -42,9 +44,8 @@
         android:id="@+id/goToCartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/dropDownMenu"
-        android:layout_marginLeft="330dp"
-        android:layout_alignParentBottom="false"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:clickable="true"
         app:srcCompat="@drawable/shoppingcarticon" />
 </RelativeLayout>

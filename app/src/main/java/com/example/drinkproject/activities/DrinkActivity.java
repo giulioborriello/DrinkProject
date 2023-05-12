@@ -28,6 +28,7 @@ public class DrinkActivity extends AppCompatActivity {
     private final Controller controller = Controller.getInstance();
     List<Drink> drinks = controller.getDrinks();
     DrinksAdapter myAdapter;
+    private  boolean doubleBackToExitPressedOnce=false;
 
 
     @Override
@@ -37,11 +38,11 @@ public class DrinkActivity extends AppCompatActivity {
         //TODO add logic for filter menu and query to db
         Spinner dropDownFilterMenu = findViewById(R.id.dropDownMenu);
         String[] filters = controller.getCategorie();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, filters);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, filters);
         dropDownFilterMenu.setAdapter(adapter);
 
         RecyclerView recyclerView = findViewById(R.id.drinkRecyclerView);
-        myAdapter = new DrinksAdapter(getApplicationContext(), drinks);
+        myAdapter = new DrinksAdapter(getApplicationContext());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
@@ -49,13 +50,10 @@ public class DrinkActivity extends AppCompatActivity {
     }
 
 
-
     @SuppressWarnings("deprecation")
     @Override
     protected void onResume(){
         super.onResume();
-
-
 
         FloatingActionButton goToCartButton = findViewById(R.id.goToCartButton);
         goToCartButton.setOnClickListener(v -> {
@@ -66,6 +64,7 @@ public class DrinkActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Il carrello è vuoto", Toast.LENGTH_SHORT).show();
             }
         });
+
 
         Spinner dropDownFilterMenu = findViewById(R.id.dropDownMenu);
         dropDownFilterMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -78,7 +77,9 @@ public class DrinkActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+
         SearchView searchView = findViewById(R.id.searchView);
+        searchView.setOnClickListener(v -> searchView.setIconified(false));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -94,36 +95,17 @@ public class DrinkActivity extends AppCompatActivity {
     }
 
 
-
-
-    private  boolean doubleBackToExitPressedOnce=false;
     @SuppressWarnings("deprecation")
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-
             finishAffinity();
             System.exit(0);
         }
-
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "premi ancora per uscire", Toast.LENGTH_SHORT).show();
-
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @SuppressLint("NotifyDataSetChanged")

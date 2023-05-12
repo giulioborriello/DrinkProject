@@ -21,10 +21,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewOrderSummary"
-        android:layout_width="match_parent"
+        android:layout_width="370dp"
         android:layout_height="570dp"
         android:layout_below="@id/textViewOrderSummary"
-        android:layout_above="@id/paymentButton"/>
+        android:layout_above="@id/paymentButton"
+        android:layout_centerInParent="true" />
 
 
     <TextView

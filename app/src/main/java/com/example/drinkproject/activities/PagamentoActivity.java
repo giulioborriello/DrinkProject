@@ -22,12 +22,8 @@ public class PagamentoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pagamento);
 
-
         EditText numeroCarta = findViewById(R.id.numeroCarta);
         numeroCarta.addTextChangedListener(new CreditCardTextWatcher(numeroCarta));
-
-
-
 
         String[] months = new String[]{"Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"};
 
@@ -36,7 +32,6 @@ public class PagamentoActivity extends AppCompatActivity {
 
         Spinner mesiSpinner = findViewById(R.id.meseScadenza);
         mesiSpinner.setAdapter(mesiAdapter);
-
 
         String[] anni = new String[]{"2024", "2025", "2026", "2027", "2028", "2029", "2030"};
 

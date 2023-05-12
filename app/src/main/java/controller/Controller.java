@@ -1,7 +1,5 @@
 package controller;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -89,21 +87,26 @@ public class Controller {
                 "Frullato di fragole, banane e yogurt\t",
                 4.5));
 
-        categorie.add("all");
+        categorie.add("Tutti");
         categorie.add("Frullati");
         categorie.add("Alcolici");
         categorie.add("Analcolici");
+        categorie.add("Consigliati in base ai tuoi gusti");
+        categorie.add("Consigliati in base alle tendenze");
 
-        for (Drink drink : listaDeiDrink) {
-            try {
-                drink.setImmagine(restituisciImmagineFake("/home/giulio/images/ImmaginiProgettoLSO/cocktail.jpg"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+
+
+    //    for (Drink drink : listaDeiDrink) {
+      //      try {
+        //        drink.setImmagine(restituisciImmagineFake("/home/giulio/images/ImmaginiProgettoLSO/cocktail.jpg"));
+          //  } catch (IOException e) {
+            //    throw new RuntimeException(e);
+            //}
+        //}
+
     }
 
-
+/*
     public byte[] restituisciImmagineFake(String pathImmagine) throws IOException{
         File file = new File(pathImmagine);
         byte[] contenutoFile = new byte[(int) file.length()];
@@ -112,7 +115,7 @@ public class Controller {
         }
         return contenutoFile;
     }
-
+*/
 
     public void dump() {
         //TODO fare il dump dei drink
@@ -191,7 +194,9 @@ public class Controller {
         return true;
 
     }
-    public ArrayList<Drink> getSugeritiInbaseAiTuoiGusti(){
+
+
+    public ArrayList<Drink> getSuggeritiInbaseAiTuoiGusti(){
         int idUtente= Integer.parseInt(utente.getId());
         //funzione di lorenzo che sceglie in base agli ingredienti
         /*
@@ -204,7 +209,9 @@ public class Controller {
 
         return  listaSuggerita;
     }
-    public ArrayList<Drink> getSugerimentiNuoviInBaseAiTuoiGusti(){
+
+
+    public ArrayList<Drink> getSuggeritiInBaseAlleTendenze(){
         //funzione di Rai
         int idUtente= Integer.parseInt(utente.getId());
         /*
@@ -216,6 +223,8 @@ public class Controller {
 
         return  listaSuggerita;
     }
+
+
     public boolean signIn(String name, String surname, String username, String password) {
         //TODO fare il signin
         /*
@@ -228,7 +237,7 @@ public class Controller {
                 "VALUES (" +
                 "'" + name+ "'," + "'" + surname+ "'," + "'" + username+ "'," + "'" + password+"'" +
                 ");";
-/*
+
         try {
             if( (Connessione.getInstance().sendInsert(queryInsertUtente)) ){
                 return true;
@@ -243,7 +252,7 @@ public class Controller {
             return  false;
         }
 
-*/
+    */
 
         utente = new Utente("0", name, surname, username, password);
         return true;

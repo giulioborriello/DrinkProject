@@ -1,8 +1,6 @@
     package com.example.drinkproject.views;
 
     import android.content.Context;
-    import android.graphics.Bitmap;
-    import android.graphics.BitmapFactory;
     import android.text.Editable;
     import android.text.TextWatcher;
     import android.view.LayoutInflater;
@@ -24,17 +22,15 @@
 
     public class DrinksAdapter extends RecyclerView.Adapter<DrinksHolder> implements Filterable {
         Context context;
-        private List<Drink> drinks;
-        private final List<Drink> filteredDrinks;
         private final LayoutInflater inflater;
         private Filter filter;
         Controller controller = Controller.getInstance();
+        private List<Drink> drinks = controller.getDrinks();
+        private final List<Drink> filteredDrinks = new ArrayList<>(drinks);
 
 
-        public DrinksAdapter(Context context, List<Drink> drinks) {
+        public DrinksAdapter(Context context) {
             this.context = context;
-            this.drinks = drinks;
-            this.filteredDrinks = new ArrayList<>(drinks);
             inflater = LayoutInflater.from(context);
             this.filter = getFilter();
         }
@@ -53,15 +49,15 @@
             String name = filteredDrinks.get(position).getNome();
             String description = filteredDrinks.get(position).getDescrizione();
 
-            Double aDouble = filteredDrinks.get(position).getPrezzo();
-            String price = aDouble.toString();
+            double aDouble = filteredDrinks.get(position).getPrezzo();
+            String price = Double.toString(aDouble);
 
-            Bitmap bitmap = BitmapFactory.decodeByteArray(drinks.get(position).getImmagine(), 0, drinks.get(position).getImmagine().length);
+            //Bitmap bitmap = BitmapFactory.decodeByteArray(drinks.get(position).getImmagine(), 0, drinks.get(position).getImmagine().length);
 
             holder.nome.setText(name);
             holder.descrizione.setText(description);
             holder.prezzo.setText(price);
-            holder.immagine.setImageBitmap(bitmap);
+            holder.immagine.setImageResource(R.drawable.spritz);
             holder.id = filteredDrinks.get(position).getId();
             holder.quantita.setText(controller.getQuantitaOrdinata(filteredDrinks.get(position).getId()));
 
@@ -119,11 +115,7 @@
                     String filterString = constraint.toString().toLowerCase().trim();
                     List<Drink> filteredList = new ArrayList<>();
 
-                    if (filterString.equals("all")) {
-                        filteredList.addAll(drinks);
-                    } else {
-                        filteredList.addAll(controller.FiltraDrinkPerCategoria(filterString));
-                    }
+                    filtraInBaseAllaCategoria(filterString, filteredList);
 
                     FilterResults filterResults = new FilterResults();
                     filterResults.values = filteredList;
@@ -140,6 +132,24 @@
             });
         }
 
+        private void filtraInBaseAllaCategoria(String filterString, List<Drink> filteredList) {
+            if (filterString.equalsIgnoreCase("Tutti")) {
+                filteredList.addAll(drinks);
+            }
+
+            else if (filterString.equalsIgnoreCase("Consigliati in base ai tuoi gusti")) {
+                filteredList.addAll(controller.getSuggeritiInbaseAiTuoiGusti());
+            }
+
+            else if (filterString.equalsIgnoreCase("Consigliati in base alle tue tendenze")) {
+                filteredList.addAll(controller.getSuggeritiInBaseAlleTendenze());
+            }
+
+            else {
+                filteredList.addAll(controller.FiltraDrinkPerCategoria(filterString));
+            }
+        }
+
 
         @Override
         public Filter getFilter() {
@@ -149,11 +159,7 @@
                     String filterString = constraint.toString().toLowerCase().trim();
                     List<Drink> filteredList = new ArrayList<>();
 
-                    if (filterString.isEmpty()) {
-                        filteredList.addAll(drinks);
-                    } else {
-                        filteredList.addAll(controller.cercaDrink(filterString));
-                    }
+                    filtraInBaseAllaRicerca(filterString.isEmpty(), filteredList, drinks, controller.cercaDrink(filterString));
 
                     FilterResults filterResults = new FilterResults();
                     filterResults.values = filteredList;
@@ -170,4 +176,12 @@
             };
         }
 
+
+        private void filtraInBaseAllaRicerca(boolean filterString, List<Drink> filteredList, List<Drink> drinks, ArrayList<Drink> controller) {
+            if (filterString) {
+                filteredList.addAll(drinks);
+            } else {
+                filteredList.addAll(controller);
+            }
+        }
     }

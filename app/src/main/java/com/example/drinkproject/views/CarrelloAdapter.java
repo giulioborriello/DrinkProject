@@ -4,12 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.drinkproject.R;
+import com.example.drinkproject.otherClasses.SwipeToDeleteCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,39 +23,58 @@ import model.DrinkOrdine;
 
 public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
     Context context;
-    private final List<DrinkOrdine> drinks;
     private final LayoutInflater inflater;
     private final Controller controller = Controller.getInstance();
     private final TextView totale;
+    private final RecyclerView recyclerView;
+    private List<DrinkOrdine> drinkOrdines = controller.getSummary();
 
-
-    public CarrelloAdapter(Context context, List<DrinkOrdine> drinks, TextView totale) {
+    public CarrelloAdapter(Context context, TextView totale, RecyclerView recyclerView) {
         this.context = context;
-        this.drinks = drinks;
         this.inflater = LayoutInflater.from(context);
         this.totale = totale;
+        this.recyclerView = recyclerView;
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this){
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                DrinkOrdine drinkOrdine = drinkOrdines.get(position);
+                Drink drink = drinkOrdine.getDrink();
+                if (drink == null) {
+                    return;
+                }
+                controller.removeDrink(drink.getId());
+                controller.updateDrink(drink.getId(), 0);
+                removeItem(position);
+                totale.setText(controller.getPrezzoTotale());
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
 
     @NonNull
     @Override
     public CarrelloHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.drink_view_carrello,parent,false);
-
+        View view = inflater.inflate(R.layout.drink_view,parent,false);
         return new CarrelloHolder(view);
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull CarrelloHolder holder, int position) {
-        Drink drink = drinks.get(position).getDrink();
+        DrinkOrdine drinkOrdine = drinkOrdines.get(position);
+        Drink drink =  drinkOrdine.getDrink();
+
         if (drink == null) {
             return;
         }
+
         String name = drink.getNome();
         String description = drink.getDescrizione();
         double price = drink.getPrezzo();
-        int quantity = drinks.get(position).getQuantita();
+        int quantity = drinkOrdine.getQuantita();
 
         holder.nome.setText(name);
         holder.descrizione.setText(description);
@@ -87,10 +109,16 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
                     controller.updateDrink(drink.getId(), newQuantity);
                     totale.setText(controller.getPrezzoTotale());
                 } else if (newQuantity == 1) {
-                    drinks.remove(position);
+                    controller.removeDrink(drink.getId());
                     controller.updateDrink(drink.getId(), 0);
-
-                    notifyItemRemoved(position);
+                    if (getItemCount() == 1) {
+                        removeItem(position);
+                        totale.setText("0");
+                    } else {
+                        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this);
+                        swipeToDeleteCallback.onSwiped(holder.itemView, ItemTouchHelper.RIGHT);
+                    }
+                    removeItem(position);
                     totale.setText("0");
                 }
             }
@@ -98,14 +126,13 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
     }
 
 
+    public void removeItem(int position) {
+        notifyItemRemoved(position);
+    }
+
+
     @Override
     public int getItemCount() {
-        return drinks.size();
+        return drinkOrdines.size();
     }
-
-
-    public interface OnDataPass {
-        void onDataPass(ArrayList<String> data);
-    }
-
 }
