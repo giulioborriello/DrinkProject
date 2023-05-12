@@ -25,12 +25,12 @@ int check(int exp, const char *msg) {
     return exp;
 }
 
-void dividi_stringa(char * stringa, char * stringa1, char * stringa2){
+void dividi_stringa(char * stringaInput, char * stringaOutput1, char * stringaOutput2){
 	char * token;
-	token = strtok(stringa, SEPARATOR);
-	strcpy(stringa1, token);
+	token = strtok(stringaInput, SEPARATOR);
+	strcpy(stringaOutput1, token);
 	token = strtok(NULL, SEPARATOR);
-	strcpy(stringa2, token);
+	strcpy(stringaOutput2, token);
 }
 		
 
@@ -69,10 +69,8 @@ void* handle_connection(void* client_socket_input){
 	printf("Richiesta: %s\n", SQLrequest);
 
     printf("Domanda: %s\n", token);
-
-    //TODO sistemare errore SIGSEGV
+    
     printf("%s\n", domanda);
-	char * notaOut;
     conn = connectSQL();
 	
     switch (atoi(SQLrequest))
@@ -82,22 +80,19 @@ void* handle_connection(void* client_socket_input){
         PGresult *table;
         querySQL(token, conn, &table);
         sendDataTable(table, client_socket);
-        printf("flag3");
+        printf("flag3\n");
         PQclear(table);
         break;
     case 1: //"insert"
         insertSQL(token, conn);
-        notaOut = "Inserimento avvenuto con successo";
         sendDataString(client_socket, message);
         break;
     case 2: //"update"
         updateSQL(token, conn);
-        notaOut = "Aggiornamento avvenuto con successo";
         sendDataString(client_socket, message);
         break;
     case 3: //"delete"
         deleteSQL(token, conn);
-        notaOut = "Cancellazione avvenuta con successo";
         sendDataString(client_socket, message);
         break;    
     default:
@@ -116,19 +111,26 @@ void* handle_connection(void* client_socket_input){
 void sendDataTable(PGresult *table, int client_socket){
     char buffer[BUFSIZE];
     char *field = malloc(sizeof(buffer) + 1);
-    printf("flag2");
+    printf("Frag Inizio Trasmissione\n");
     //size_t bytes_read;
     int rows = PQntuples(table);
     int columns = PQnfields(table);
-    
-    for(int i=0;i<=rows;i++){
-    	for(int j=0;j<=columns;j++){
-    		strcpy(field, PQgetvalue(table,i,j) );
-    		strcpy(buffer, field);
-    		write(client_socket,buffer,strlen(field));
+	
+	for(int i=0;i<rows;i++){
+		for(int j=0;j<columns;j++){
+			field=PQgetvalue(table,i,j);
+			send(client_socket, field, strlen(field), 0);
+            field = " ";
+			send(client_socket, field, strlen(field), 0);
 		}
+    	field = "\n";
+		send(client_socket, field, strlen(field), 0);
 	}
-	free(field);
+	printf("Flag prima del free\n");
+    field=PQgetvalue(table,0,0);
+    send(client_socket, field, strlen(field), 0); 
+    
+    //free(field);
 }
 
 void sendDataString(int client_socket, char* string){

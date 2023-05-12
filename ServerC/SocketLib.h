@@ -6,7 +6,7 @@
 #define SEPARATOR "#"
 
 #define PATH_MAX_LOCAL 1024
-#define SERVERPORT 8080
+#define SERVERPORT 8989
 #define SOCKETERROR (-1)
 #define SERVER_BACKLOG 100
 #define THREAD_POOL_SIZE 20
@@ -20,6 +20,6 @@ void* handle_connection(void* client_socket_input);
 int check(int exp, const char *msg);
 void sendDataTable(PGresult *table, int client_socket);
 void sendDataString(int client_socket, char* string);
-void dividi_stringa(char * stringa, char * stringa1, char * stringa2);
+void dividi_stringa(char * stringaInput, char * stringaOutput1, char * stringaOutput2);
 
 #endif

@@ -49,10 +49,13 @@ void querySQL (char *query, PGconn *conn, PGresult **res){
       exit(1);
    }
    
-   // Stampa i risultati 
-   //TODO rendere questi parametri di output
+   // Stampa i risultati per tener traccia, da togliere
    int rows = PQntuples(*res);
+   printf("Righe: %d\n",rows);
+   
    int cols = PQnfields(*res);
+   printf("Colonne: %d\n",cols);
+   
    printf("\nRisultati della query:\n");
    for (int i = 0; i < rows; i++) {
       for (int j = 0; j < cols; j++) {
@@ -60,9 +63,7 @@ void querySQL (char *query, PGconn *conn, PGresult **res){
       }
       printf("\n");
    }
-   printf("flag interno");
-   // Libera la memoria
-   //PQclear(res);
+   printf("Fine tabella\n");
 }
 
 /**
