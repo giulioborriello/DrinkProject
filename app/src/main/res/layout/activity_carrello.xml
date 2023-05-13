@@ -41,7 +41,7 @@
 
     <TextView
         android:id="@+id/totalCounter"
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/finalTotal"

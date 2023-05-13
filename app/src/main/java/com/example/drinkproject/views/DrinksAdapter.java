@@ -62,18 +62,24 @@
             holder.quantita.setText(controller.getQuantitaOrdinata(filteredDrinks.get(position).getId()));
 
             holder.aggiungiUnDrink.setOnClickListener(v -> {
-                if(holder.quantita.getText().toString().equals("")) {
+                String quantitaInput = holder.quantita.getText().toString();
+                if(quantitaInput.equals("")) {
                     holder.quantita.setText("1");
-                } else {
-                    int quantity = Integer.parseInt(holder.quantita.getText().toString());
+                }
+                else if (quantitaInput.equals("30")) {
+                    holder.quantita.setText("0");
+                }
+                else {
+                    int quantity = Integer.parseInt(quantitaInput);
                     quantity++;
                     holder.quantita.setText(String.valueOf(quantity));
                 }
             });
 
             holder.rimuoviUnDrink.setOnClickListener(v -> {
-                if(!holder.quantita.getText().toString().equals("")) {
-                    int quantity = Integer.parseInt(holder.quantita.getText().toString());
+                String quantitaInput = holder.quantita.getText().toString();
+                if(!quantitaInput.equals("")) {
+                    int quantity = Integer.parseInt(quantitaInput);
                     if (quantity > 0) {
                         quantity--;
                         holder.quantita.setText(String.valueOf(quantity));

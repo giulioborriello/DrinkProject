@@ -1,6 +1,8 @@
 package com.example.drinkproject.views;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,37 +87,66 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
         holder.aggiungiUnDrink.setOnClickListener(v -> {
             if(holder.quantita.getText().toString().equals("")) {
                 holder.quantita.setText("1");
-            } else {
+            }
+            else {
                 int newQuantity = Integer.parseInt(holder.quantita.getText().toString());
                 newQuantity++;
                 holder.quantita.setText(String.valueOf(newQuantity));
+                holder.prezzo.setText(String.valueOf(price * newQuantity));
 
-                String nuovoPrezzo = String.valueOf(price * newQuantity);
-                holder.prezzo.setText(nuovoPrezzo);
-
-                controller.updateDrink(drink.getId(), newQuantity);
-                totale.setText(controller.getPrezzoTotale());
+                //controller.updateDrink(drink.getId(), newQuantity);
+                //totale.setText(controller.getPrezzoTotale());
             }
         });
 
         holder.rimuoviUnDrink.setOnClickListener(v -> {
-            if(!holder.quantita.getText().toString().equals("")) {
-                int newQuantity = Integer.parseInt(holder.quantita.getText().toString());
-                if (newQuantity > 1) {
+            String quantitaInput = holder.quantita.getText().toString();
+            if(!quantitaInput.equals("")) {
+                int newQuantity = Integer.parseInt(quantitaInput);
+                if (newQuantity >= 1) {
                     newQuantity--;
                     holder.quantita.setText(String.valueOf(newQuantity));
                     holder.prezzo.setText(String.valueOf(price*newQuantity));
 
-                    controller.updateDrink(drink.getId(), newQuantity);
-                    totale.setText(controller.getPrezzoTotale());
-                } else if (newQuantity == 1) {
+                    //controller.updateDrink(drink.getId(), newQuantity);
+                    //totale.setText(controller.getPrezzoTotale());
+                }
+                else if (newQuantity == 1) {
                     controller.removeDrink(drink.getId());
-                    controller.updateDrink(drink.getId(), 0);
-                    removeItem(position);
-                    totale.setText("0");
+                    //controller.updateDrink(drink.getId(), 0);
+                    //removeItem(position);
                 }
             }
         });
+
+        holder.quantita.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s!=null && !s.toString().equals("0")) {
+                    controller.updateDrink(drinkOrdines.get(position).getDrink().getId(), Integer.parseInt(s.toString()));
+                    totale.setText(controller.getPrezzoTotale());
+                }
+                else if (s != null && s.toString().equals("0")) {
+                    controller.removeDrink(drink.getId());
+                    controller.updateDrink(drink.getId(), 0);
+                    removeItem(position);
+                    totale.setText(controller.getPrezzoTotale());
+                }
+            }
+        });
+
+
+
     }
 
 

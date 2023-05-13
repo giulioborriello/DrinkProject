@@ -8,7 +8,7 @@ public class Utente {
     private String cognome;
     private String email;
     private String password;
-    private Carello carrello;
+    private Carrello carrello;
 
     public Utente(String idInput, String nomeInput, String cognomeInput, String emailInput, String passwordInput) {
         this.id = idInput;
@@ -16,7 +16,7 @@ public class Utente {
         this.cognome = cognomeInput;
         this.email = emailInput;
         this.password = passwordInput;
-        carrello = new Carello(this);
+        carrello = new Carrello(this);
 
     }
 

@@ -2,12 +2,12 @@ package model;
 
 import java.util.ArrayList;
 
-public class Carello {
+public class Carrello {
     private Utente utente;
     private ArrayList<DrinkOrdine> drink_ordineArrayList = new ArrayList<>();
 
 
-    public Carello(Utente utenteInput){
+    public Carrello(Utente utenteInput){
         this.utente = utenteInput;
     }
 
