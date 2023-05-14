@@ -6,12 +6,15 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Drink;
+import model.Utente;
+
 @SuppressWarnings("unused")
 public class Connessione {
 
     private static Connessione istanza = null;
-    private static final String indirizzoServer = "localhost"; // Indirizzo IP o nome del server
-    private static final int portaServer = 8080; // Porta del server
+    private static final String indirizzoServer = "192.168.190.47"; // Indirizzo IP o nome del server
+    private static final int portaServer = 8989; // Porta del server
     private final Socket socket;
     private final PrintWriter out;
     private final BufferedReader in;
@@ -117,6 +120,101 @@ public class Connessione {
 
     }
 
+   public  Utente login(String username, String password) {
+        String querySelectUtente = "SELECT * " +
+                "FROM utente" +
+                "WHERE email=' " + username + "' AND" +
+                "password ='" + password + "'";
+        List<String> utenteRes;
 
+        try {
+            utenteRes = sendSelect(querySelectUtente);
+        } catch (IOException e) {
+            return null;
+        }
+        if (utenteRes.get(0).equals(Connessione.FAILURE)) {
+            return null;
+        }
+        //TODO estrapolare parametri e salvali nell'attributo utente
+        String id = utenteRes.get(0);
+        String nome = utenteRes.get(1);
+        String cognome = utenteRes.get(2);
+        String email = utenteRes.get(3);
+        String pass = utenteRes.get(4);
+
+        return new Utente(id, nome, cognome, email, pass);
+    }
+
+
+    public byte[] getImmagine(String id ){
+        String query ="SELECT immagine" +
+                "FROM drink" +
+                "WHERE id="+id;
+
+        try {
+            List<String> res=sendSelect(query);
+            if (res.get(0).equals(FAILURE)) return null;
+
+            return res.get(0).getBytes();
+        } catch (IOException e) {
+            return null;
+        }
+
+
+    }
+    public ArrayList<Drink> getListaDrink(){
+        String query="SELECT id, nome, categoria, descrizione, prezzo " +
+                "FROM drink" ;
+        List<String> res;
+        try {
+            res = sendSelect(query);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        ArrayList<Drink> listaDrink=new ArrayList<>();
+        for (int i=0;i<res.size();i+=5) {
+            String id = res.get(i);
+            String nome= res.get(i+1);
+            String categoria = res.get(i+2);
+            String descrizione = res.get(i+3);
+            double prezzo = Double.parseDouble(res.get(i+4));
+            listaDrink.add(new Drink(id,nome,categoria,descrizione,prezzo ));
+        }
+        return listaDrink;
+    }
+    public ArrayList<String> getCategoria(){
+        String query="SELECT DISTINCT categoria" +
+                "FROM drink";
+        List<String> res;
+        try {
+            res = sendSelect(query);
+        } catch (IOException e) {
+            return null;
+        }
+        if (res.get(0).equals(FAILURE)) return  null;
+        return (ArrayList<String>) res;
+    }
+
+    public ArrayList<String> getIDDrinkSuggeritiDiRaimondo(){
+        String query="SELECT id" +
+                "FROM raccomanda_drink";
+        List<String> res;
+        try {
+            res = sendSelect(query);
+        } catch (IOException e) {
+            return null;
+        }
+        if (res.get(0).equals(FAILURE)) return  null;
+        return (ArrayList<String>) res;
+    }
+    public boolean signIn(String name, String surname, String username, String password){
+
+        String query= "INSERT INTO utente" +
+                "(nome, cognome email, password)" +
+                "VALUES (" +
+                "'" + name+ "'," + "'" + surname+ "'," + "'" + username+ "'," + "'" + password+"'" +
+                ")";
+        return sendInsert(query);
+    }
 }
 

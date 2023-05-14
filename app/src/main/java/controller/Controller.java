@@ -4,9 +4,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import model.*;
+import Dao.Connessione;
+import model.Drink;
+import model.DrinkOrdine;
+import model.Utente;
 
 @SuppressWarnings("unused")
 public class Controller {
@@ -14,7 +18,7 @@ public class Controller {
     private static Controller controller;
     private Utente utente = null;
     private static final ArrayList<Drink> listaDeiDrink = new ArrayList<>();
-    private static final ArrayList<String> categorie = new ArrayList<>();
+    private static ArrayList<String> categorie = new ArrayList<>();
 
     private Controller() {
         dumpEseguito=false;
@@ -55,7 +59,7 @@ public class Controller {
 
 
     private void fakeDump() {
-        login("GLR", "pass");
+       // login("GLR", "pass");
         listaDeiDrink.add(new Drink("1",
                 "Mojito",
                 "Alcolici",
@@ -95,57 +99,52 @@ public class Controller {
         categorie.add("Consigliati in base alle tendenze");
 
 
-
-    //    for (Drink drink : listaDeiDrink) {
-      //      try {
-        //        drink.setImmagine(restituisciImmagineFake("/home/giulio/images/ImmaginiProgettoLSO/cocktail.jpg"));
-          //  } catch (IOException e) {
-            //    throw new RuntimeException(e);
-            //}
-        //}
-
     }
+
+
 
 /*
     public byte[] restituisciImmagineFake(String pathImmagine) throws IOException{
         File file = new File(pathImmagine);
         byte[] contenutoFile = new byte[(int) file.length()];
         try (FileInputStream inputStream = new FileInputStream(file)) {
+            //noinspection ResultOfMethodCallIgnored
             inputStream.read(contenutoFile);
         }
+        Connessione.getInstance().sendSelect("Select Immagine from drink where id=1");
+
+
         return contenutoFile;
+
+
     }
 */
+    public void dumpCategoria (){
+        List<String> res = null;
+        try {
+            res = Connessione.getInstance().getCategoria();
+        } catch (IOException ex) {
+            categorie= new ArrayList<>(Arrays.asList("Tutti","Frullati", "Alcolici", "Analcolici","Consigliati in base ai tuoi gusti","Consigliati in base alle tendenze"));
+        }
+        if (res==null) categorie= new ArrayList<>(Arrays.asList("Tutti","Frullati", "Alcolici", "Analcolici","Consigliati in base ai tuoi gusti","Consigliati in base alle tendenze"));
+    else {
+        categorie.add("Tutti");
+        categorie.addAll(res); categorie.add("Consigliati in base ai tuoi gusti"); categorie.add("Consigliati in base alle tendenze");
+    }
+
+    }
+
 
     public void dump() {
         //TODO fare il dump dei drink
 /*
-  Connessione con;
         try {
-            con = Connessione.getInstance();
-            String querySelectForDrink = "SELECT * " +
-                    "FROM drink";
-            List<String> tabellaDrink = con.sendSelect(querySelectForDrink);
-            for (String eleDrink : tabellaDrink
-            ) {
-                System.out.println(eleDrink);
-            }
-
-            String querySelectForCategorie = "SELECT DISTINCT categoria" +
-                    "FROM drink";
-            List<String> listaCategorie = con.sendSelect(querySelectForCategorie);
-            categorie.add("all");
-            categorie.addAll(listaCategorie);
-
+            listaDeiDrink.addAll( Connessione.getInstance().getListaDrink());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-         try {
-            con.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
 */
 
         fakeDump();
@@ -157,46 +156,30 @@ public class Controller {
 
     public boolean login(String username, String password) {
         //check if username and password are valid
-        //TODO verificare login in c e ricevere i suoi dati
-
-        /*
-        Connessione conn;
+/*
         try {
-            conn = Connessione.getInstance();
+            utente = Connessione.getInstance().login(username,password);
+            return true;
         } catch (IOException e) {
-            System.err.println("Non sono riuscito a connettermi a Server");
             return false;
-        }
-        String querySelectUtente = "SELECT * " +
-                "FROM utente" +
-                "WHERE email=' " + username + "' AND" +
-                "password ='" + password + "'";
-        List<String> utenteRes;
-        try {
-            utenteRes = conn.sendSelect(querySelectUtente);
-            //TODO estrapolare parametri e salvali nell'attributo utente
-              String id;
-             String nome;
-              String cognome;
-            String email;
-            String password;
-            utente = new Utente(id,nome,cognome,email,password);
 
-        } catch (IOException e) {
-            System.err.println("Non sono riuscito a fare il login");
-            return false;
         }
-        //TODO DATO LA LISTA PRENDERE I VALORI AL SUO INTERNO e creare oggetto utente
+
+
+
 */
+
+
         utente = new Utente("0", "GLR", "LSO", "GLR.unina.it", "pass");
-
-
         return true;
-
     }
 
 
-    public ArrayList<Drink> getSuggeritiInbaseAiTuoiGusti(){
+
+
+
+
+    public ArrayList<Drink> getSugeritiInbaseAiTuoiGusti(){
         int idUtente= Integer.parseInt(utente.getId());
         //funzione di lorenzo che sceglie in base agli ingredienti
         /*
@@ -209,9 +192,7 @@ public class Controller {
 
         return  listaSuggerita;
     }
-
-
-    public ArrayList<Drink> getSuggeritiInBaseAlleTendenze(){
+    public ArrayList<Drink> getSugerimentiNuoviInBaseAiTuoiGusti(){
         //funzione di Rai
         int idUtente= Integer.parseInt(utente.getId());
         /*
@@ -223,38 +204,15 @@ public class Controller {
 
         return  listaSuggerita;
     }
-
-
     public boolean signIn(String name, String surname, String username, String password) {
-        //TODO fare il signin
-        /*
-        INSERT INTO public.utente(
-	        id, nome, cognome, email, password, "dati_Biometrici")
-	        VALUES (?, ?, ?, ?, ?, ?);
 
-        String queryInsertUtente = "INSERT INTO utente" +
-                "(nome, cognome email, password)" +
-                "VALUES (" +
-                "'" + name+ "'," + "'" + surname+ "'," + "'" + username+ "'," + "'" + password+"'" +
-                ");";
-
-        try {
-            if( (Connessione.getInstance().sendInsert(queryInsertUtente)) ){
-                return true;
-                utente = new Utente("0",name,surname,username,password);
-
-            }else{
-
-
-                return false;
-            }
-        } catch (IOException e) {
-            return  false;
-        }
-
-    */
-
-        utente = new Utente("0", name, surname, username, password);
+       // try {
+       //     if (Connessione.getInstance().signIn(name,surname,username,password)){
+                utente = new Utente("0", name, surname, username, password);
+       //     }else return false;
+        //} catch (IOException e) {
+        //    throw new RuntimeException(e);
+        //}
         return true;
     }
 
@@ -320,14 +278,13 @@ public class Controller {
     }
 
 
-    public boolean removeDrink(String idDrink) {
+    public void removeDrink(String idDrink) {
         //recupera drink
         Drink idDrinkDaRimuovere = getDrink(idDrink);
 
-        if (idDrinkDaRimuovere == null) return false;
+        if (idDrinkDaRimuovere == null) return;
 
         utente.removeDrink(idDrinkDaRimuovere);
-        return true;
     }
 
 
