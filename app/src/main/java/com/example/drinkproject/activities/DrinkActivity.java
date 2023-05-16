@@ -9,16 +9,20 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.drinkproject.R;
 import com.example.drinkproject.views.DrinksAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.List;
 
 import controller.Controller;
@@ -27,60 +31,53 @@ import model.Drink;
 public class DrinkActivity extends AppCompatActivity {
     private final Controller controller = Controller.getInstance();
     List<Drink> drinks = controller.getDrinks();
-    DrinksAdapter myAdapter;
-    private  boolean doubleBackToExitPressedOnce=false;
+    private  boolean doubleBackToExitPressedOnce = false;
+
+    private DrinksAdapter myAdapter;
+    private RecyclerView recyclerView;
+    private View impostazioniPulsante, pulsanteVaiAlCarrello;
+    private Spinner filtroATendina;
+    private SearchView barraDiRicerca;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink);
+        effettuaIlCollegamentoDelleViews();
         //TODO add logic for filter menu and query to db
-        Spinner dropDownFilterMenu = findViewById(R.id.dropDownMenu);
+        settaIListner();
+        settaIFiltri();
+        settaLaRecyclerView();
+    }
+
+
+    private void settaIFiltri() {
         String[] filters = controller.getCategorie();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, filters);
-        dropDownFilterMenu.setAdapter(adapter);
+        filtroATendina.setAdapter(adapter);
+    }
 
-        RecyclerView recyclerView = findViewById(R.id.drinkRecyclerView);
+
+    private void settaLaRecyclerView() {
         myAdapter = new DrinksAdapter(getApplicationContext());
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
         recyclerView.setAdapter(myAdapter);
     }
 
 
-    @SuppressWarnings("deprecation")
-    @Override
-    protected void onResume(){
-        super.onResume();
-
-        FloatingActionButton goToCartButton = findViewById(R.id.goToCartButton);
-        goToCartButton.setOnClickListener(v -> {
-            if(controller.ilCarrelloeVuoto()) {
-                Intent intent = new Intent(getApplicationContext(), CarrelloActivity.class);
-                startActivityForResult(intent,1);
-            } else {
-                Toast.makeText(getApplicationContext(), "Il carrello è vuoto", Toast.LENGTH_SHORT).show();
-            }
+    private void settaIListner() {
+        impostazioniPulsante.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), ImpostazioniActivity.class);
+            startActivityForResult(intent, 1);
         });
 
-
-        Spinner dropDownFilterMenu = findViewById(R.id.dropDownMenu);
-        dropDownFilterMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    myAdapter.getCategoriesFilter().filter(dropDownFilterMenu.getSelectedItem().toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+        pulsanteVaiAlCarrello.setOnClickListener(v -> {
+            verificaSeIlCarrelloEVuotoEVaiAlCarrello();
         });
 
-
-        SearchView searchView = findViewById(R.id.searchView);
-        searchView.setOnClickListener(v -> searchView.setIconified(false));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        barraDiRicerca.setOnClickListener(v -> barraDiRicerca.setIconified(false));
+        barraDiRicerca.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -92,6 +89,55 @@ public class DrinkActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        filtroATendina.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                myAdapter.getCategoriesFilter().filter(filtroATendina.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+    }
+
+
+    private void verificaSeIlCarrelloEVuotoEVaiAlCarrello() {
+        if(controller.ilCarrelloeVuoto()) {
+            Intent intent = new Intent(getApplicationContext(), CarrelloActivity.class);
+            startActivityForResult(intent,1);
+        } else {
+            Toast.makeText(getApplicationContext(), "Il carrello è vuoto", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private void effettuaIlCollegamentoDelleViews() {
+        recyclerView = findViewById(R.id.drinkRecyclerView);
+        impostazioniPulsante = findViewById(R.id.impostazioniPulsanteDrink);
+        pulsanteVaiAlCarrello = findViewById(R.id.goToCartButton);
+        filtroATendina = findViewById(R.id.dropDownMenu);
+        barraDiRicerca = findViewById(R.id.searchView);
+    }
+
+
+    @SuppressWarnings("deprecation")
+    @Override
+    protected void onResume(){
+        super.onResume();
+        settaIColori();
+    }
+
+    private void settaIColori() {
+        RelativeLayout drinkLayout = findViewById(R.id.drinkLayout);
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ImpostazioniActivity.CHIAVE_STATO_SWITCH, false)) {
+            drinkLayout.setBackgroundColor(getResources().getColor(android.R.color.black));
+            setTextColorForAllViews(drinkLayout, getResources().getColor(android.R.color.white));
+        }
+        else {
+            drinkLayout.setBackgroundColor(getResources().getColor(R.color.brick_red));
+            setTextColorForAllViews(drinkLayout, getResources().getColor(android.R.color.white));
+        }
     }
 
 
@@ -112,9 +158,21 @@ public class DrinkActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 1 && resultCode == RESULT_OK) {
+        if(resultCode == RESULT_OK) {
             myAdapter.notifyDataSetChanged();
+        }
+    }
+
+
+    private void setTextColorForAllViews(ViewGroup viewGroup, int color) {
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View view = viewGroup.getChildAt(i);
+
+            if (view instanceof ViewGroup) {
+                setTextColorForAllViews((ViewGroup) view, color);
+            } else if (view instanceof TextView) {
+                ((TextView) view).setTextColor(color);
+            }
         }
     }
 }

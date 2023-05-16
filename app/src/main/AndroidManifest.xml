@@ -15,22 +15,31 @@
         android:theme="@style/Theme.DrinkProject"
         tools:targetApi="31">
         <activity
+            android:name=".activities.ImpostazioniActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activities.PagamentoActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.PaymentActivity"
             android:exported="false"
             android:label="@string/title_activity_payment"
-            android:theme="@style/Theme.DrinkProject" />
+            android:theme="@style/Theme.DrinkProject"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.CarrelloActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.RegistrazioneActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.DrinkActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -41,7 +50,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

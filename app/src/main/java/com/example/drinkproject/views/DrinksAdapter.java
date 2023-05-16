@@ -1,6 +1,7 @@
     package com.example.drinkproject.views;
 
     import android.content.Context;
+    import android.preference.PreferenceManager;
     import android.text.Editable;
     import android.text.TextWatcher;
     import android.view.LayoutInflater;
@@ -8,11 +9,15 @@
     import android.view.ViewGroup;
     import android.widget.Filter;
     import android.widget.Filterable;
+    import android.widget.RelativeLayout;
 
     import androidx.annotation.NonNull;
     import androidx.recyclerview.widget.RecyclerView;
 
+    import com.example.drinkproject.MainActivity;
     import com.example.drinkproject.R;
+    import com.example.drinkproject.activities.ImpostazioniActivity;
+    import com.example.drinkproject.classiDiSupporto.ImpostazioniAttributi;
 
     import java.util.ArrayList;
     import java.util.List;
@@ -27,7 +32,6 @@
         Controller controller = Controller.getInstance();
         private List<Drink> drinks = controller.getDrinks();
         private final List<Drink> filteredDrinks = new ArrayList<>(drinks);
-
 
         public DrinksAdapter(Context context) {
             this.context = context;
@@ -52,6 +56,20 @@
             double aDouble = filteredDrinks.get(position).getPrezzo();
             String price = Double.toString(aDouble);
 
+            if(PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getBoolean(ImpostazioniActivity.CHIAVE_STATO_SWITCH, false)){
+                holder.itemView.setBackgroundColor(context.getResources().getColor(android.R.color.white));
+                holder.nome.setTextColor(context.getResources().getColor(android.R.color.black));
+                holder.descrizione.setTextColor(context.getResources().getColor(android.R.color.black));
+                holder.prezzo.setTextColor(context.getResources().getColor(android.R.color.black));
+                holder.quantita.setTextColor(context.getResources().getColor(android.R.color.black));
+            }
+            else {
+                holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.backgroud_recyclerview_item));
+                holder.nome.setTextColor(context.getResources().getColor(android.R.color.white));
+                holder.descrizione.setTextColor(context.getResources().getColor(android.R.color.white));
+                holder.prezzo.setTextColor(context.getResources().getColor(android.R.color.white));
+                holder.quantita.setTextColor(context.getResources().getColor(android.R.color.white));
+            }
             //Bitmap bitmap = BitmapFactory.decodeByteArray(drinks.get(position).getImmagine(), 0, drinks.get(position).getImmagine().length);
 
             holder.nome.setText(name);
@@ -60,6 +78,14 @@
             holder.immagine.setImageResource(R.drawable.spritz);
             holder.id = filteredDrinks.get(position).getId();
             holder.quantita.setText(controller.getQuantitaOrdinata(filteredDrinks.get(position).getId()));
+
+            if(ImpostazioniAttributi.modalitaColoriAltoContrastoAttivata){
+                holder.itemView.setBackgroundColor(context.getResources().getColor(android.R.color.white));
+                holder.nome.setTextColor(context.getResources().getColor(android.R.color.black));
+                holder.descrizione.setTextColor(context.getResources().getColor(android.R.color.black));
+                holder.prezzo.setTextColor(context.getResources().getColor(android.R.color.black));
+                holder.quantita.setTextColor(context.getResources().getColor(android.R.color.black));
+            }
 
             holder.aggiungiUnDrink.setOnClickListener(v -> {
                 String quantitaInput = holder.quantita.getText().toString();
@@ -144,11 +170,11 @@
             }
 
             else if (filterString.equalsIgnoreCase("Consigliati in base ai tuoi gusti")) {
-                filteredList.addAll(controller.getSuggeritiInbaseAiTuoiGusti());
+                filteredList.addAll(controller.getSuggerimentiInbaseAiTuoiGusti());
             }
 
             else if (filterString.equalsIgnoreCase("Consigliati in base alle tue tendenze")) {
-                filteredList.addAll(controller.getSuggeritiInBaseAlleTendenze());
+                filteredList.addAll(controller.getSuggerimentiInBaseAlleTendenze());
             }
 
             else {

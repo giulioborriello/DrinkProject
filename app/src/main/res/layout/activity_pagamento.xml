@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pagamentoLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/brick_red"
@@ -26,36 +27,36 @@
 
     <EditText
         android:id="@+id/numeroCarta"
+        style="@style/hintCenterInputLeft"
         android:layout_width="350dp"
         android:layout_height="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="100dp"
         android:layout_below="@id/titoloPagamento"
         android:layout_centerHorizontal="true"
-        android:hint="@string/credit_card_name"
-        android:textColorHint="@color/white"
+        android:layout_marginTop="100dp"
         android:autofillHints="creditCardNumber"
         android:background="@drawable/rectangle_edit_text"
+        android:hint="@string/credit_card_name"
         android:inputType="number"
-        android:textColor="@color/white"
         android:maxLength="19"
         android:textAlignment="center"
-        style="@style/hintCenterInputLeft"/>
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <EditText
         android:id="@+id/cvvCarta"
         android:layout_width="70dp"
         android:layout_height="40dp"
+        android:layout_alignTop="@id/meseScadenza"
+        android:layout_alignEnd="@id/numeroCarta"
         android:background="@drawable/rectangle_edit_text"
         android:hint="@string/cvv"
-        android:textColorHint="@color/white"
-        android:layout_alignEnd="@id/numeroCarta"
-        android:layout_alignTop="@id/meseScadenza"
         android:inputType="number"
+        android:maxLength="3"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:maxLength="3"/>
+        android:textColorHint="@color/white" />
 
 
     <EditText
@@ -63,14 +64,14 @@
         android:layout_width="350dp"
         android:layout_height="40dp"
         android:layout_below="@id/numeroCarta"
-        android:background="@drawable/rectangle_edit_text"
         android:layout_alignStart="@id/meseScadenza"
         android:layout_marginTop="10sp"
+        android:background="@drawable/rectangle_edit_text"
+        android:hint="@string/name"
+        android:inputType="textPersonName"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:inputType="textPersonName"
-        android:hint="@string/name"
-        android:textColorHint="@color/white"/>
+        android:textColorHint="@color/white" />
 
 
     <EditText
@@ -79,24 +80,24 @@
         android:layout_height="40dp"
         android:layout_below="@id/nomeProprietarioCarta"
         android:layout_alignStart="@id/nomeProprietarioCarta"
-        android:background="@drawable/rectangle_edit_text"
         android:layout_marginTop="10sp"
+        android:background="@drawable/rectangle_edit_text"
+        android:hint="Cognome"
+        android:inputType="textPersonName"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:inputType="textPersonName"
-        android:hint="Cognome" />
+        android:textColorHint="@color/white" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/confermaDati"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        app:srcCompat="@drawable/ok"
         android:layout_below="@id/cvvCarta"
         android:layout_alignEnd="@id/cognomeProprietarioCarta"
-        android:layout_marginTop="10sp"/>
+        android:layout_marginTop="10sp"
+        android:clickable="true"
+        app:srcCompat="@drawable/ok" />
 
 
     <Spinner
@@ -106,9 +107,9 @@
         android:layout_below="@id/cognomeProprietarioCarta"
         android:layout_alignStart="@id/numeroCarta"
         android:layout_marginTop="40sp"
-        android:spinnerMode="dropdown"
+        android:background="@color/sky_blue"
         android:prompt="@string/select_month"
-        android:background="@color/sky_blue"/>
+        android:spinnerMode="dropdown" />
 
 
     <Spinner
@@ -116,11 +117,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/cognomeProprietarioCarta"
-        android:layout_toEndOf="@id/meseScadenza"
+        android:layout_marginLeft="5sp"
         android:layout_marginTop="40sp"
-        android:spinnerMode="dropdown"
+        android:layout_toEndOf="@id/meseScadenza"
         android:background="@color/sky_blue"
-        android:layout_marginLeft="5sp"/>
+        android:spinnerMode="dropdown" />
 
 
     <TextView
@@ -130,6 +131,6 @@
         android:layout_below="@id/cognomeProprietarioCarta"
         android:layout_alignStart="@id/numeroCarta"
         android:layout_marginTop="10sp"
-        android:textColor="@color/white"
-        android:text="Scadenza" />
+        android:text="Scadenza"
+        android:textColor="@color/white" />
 </RelativeLayout>

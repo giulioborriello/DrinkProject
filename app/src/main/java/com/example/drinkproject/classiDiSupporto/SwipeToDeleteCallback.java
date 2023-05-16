@@ -1,4 +1,4 @@
-package com.example.drinkproject.otherClasses;
+package com.example.drinkproject.classiDiSupporto;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

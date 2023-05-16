@@ -175,11 +175,7 @@ public class Controller {
     }
 
 
-
-
-
-
-    public ArrayList<Drink> getSugeritiInbaseAiTuoiGusti(){
+    public ArrayList<Drink> getSuggerimentiInbaseAiTuoiGusti(){
         int idUtente= Integer.parseInt(utente.getId());
         //funzione di lorenzo che sceglie in base agli ingredienti
         /*
@@ -192,7 +188,9 @@ public class Controller {
 
         return  listaSuggerita;
     }
-    public ArrayList<Drink> getSugerimentiNuoviInBaseAiTuoiGusti(){
+
+
+    public ArrayList<Drink> getSuggerimentiInBaseAlleTendenze(){
         //funzione di Rai
         int idUtente= Integer.parseInt(utente.getId());
         /*
@@ -370,10 +368,13 @@ public class Controller {
 
 
         public String getQuantitaOrdinata(String id){
-            for (DrinkOrdine drinkOrdine : utente.getDrinkOrdineList()) {
-                if (drinkOrdine.getDrink().getId().equals(id)) {
-                    return String.valueOf(drinkOrdine.getQuantita());
+            if (utente != null) {
+                for (DrinkOrdine drinkOrdine : utente.getDrinkOrdineList()) {
+                    if (drinkOrdine.getDrink().getId().equals(id)) {
+                        return String.valueOf(drinkOrdine.getQuantita());
+                    }
                 }
+                return "0";
             }
             return "0";
         }

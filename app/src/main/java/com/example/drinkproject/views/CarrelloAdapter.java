@@ -1,12 +1,13 @@
 package com.example.drinkproject.views;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,9 +15,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.drinkproject.R;
-import com.example.drinkproject.otherClasses.SwipeToDeleteCallback;
+import com.example.drinkproject.activities.ImpostazioniActivity;
+import com.example.drinkproject.classiDiSupporto.ImpostazioniAttributi;
+import com.example.drinkproject.classiDiSupporto.SwipeToDeleteCallback;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import controller.Controller;
@@ -84,6 +86,14 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
         holder.quantita.setText(String.valueOf(quantity));
         holder.immagine.setImageResource(R.drawable.spritz);
 
+        if(PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getBoolean(ImpostazioniActivity.CHIAVE_STATO_SWITCH, false)){
+            holder.itemView.setBackgroundColor(context.getResources().getColor(android.R.color.white));
+            holder.nome.setTextColor(context.getResources().getColor(android.R.color.black));
+            holder.descrizione.setTextColor(context.getResources().getColor(android.R.color.black));
+            holder.prezzo.setTextColor(context.getResources().getColor(android.R.color.black));
+            holder.quantita.setTextColor(context.getResources().getColor(android.R.color.black));
+        }
+
         holder.aggiungiUnDrink.setOnClickListener(v -> {
             if(holder.quantita.getText().toString().equals("")) {
                 holder.quantita.setText("1");
@@ -132,7 +142,7 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s!=null && !s.toString().equals("0")) {
+                if(s!=null && !s.toString().equals("0") && !s.toString().equals("")) {
                     controller.updateDrink(drinkOrdines.get(position).getDrink().getId(), Integer.parseInt(s.toString()));
                     totale.setText(controller.getPrezzoTotale());
                 }

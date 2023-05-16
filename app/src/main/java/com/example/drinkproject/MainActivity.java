@@ -2,6 +2,8 @@ package com.example.drinkproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.biometric.BiometricPrompt;
 
@@ -10,12 +12,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.drinkproject.activities.DrinkActivity;
+import com.example.drinkproject.activities.ImpostazioniActivity;
 import com.example.drinkproject.activities.RegistrazioneActivity;
+import com.example.drinkproject.classiDiSupporto.ImpostazioniAttributi;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.concurrent.Executor;
@@ -23,12 +29,11 @@ import java.util.concurrent.Executor;
 import controller.Controller;
 
 public class MainActivity extends AppCompatActivity {
-
-
-    //private Socket socket;
     private Controller  controller=null;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
+    private  boolean doubleBackToExitPressedOnce=false;
+    public static boolean isAccessibilityEnabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         // Ottenere l'executor dell'UI thread
         Executor executor = ContextCompat.getMainExecutor(this);
 
-// Postare un messaggio sulla coda dell'UI thread
+        // Postare un messaggio sulla coda dell'UI thread
         //TODO USARE MEtodo della prof
         // public void onClick(View v) {
         //    // Crea un nuovo thread
@@ -101,35 +106,22 @@ public class MainActivity extends AppCompatActivity {
                 biometricLoginButton.setClickable(false);
             }
         }
-
-
-
-
-
-
     }
-
-    private  boolean doubleBackToExitPressedOnce=false;
-    @Override
-    public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
-        }
-
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "premi ancora per uscire", Toast.LENGTH_SHORT).show();
-
-        //noinspection deprecation
-        new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
-    }
-
-
 
 
     @Override
     protected void onResume() {
         super.onResume();
+        ConstraintLayout mainConstraint = findViewById(R.id.mainLayout);
+
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ImpostazioniActivity.CHIAVE_STATO_SWITCH, false)) {
+            mainConstraint.setBackgroundColor(getResources().getColor(android.R.color.white));
+            setTextColorForAllViews(mainConstraint, getResources().getColor(android.R.color.black));
+        }
+        else {
+            mainConstraint.setBackgroundColor(getResources().getColor(R.color.brick_red));
+            setTextColorForAllViews(mainConstraint, getResources().getColor(android.R.color.white));
+        }
 
         View registerButton = findViewById(R.id.registerUsernamePasswordButton);
         registerButton.setOnClickListener(v -> {
@@ -150,10 +142,45 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
                 Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
                 startActivity(intent);
-            } else {
+            }
+            else {
                 Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
+        View pulsanteImpostazioni = findViewById(R.id.impostazioniPulsanteMain);
+        pulsanteImpostazioni.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), ImpostazioniActivity.class);
+            startActivity(intent);
+        });
     }
 
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "premi ancora per uscire", Toast.LENGTH_SHORT).show();
+
+        //noinspection deprecation
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
+    }
+
+    private void setTextColorForAllViews(ViewGroup viewGroup, int color) {
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View view = viewGroup.getChildAt(i);
+
+            if (view instanceof ViewGroup) {
+                setTextColorForAllViews((ViewGroup) view, color);
+            } else if (view instanceof TextView) {
+                ((TextView) view).setTextColor(color);
+            }
+        }
+    }
 }

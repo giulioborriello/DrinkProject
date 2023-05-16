@@ -1,6 +1,5 @@
-package com.example.drinkproject.otherClasses;
+package com.example.drinkproject.classiDiSupporto;
 
-import android.text.Editable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
