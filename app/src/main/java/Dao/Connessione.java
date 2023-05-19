@@ -1,12 +1,16 @@
 package Dao;
 
 
-import java.net.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.Drink;
+import model.DrinkOrdine;
 import model.Utente;
 
 @SuppressWarnings("unused")
@@ -215,6 +219,45 @@ public class Connessione {
                 "'" + name+ "'," + "'" + surname+ "'," + "'" + username+ "'," + "'" + password+"'" +
                 ")";
         return sendInsert(query);
+    }
+
+    public boolean effettuaPagamento(Utente utente){
+
+
+        String queryMaxIdOrdine="select max(id) from ordine";
+        List<String> resIdOrdine;
+        try {
+            resIdOrdine = sendSelect(queryMaxIdOrdine);
+            if(resIdOrdine.get(0).equals(FAILURE)) return false;
+        } catch (IOException e) {
+            return false;
+        }
+        int idOrdine = Integer.parseInt(resIdOrdine.get(0)) +1;
+
+        String queryIsertOrdine= "INSERT INTO ordine (id, utente_id)" +
+                "VALUES("+idOrdine+", "+utente.getId()+")";
+        if (!sendInsert(queryIsertOrdine)){
+            return false;
+        }
+
+
+
+        String queryClone = "INSERT INTO public.drink_ordine(\n" +
+                "\t drink_id, ordine_id, quantita, prezzo)\n" +
+                "\tVALUES\n";
+        //"\tVALUES ( ?, ?, ?, ?) "
+        StringBuilder query = new StringBuilder();
+        ArrayList<DrinkOrdine> carello = (ArrayList<DrinkOrdine>) utente.getDrinkOrdineList();
+        for (DrinkOrdine drinkOrdinato : carello) {
+            String drink_id = drinkOrdinato.getDrink().getId();
+            String ordine_id = Integer.toString(idOrdine);
+            int quantita = drinkOrdinato.getQuantita();
+            double prezzo = drinkOrdinato.getPrezzo();
+            String value = "\t(" + drink_id + "," + ordine_id + "," + quantita + "," + prezzo + ");\n";
+            query.append(queryClone).append(value);
+        }
+
+        return true;
     }
 }
 

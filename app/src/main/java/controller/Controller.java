@@ -337,24 +337,16 @@ public class Controller {
 
 
     public boolean effettuaPagamento(String nome, String cognome, String numerocarta, String dataScadenza, String cvv) {
-        String queryClone = "INSERT INTO public.drink_ordine(\n" +
-                "\t drink_id, ordine_id, quantita, prezzo)\n" +
-                "\tVALUES\n";
-        //"\tVALUES ( ?, ?, ?, ?) "
-        StringBuilder query = new StringBuilder();
-        ArrayList<DrinkOrdine> carello = (ArrayList<DrinkOrdine>) utente.getDrinkOrdineList();
-        for (DrinkOrdine drinkOrdinato : carello) {
-            String drink_id = drinkOrdinato.getDrink().getId();
-            String drink_ordine = "0";//TODO crea la query per creare ordine cosi da avere id del ordine
-            int quantita = drinkOrdinato.getQuantita();
-            double prezzo = drinkOrdinato.getPrezzo();
-            String value = "\t(" + drink_id + "," + drink_ordine + "," + quantita + "," + prezzo + ");\n";
-            query.append(queryClone).append(value);
+        try {
+            if(!Connessione.getInstance().effettuaPagamento(utente)){
+                return false;
+            }
+        } catch (IOException e) {
+            //ERROR DI COMUNICAZIONE SERVER
+            return false;
         }
-        System.out.println("sono nel metodo Controller.EffettuaPagamento()\n la query creata è:\n" + query);
-        //TODO inserire logica comunicazione server c ;
-
         return true;
+
     }
 
 
