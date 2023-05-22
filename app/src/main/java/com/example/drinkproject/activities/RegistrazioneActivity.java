@@ -8,52 +8,54 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.drinkproject.MainActivity;
 import com.example.drinkproject.R;
-import com.example.drinkproject.classiDiSupporto.ImpostazioniAttributi;
 
 import controller.Controller;
 
 public class RegistrazioneActivity extends AppCompatActivity {
     Controller controller = Controller.getInstance();
+    private EditText registraIlNome, registraIlCognome, registraUsername, registraLaPassword;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrazione);
+
+        effettuaIlCollegamentoDelleViews();
+        settaIListner();
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        ConstraintLayout registrazioneLayout = findViewById(R.id.registrazioneLayout);
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ImpostazioniActivity.CHIAVE_STATO_SWITCH, false)) {
-            registrazioneLayout.setBackgroundColor(getResources().getColor(android.R.color.white));
-            setTextColorForAllViews(registrazioneLayout, getResources().getColor(android.R.color.black));
-        }
-        else {
-            registrazioneLayout.setBackgroundColor(getResources().getColor(R.color.brick_red));
-            setTextColorForAllViews(registrazioneLayout, getResources().getColor(android.R.color.white));
-        }
+        settaIColori();
+    }
 
+
+    private void effettuaIlCollegamentoDelleViews() {
+        registraIlNome = findViewById(R.id.registraIlNome);
+        registraIlCognome = findViewById(R.id.registraIlCognome);
+        registraUsername = findViewById(R.id.registraUsername);
+        registraLaPassword = findViewById(R.id.registraLaPassword);
+    }
+
+
+    private void settaIListner() {
         View registerButton = findViewById(R.id.submitRegistrationWithUsernameAndPassword);
         registerButton.setOnClickListener(v -> {
-            EditText nomeEditText = findViewById(R.id.registerName);
-            EditText cognomeEditText = findViewById(R.id.registerSurname);
-            EditText usernameEditText = findViewById(R.id.registerUsername);
-            EditText passwordEditText = findViewById(R.id.registerPassword);
+            EditText nomeEditText = findViewById(R.id.registraIlNome);
+            EditText cognomeEditText = findViewById(R.id.registraIlCognome);
+            EditText usernameEditText = findViewById(R.id.registraUsername);
+            EditText passwordEditText = findViewById(R.id.registraLaPassword);
 
             String name = nomeEditText.getText().toString();
             String surname = cognomeEditText.getText().toString();
@@ -73,6 +75,23 @@ public class RegistrazioneActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+
+    private void settaIColori() {
+        ConstraintLayout registrazioneLayout = findViewById(R.id.registrazioneLayout);
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ImpostazioniActivity.CHIAVE_STATO_SWITCH, false)) {
+            registrazioneLayout.setBackgroundColor(getResources().getColor(android.R.color.white));
+            setTextColorForAllViews(registrazioneLayout, getResources().getColor(android.R.color.black));
+            registraIlCognome.setHintTextColor(getResources().getColor(R.color.white));
+            registraIlNome.setHintTextColor(getResources().getColor(R.color.white));
+            registraUsername.setHintTextColor(getResources().getColor(R.color.white));
+            registraLaPassword.setHintTextColor(getResources().getColor(R.color.white));
+        }
+        else {
+            registrazioneLayout.setBackgroundColor(getResources().getColor(R.color.brick_red));
+            setTextColorForAllViews(registrazioneLayout, getResources().getColor(android.R.color.white));
+        }
     }
 
 

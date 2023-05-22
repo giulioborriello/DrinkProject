@@ -36,6 +36,8 @@
     <string name="cvv">CVV</string>
     <string name="card_expiration">Scadenza carta</string>
     <string name="name">Nome</string>
-    <string name="select_month">Seleziona il mese\n</string>
+    <string name="mesi_spinner">Seleziona il mese\n</string>
+    <string name="anni_spinner">Seleziona l\'anno\n</string>
     <string name="switch_change_modality">Attiva la modalità colori ad alto contrasto</string>
+    <string name="titolo_pagamento">Per piacere inserisci i dati della tua carta di credito</string>
 </resources>

@@ -30,9 +30,10 @@ public class CarrelloActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrello);
-        myAdapter = new CarrelloAdapter(getApplicationContext(), findViewById(R.id.totalCounter), recyclerView);
 
         recyclerView = findViewById(R.id.recyclerViewOrderSummary);
+        myAdapter = new CarrelloAdapter(getApplicationContext(), findViewById(R.id.totalCounter), recyclerView);
+
     }
 
 

@@ -10,7 +10,7 @@
 
 
     <EditText
-        android:id="@+id/registerSurname"
+        android:id="@+id/registraIlCognome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -20,11 +20,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerName"
+        app:layout_constraintTop_toBottomOf="@+id/registraIlNome"
         app:layout_constraintVertical_bias="0.05" />
 
     <EditText
-        android:id="@+id/registerName"
+        android:id="@+id/registraIlNome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -53,7 +53,7 @@
         app:layout_constraintVertical_bias="0.073" />
 
     <EditText
-        android:id="@+id/registerPassword"
+        android:id="@+id/registraLaPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -63,11 +63,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerUsername"
+        app:layout_constraintTop_toBottomOf="@+id/registraUsername"
         app:layout_constraintVertical_bias="0.05" />
 
     <EditText
-        android:id="@+id/registerUsername"
+        android:id="@+id/registraUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -77,7 +77,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerSurname"
+        app:layout_constraintTop_toBottomOf="@+id/registraIlCognome"
         app:layout_constraintVertical_bias="0.05" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

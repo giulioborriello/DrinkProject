@@ -128,6 +128,7 @@ public class DrinkActivity extends AppCompatActivity {
         settaIColori();
     }
 
+
     private void settaIColori() {
         RelativeLayout drinkLayout = findViewById(R.id.drinkLayout);
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ImpostazioniActivity.CHIAVE_STATO_SWITCH, false)) {

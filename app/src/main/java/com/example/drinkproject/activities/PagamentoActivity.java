@@ -23,7 +23,9 @@ public class PagamentoActivity extends AppCompatActivity {
     private Controller controller = Controller.getInstance();
     private EditText numeroCarta, nomeProprietarioCarta, cognomeProprietarioCarta, cvvCarta;
     private Spinner mesiSpinner, anniSpinner;
-    private View pagamentoButton;
+    private View pagamentoButton, impostazioniPulsante;
+    private TextView titoloPagamento;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,27 +61,61 @@ public class PagamentoActivity extends AppCompatActivity {
         numeroCarta = findViewById(R.id.numeroCarta);
         mesiSpinner = findViewById(R.id.meseScadenza);
         anniSpinner = findViewById(R.id.annoScadenza);
-        pagamentoButton = findViewById(R.id.confermaDati);
+        pagamentoButton = findViewById(R.id.pulsanteConfermaDati);
+        impostazioniPulsante = findViewById(R.id.impostazionePulsantePagamento);
+        titoloPagamento = findViewById(R.id.titoloPagamento);
     }
 
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onResume() {
         super.onResume();
+        settaIColori();
+        settaIListner();
+    }
+
+    private void settaIColori() {
         RelativeLayout pagamentoLayout = findViewById(R.id.pagamentoLayout);
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ImpostazioniActivity.CHIAVE_STATO_SWITCH, false)) {
-            settaIColori(pagamentoLayout, android.R.color.white, android.R.color.black);
+            pagamentoLayout.setBackgroundColor(getResources().getColor(R.color.black));
+            cambiaIlColoreDiTutteLeViews(pagamentoLayout, getResources().getColor(android.R.color.white));
+            numeroCarta.setBackground(getResources().getDrawable(R.drawable.rectangle_edit_text_alto_contrasto));
+            nomeProprietarioCarta.setBackground(getResources().getDrawable(R.drawable.rectangle_edit_text_alto_contrasto));
+            cognomeProprietarioCarta.setBackground(getResources().getDrawable(R.drawable.rectangle_edit_text_alto_contrasto));
+            cvvCarta.setBackground(getResources().getDrawable(R.drawable.rectangle_edit_text_alto_contrasto));
+
+            mesiSpinner.setBackground(getResources().getDrawable(R.drawable.rectangle_spinner));
+            anniSpinner.setBackground(getResources().getDrawable(R.drawable.rectangle_spinner));
+
+
         }
         else {
-            settaIColori(pagamentoLayout, R.color.brick_red, android.R.color.white);
+            pagamentoLayout.setBackgroundColor(getResources().getColor(R.color.brick_red));
+            cambiaIlColoreDiTutteLeViews(pagamentoLayout, getResources().getColor(android.R.color.white));
+            numeroCarta.setBackground(getResources().getDrawable(R.drawable.rectangle_edit_text));
+            nomeProprietarioCarta.setBackground(getResources().getDrawable(R.drawable.rectangle_edit_text));
+            cognomeProprietarioCarta.setBackground(getResources().getDrawable(R.drawable.rectangle_edit_text));
+            cvvCarta.setBackground(getResources().getDrawable(R.drawable.rectangle_edit_text));
+            mesiSpinner.setPrompt(getResources().getString(R.string.mesi_spinner));
+            anniSpinner.setPrompt(getResources().getString(R.string.anni_spinner));
+            anniSpinner.setPrompt("Seleziona l'anno");
         }
-
-        settaIListner();
     }
 
 
     private void settaIListner() {
-        View pagamentoButton = findViewById(R.id.confermaDati);
+        View impostazioniPulsante = findViewById(R.id.impostazionePulsantePagamento);
+        impostazioniPulsante.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ImpostazioniActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        View pagamentoButton = findViewById(R.id.pulsanteConfermaDati);
         pagamentoButton.setOnClickListener(new View.OnClickListener() {
             final String nome = ((EditText) findViewById(R.id.nomeProprietarioCarta)).getText().toString();
             final String cognome = ((EditText) findViewById(R.id.cognomeProprietarioCarta)).getText().toString();
@@ -98,20 +134,6 @@ public class PagamentoActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-
-    private void settaIColori(RelativeLayout pagamentoLayout, int brick_red, int white) {
-        pagamentoLayout.setBackgroundColor(getResources().getColor(brick_red));
-        cambiaIlColoreDiTutteLeViews(pagamentoLayout, getResources().getColor(white));
-        numeroCarta.setBackgroundColor(getResources().getColor(brick_red));
-        nomeProprietarioCarta.setBackgroundColor(getResources().getColor(brick_red));
-        cognomeProprietarioCarta.setBackgroundColor(getResources().getColor(brick_red));
-        cvvCarta.setBackgroundColor(getResources().getColor(brick_red));
-        numeroCarta.setHintTextColor(getResources().getColor(white));
-        nomeProprietarioCarta.setHintTextColor(getResources().getColor(white));
-        cognomeProprietarioCarta.setHintTextColor(getResources().getColor(white));
-        cvvCarta.setHintTextColor(getResources().getColor(white));
     }
 
 
