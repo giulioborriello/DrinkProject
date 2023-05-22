@@ -21,13 +21,13 @@ import android.widget.Toast;
 import com.example.drinkproject.activities.DrinkActivity;
 import com.example.drinkproject.activities.ImpostazioniActivity;
 import com.example.drinkproject.activities.RegistrazioneActivity;
-import com.example.drinkproject.classiDiSupporto.ImpostazioniAttributi;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.concurrent.Executor;
 
 import controller.Controller;
 
+@SuppressWarnings("deprecation")
 public class MainActivity extends AppCompatActivity {
     private Controller  controller=null;
     private BiometricPrompt biometricPrompt;

@@ -163,12 +163,12 @@ public class Connessione {
         } catch (IOException e) {
             return null;
         }
+
+
     }
-
-
     public ArrayList<Drink> getListaDrink(){
         String query="SELECT id, nome, categoria, descrizione, prezzo " +
-                "FROM drink" ;
+                " FROM drink " ;
         List<String> res;
         try {
             res = sendSelect(query);
@@ -176,7 +176,7 @@ public class Connessione {
             throw new RuntimeException(e);
         }
         ArrayList<Drink> listaDrink=new ArrayList<>();
-        for (int i=0;i<res.size()-1;i+=5) {
+        for (int i=0;i<res.size();i+=5) {
             String id = res.get(i);
             String nome= res.get(i+1);
             String categoria = res.get(i+2);
@@ -189,6 +189,8 @@ public class Connessione {
 
 
     public ArrayList<String> getCategoria(){
+        String query="SELECT DISTINCT categoria " +
+                " FROM drink";
         String query="SELECT DISTINCT categoria " +
                 "FROM drink ";
         List<String> res;
@@ -204,8 +206,8 @@ public class Connessione {
     }
 
     public ArrayList<String> getIDDrinkSuggeritiDiRaimondo(){
-        String query="SELECT id" +
-                "FROM raccomanda_drink";
+        String query="SELECT id " +
+                " FROM raccomanda_drink ";
         List<String> res;
         try {
             res = sendSelect(query);
@@ -217,11 +219,11 @@ public class Connessione {
     }
     public boolean signIn(String name, String surname, String username, String password){
 
-        String query= "INSERT INTO utente" +
-                "(nome, cognome email, password)" +
-                "VALUES (" +
+        String query= " INSERT INTO utente " +
+                " (nome, cognome email, password) " +
+                " VALUES (" +
                 "'" + name+ "'," + "'" + surname+ "'," + "'" + username+ "'," + "'" + password+"'" +
-                ")";
+                ") ";
         return sendInsert(query);
     }
 
@@ -238,17 +240,17 @@ public class Connessione {
         }
         int idOrdine = Integer.parseInt(resIdOrdine.get(0)) +1;
 
-        String queryIsertOrdine= "INSERT INTO ordine (id, utente_id)" +
-                "VALUES("+idOrdine+", "+utente.getId()+")";
+        String queryIsertOrdine= " INSERT INTO ordine (id, utente_id) " +
+                " VALUES("+idOrdine+", "+utente.getId()+") ";
         if (!sendInsert(queryIsertOrdine)){
             return false;
         }
 
 
 
-        String queryClone = "INSERT INTO public.drink_ordine(\n" +
-                "\t drink_id, ordine_id, quantita, prezzo)\n" +
-                "\tVALUES\n";
+        String queryClone = "INSERT INTO public.drink_ordine( \n" +
+                "\t drink_id, ordine_id, quantita, prezzo) \n" +
+                "\t  VALUES \n";
         //"\tVALUES ( ?, ?, ?, ?) "
         StringBuilder query = new StringBuilder();
         ArrayList<DrinkOrdine> carello = (ArrayList<DrinkOrdine>) utente.getDrinkOrdineList();
@@ -257,11 +259,11 @@ public class Connessione {
             String ordine_id = Integer.toString(idOrdine);
             int quantita = drinkOrdinato.getQuantita();
             double prezzo = drinkOrdinato.getPrezzo();
-            String value = "\t(" + drink_id + "," + ordine_id + "," + quantita + "," + prezzo + ");\n";
+            String value = "\t (" + drink_id + "," + ordine_id + "," + quantita + "," + prezzo + ");\n";
             query.append(queryClone).append(value);
         }
 
-        return true;
+        return sendInsert(String.valueOf(query));
     }
 }
 
