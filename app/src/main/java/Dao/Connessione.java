@@ -189,8 +189,8 @@ public class Connessione {
 
 
     public ArrayList<String> getCategoria(){
-        String query="SELECT DISTINCT categoria" +
-                "FROM drink";
+        String query="SELECT DISTINCT categoria " +
+                "FROM drink ";
         List<String> res;
         try {
             res = sendSelect(query);
