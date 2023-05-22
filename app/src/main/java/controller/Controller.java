@@ -137,20 +137,12 @@ public class Controller {
 
     public void dump() {
         //TODO fare il dump dei drink
-/*
         try {
             listaDeiDrink.addAll( Connessione.getInstance().getListaDrink());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
-*/
-
-        fakeDump();
-        System.out.println("drink 1: " + getDrink("1").toString());
-        System.out.println("drink 2: " + getDrink("2"));
-
+        dumpCategoria();
     }
 
 
@@ -375,7 +367,4 @@ public class Controller {
         public void svuotaCarrello () {
             utente.svuotaCarrello();
         }
-
-
-
 }

@@ -27,17 +27,23 @@ public class ImpostazioniActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_impostazioni);
-        accessibilitaSwitch = findViewById(R.id.accessibilitaSwitch);
-        layoutImpostazioni = findViewById(R.id.layoutImpostazioni);
-
+        effettuaIlCollegamentoDelleViews();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
+   
     @Override
     protected void onResume() {
         super.onResume();
         impostaAccessibilita();
     }
+
+
+    private void effettuaIlCollegamentoDelleViews() {
+        accessibilitaSwitch = findViewById(R.id.accessibilitaSwitch);
+        layoutImpostazioni = findViewById(R.id.layoutImpostazioni);
+    }
+
 
     private void impostaAccessibilita() {
         boolean statoSwitch = sharedPreferences.getBoolean(CHIAVE_STATO_SWITCH, false);

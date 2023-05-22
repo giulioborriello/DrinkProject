@@ -17,8 +17,8 @@ import model.Utente;
 public class Connessione {
 
     private static Connessione istanza = null;
-    private static final String indirizzoServer = "192.168.190.47"; // Indirizzo IP o nome del server
-    private static final int portaServer = 8989; // Porta del server
+    private static final String indirizzoServer = "109.117.81.47"; // Indirizzo IP o nome del server
+    private static final int portaServer = 8080; // Porta del server
     private final Socket socket;
     private final PrintWriter out;
     private final BufferedReader in;
@@ -163,9 +163,9 @@ public class Connessione {
         } catch (IOException e) {
             return null;
         }
-
-
     }
+
+
     public ArrayList<Drink> getListaDrink(){
         String query="SELECT id, nome, categoria, descrizione, prezzo " +
                 "FROM drink" ;
@@ -176,7 +176,7 @@ public class Connessione {
             throw new RuntimeException(e);
         }
         ArrayList<Drink> listaDrink=new ArrayList<>();
-        for (int i=0;i<res.size();i+=5) {
+        for (int i=0;i<res.size()-1;i+=5) {
             String id = res.get(i);
             String nome= res.get(i+1);
             String categoria = res.get(i+2);
@@ -186,6 +186,8 @@ public class Connessione {
         }
         return listaDrink;
     }
+
+
     public ArrayList<String> getCategoria(){
         String query="SELECT DISTINCT categoria" +
                 "FROM drink";
@@ -195,7 +197,9 @@ public class Connessione {
         } catch (IOException e) {
             return null;
         }
-        if (res.get(0).equals(FAILURE)) return  null;
+        if (res.get(0).equals(FAILURE))
+            return  null;
+        res.remove(res.size()-1);
         return (ArrayList<String>) res;
     }
 

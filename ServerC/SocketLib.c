@@ -127,13 +127,12 @@ void sendDataTable(PGresult *table, int client_socket){
 	
 	for(int i=0;i<rows;i++){
 		for(int j=0;j<columns;j++){
-			field=PQgetvalue(table,i,j);
-			send(client_socket, field, strlen(field), 0);
-            field = " ";
-			send(client_socket, field, strlen(field), 0);
+    		char* field = PQgetvalue(table, i, j);
+            size_t lunghezza = strlen(field);
+            send(client_socket, field, strlen(field), 0);
+            field = "\n";
+            send(client_socket, field, strlen(field), 0);
 		}
-    	field = "\n";
-		send(client_socket, field, strlen(field), 0);
 	}
 	printf("Flag prima del free\n");
     field=PQgetvalue(table,0,0);

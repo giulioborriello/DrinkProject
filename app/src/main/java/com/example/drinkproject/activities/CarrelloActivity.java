@@ -25,14 +25,14 @@ public class CarrelloActivity extends AppCompatActivity {
     private Controller controller = Controller.getInstance();
     RecyclerView recyclerView;
     CarrelloAdapter myAdapter;
+    private View vaiAlPagamentoPulsante;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrello);
-
-        recyclerView = findViewById(R.id.recyclerViewOrderSummary);
-        myAdapter = new CarrelloAdapter(getApplicationContext(), findViewById(R.id.totalCounter), recyclerView);
+        effettuaIlCollegamentoDelleViews();
+        creaAdapter();
 
     }
 
@@ -40,33 +40,37 @@ public class CarrelloActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        settaIColori();
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(myAdapter);
-
         TextView totalCounter = (TextView) findViewById(R.id.totalCounter);
         totalCounter.setText(controller.getPrezzoTotale());
+        settaIListner();
+    }
 
+
+    private void creaAdapter() {
+        myAdapter = new CarrelloAdapter(getApplicationContext(), findViewById(R.id.totalCounter), recyclerView);
+    }
+
+
+    private void effettuaIlCollegamentoDelleViews() {
+        vaiAlPagamentoPulsante = findViewById(R.id.paymentButton);
+        recyclerView = findViewById(R.id.recyclerViewOrderSummary);
+    }
+
+
+    private void settaIListner() {
         View pulsanteImpostazioni = findViewById(R.id.impostazioniPulsanteCarrello);
         pulsanteImpostazioni.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ImpostazioniActivity.class);
             startActivityForResult(intent, 1);
         });
 
-        RelativeLayout carrelloLayout = findViewById(R.id.carrelloLayout);
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ImpostazioniActivity.CHIAVE_STATO_SWITCH, false)) {
-            carrelloLayout.setBackgroundColor(getResources().getColor(android.R.color.black));
-            setTextColorForAllViews(carrelloLayout, getResources().getColor(android.R.color.white));
-        }
-        else {
-            carrelloLayout.setBackgroundColor(getResources().getColor(R.color.brick_red));
-            setTextColorForAllViews(carrelloLayout, getResources().getColor(android.R.color.white));
-        }
 
         boolean paymentWork = true;         //variable for testing
         //TODO: add logic for pay with credit card
-        View paymentButton = findViewById(R.id.paymentButton);
-        paymentButton.setOnClickListener(v -> {
+        vaiAlPagamentoPulsante.setOnClickListener(v -> {
             if(controller.ilCarrelloeVuoto()) {
                 Intent intent = new Intent(getApplicationContext(), PagamentoActivity.class);
                 startActivity(intent);
@@ -90,6 +94,18 @@ public class CarrelloActivity extends AppCompatActivity {
             } */
 
         });
+    }
+
+    private void settaIColori() {
+        RelativeLayout carrelloLayout = findViewById(R.id.carrelloLayout);
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ImpostazioniActivity.CHIAVE_STATO_SWITCH, false)) {
+            carrelloLayout.setBackgroundColor(getResources().getColor(android.R.color.black));
+            setTextColorForAllViews(carrelloLayout, getResources().getColor(android.R.color.white));
+        }
+        else {
+            carrelloLayout.setBackgroundColor(getResources().getColor(R.color.brick_red));
+            setTextColorForAllViews(carrelloLayout, getResources().getColor(android.R.color.white));
+        }
     }
 
 
