@@ -1,6 +1,8 @@
     package com.example.drinkproject.views;
 
     import android.content.Context;
+    import android.graphics.Bitmap;
+    import android.graphics.BitmapFactory;
     import android.preference.PreferenceManager;
     import android.text.Editable;
     import android.text.TextWatcher;
@@ -70,12 +72,22 @@
                 holder.prezzo.setTextColor(context.getResources().getColor(android.R.color.white));
                 holder.quantita.setTextColor(context.getResources().getColor(android.R.color.white));
             }
-            //Bitmap bitmap = BitmapFactory.decodeByteArray(drinks.get(position).getImmagine(), 0, drinks.get(position).getImmagine().length);
 
             holder.nome.setText(name);
             holder.descrizione.setText(description);
             holder.prezzo.setText(price);
             holder.immagine.setImageResource(R.drawable.spritz);
+
+            new Thread(() -> {
+                controller = null;
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(drinks.get(position).getImmagine(), 0, drinks.get(position).getImmagine().length);
+                    controller = Controller.getInstance().;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
             holder.id = filteredDrinks.get(position).getId();
             holder.quantita.setText(controller.getQuantitaOrdinata(filteredDrinks.get(position).getId()));
 

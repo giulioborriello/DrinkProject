@@ -167,6 +167,15 @@ public class Controller {
     }
 
 
+    public byte[] getImmagineByID(String id) throws IOException {
+        Drink drink = getDrinkByID(id);
+        if(drink.getImmagine() == null){
+            drink.setImmagine(Connessione.getInstance().getImmagineByID(id));
+        }
+        return drink.getImmagine();
+    }
+
+
     public ArrayList<Drink> getSuggerimentiInbaseAiTuoiGusti(){
         int idUtente= Integer.parseInt(utente.getId());
         //funzione di lorenzo che sceglie in base agli ingredienti
@@ -217,7 +226,7 @@ public class Controller {
         return listaDeiDrink;
     }
 
-    public Drink getDrink(String idDrink) {
+    public Drink getDrinkByID(String idDrink) {
         for (Drink drink : listaDeiDrink) {
             if (drink.getId().equals(idDrink)) {
                 return drink;
@@ -260,7 +269,7 @@ public class Controller {
         if (quantita <= 0) return;
 
         //recupera drink
-        Drink drinkDaAggiungere = getDrink(idDrinkOrdinato);
+        Drink drinkDaAggiungere = getDrinkByID(idDrinkOrdinato);
 
         if (drinkDaAggiungere == null) return;
 
@@ -270,7 +279,7 @@ public class Controller {
 
     public void removeDrink(String idDrink) {
         //recupera drink
-        Drink idDrinkDaRimuovere = getDrink(idDrink);
+        Drink idDrinkDaRimuovere = getDrinkByID(idDrink);
 
         if (idDrinkDaRimuovere == null) return;
 
@@ -280,7 +289,7 @@ public class Controller {
 
     public boolean removeDrink(String idDrink, int quantity) {
         //recupera drink
-        Drink idDrinkDaRimuovere = getDrink(idDrink);
+        Drink idDrinkDaRimuovere = getDrinkByID(idDrink);
 
         if (idDrinkDaRimuovere == null) return false;
 
@@ -302,7 +311,7 @@ public class Controller {
 
 
     public void updateDrink(String idDrink, int quantita) {
-        Drink drinkDaAggiornare = getDrink(idDrink);
+        Drink drinkDaAggiornare = getDrinkByID(idDrink);
         if (!esisteIlDrinkNelCarrello(idDrink))
             addDrink(idDrink, quantita);
         else

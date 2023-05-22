@@ -23,6 +23,7 @@ import com.example.drinkproject.activities.ImpostazioniActivity;
 import com.example.drinkproject.activities.RegistrazioneActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.concurrent.Executor;
 
 import controller.Controller;
@@ -58,7 +59,17 @@ public class MainActivity extends AppCompatActivity {
         //}
         executor.execute(() -> {
             // dump dati
-            controller = Controller.getInstance();
+            new Thread(new Runnable() {
+                public void run() {
+                    controller = null;
+                    try {
+                        controller = Controller.getInstance();
+                    } catch (Exception e) {
+                        //TODO: aggiungere fakedump
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         });
 
         SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);

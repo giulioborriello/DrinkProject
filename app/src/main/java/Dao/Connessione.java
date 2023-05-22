@@ -1,6 +1,8 @@
 package Dao;
 
 
+import android.os.AsyncTask;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,7 +17,6 @@ import model.Utente;
 
 @SuppressWarnings("unused")
 public class Connessione {
-
     private static Connessione istanza = null;
     private static final String indirizzoServer = "109.117.81.47"; // Indirizzo IP o nome del server
     private static final int portaServer = 8080; // Porta del server
@@ -29,6 +30,23 @@ public class Connessione {
     private final String INVALID_MESSAGE = "INVALID_MESSAGE";
     private final String TIMEOUT = "TIMEOUT";
     private final String CONNECTION_ERROR = "CONNECTION_ERROR";
+
+
+    private static class ConnessioneTask extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... params) {
+            String message = params[0];
+            try {
+                Connessione connessione = Connessione.getInstance();
+                // Esegui le operazioni di rete qui, utilizzando il messaggio
+                connessione.sendMessage(message);
+                connessione.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 
 
     // Costruttore privato per impedire la creazione di oggetti Connessione
@@ -53,10 +71,12 @@ public class Connessione {
         out.println(message);
     }
 
+
     // Metodo per leggere la risposta del server
     public String readResponse() throws IOException {
         return in.readLine();
     }
+
 
     // Metodo per leggere tutti i messaggi inviati dal server
     public List<String> readAllResponses() throws IOException {
@@ -65,14 +85,17 @@ public class Connessione {
         while ((response = in.readLine()) != null) {
             responses.add(response);
         }
+        close();
         return responses;
     }
+
 
     // Metodo per chiudere la connessione al server
     public void close() throws IOException {
         in.close();
         out.close();
         socket.close();
+        istanza = null;
     }
 
    /*
@@ -150,7 +173,7 @@ public class Connessione {
     }
 
 
-    public byte[] getImmagine(String id ){
+    public byte[] getImmagineByID(String id ){
         String query ="SELECT immagine" +
                 "FROM drink" +
                 "WHERE id="+id;
@@ -176,7 +199,7 @@ public class Connessione {
             throw new RuntimeException(e);
         }
         ArrayList<Drink> listaDrink=new ArrayList<>();
-        for (int i=0;i<res.size();i+=5) {
+        for (int i=0;i<res.size()-1;i+=5) {
             String id = res.get(i);
             String nome= res.get(i+1);
             String categoria = res.get(i+2);
@@ -190,7 +213,7 @@ public class Connessione {
 
     public ArrayList<String> getCategoria(){
         String query="SELECT DISTINCT categoria " +
-                " FROM drink";
+                " FROM drink ";
         List<String> res;
         try {
             res = sendSelect(query);
