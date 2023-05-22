@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import model.Drink;
@@ -174,15 +175,15 @@ public class Connessione {
 
 
     public byte[] getImmagineByID(String id ){
-        String query ="SELECT immagine" +
-                "FROM drink" +
-                "WHERE id="+id;
+        String query ="SELECT immagine " +
+                "FROM drink " +
+                "WHERE id= "+id;
 
         try {
             List<String> res=sendSelect(query);
-            if (res.get(0).equals(FAILURE)) return null;
-
-            return res.get(0).getBytes();
+            if (res.get(0).equals(FAILURE))
+                return null;
+            return  Base64.getDecoder().decode(res.get(0));
         } catch (IOException e) {
             return null;
         }

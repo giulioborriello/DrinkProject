@@ -1,5 +1,6 @@
     package com.example.drinkproject.views;
 
+    import android.app.Activity;
     import android.content.Context;
     import android.graphics.Bitmap;
     import android.graphics.BitmapFactory;
@@ -79,17 +80,31 @@
             holder.immagine.setImageResource(R.drawable.spritz);
 
             new Thread(() -> {
-                controller = null;
                 try {
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(drinks.get(position).getImmagine(), 0, drinks.get(position).getImmagine().length);
-                    controller = Controller.getInstance().;
+                    byte[] immagineBytes = controller.getImmagineByID(filteredDrinks.get(position).getId());
+                    Bitmap bitmap = null;
+                    if (immagineBytes != null) {
+                        bitmap = BitmapFactory.decodeByteArray(immagineBytes, 0, immagineBytes.length);
+                    }
+
+                    final Bitmap finalBitmap = bitmap;
+                    ((Activity) context).runOnUiThread(() -> {
+                        if (finalBitmap != null) {
+                            holder.immagine.setImageBitmap(finalBitmap);
+                        } else {
+                            holder.immagine.setImageResource(R.drawable.spritz);
+                        }
+                    });
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }).start();
 
             holder.id = filteredDrinks.get(position).getId();
-            holder.quantita.setText(controller.getQuantitaOrdinata(filteredDrinks.get(position).getId()));
+            String id = filteredDrinks.get(position).getId();
+            String quantitaOrdinata = controller.getQuantitaOrdinata(id);
+            holder.quantita.setText(quantitaOrdinata);
 
             if(ImpostazioniAttributi.modalitaColoriAltoContrastoAttivata){
                 holder.itemView.setBackgroundColor(context.getResources().getColor(android.R.color.white));
