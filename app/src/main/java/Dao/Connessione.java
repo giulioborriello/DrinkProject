@@ -1,8 +1,6 @@
 package Dao;
 
 
-import android.os.AsyncTask;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,28 +24,13 @@ public class Connessione {
     private final BufferedReader in;
     private final String SEPARATORE = "#";
     private final String SUCCESS = "SUCCESS";
-    public static final String FAILURE = "FAILURE";
+    public static final String FAILURE = "FAILIURE";
     private final String ERROR = "ERROR";
     private final String INVALID_MESSAGE = "INVALID_MESSAGE";
     private final String TIMEOUT = "TIMEOUT";
     private final String CONNECTION_ERROR = "CONNECTION_ERROR";
 
 
-    private static class ConnessioneTask extends AsyncTask<String, Void, Void> {
-        @Override
-        protected Void doInBackground(String... params) {
-            String message = params[0];
-            try {
-                Connessione connessione = Connessione.getInstance();
-                // Esegui le operazioni di rete qui, utilizzando il messaggio
-                connessione.sendMessage(message);
-                connessione.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
 
 
     // Costruttore privato per impedire la creazione di oggetti Connessione
@@ -149,11 +132,12 @@ public class Connessione {
     }
 
    public  Utente login(String username, String password) {
-        String querySelectUtente = "SELECT * " +
-                "FROM utente" +
-                "WHERE email=' " + username + "' AND" +
-                "password ='" + password + "'";
-        List<String> utenteRes;
+       String querySelectUtente = "SELECT * " +
+               "FROM utente " +
+               "WHERE email='"+ username + "' AND " +
+               "password ='" + password + "'";
+
+       List<String> utenteRes;
 
         try {
             utenteRes = sendSelect(querySelectUtente);

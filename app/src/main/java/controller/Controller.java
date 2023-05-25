@@ -148,7 +148,7 @@ public class Controller {
 
     public boolean login(String username, String password) {
         //check if username and password are valid
-/*
+
         try {
             utente = Connessione.getInstance().login(username,password);
             return true;
@@ -158,12 +158,6 @@ public class Controller {
         }
 
 
-
-*/
-
-
-        utente = new Utente("0", "GLR", "LSO", "GLR.unina.it", "pass");
-        return true;
     }
 
 
