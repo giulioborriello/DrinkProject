@@ -23,6 +23,7 @@ public class ImpostazioniActivity extends AppCompatActivity {
     private ConstraintLayout layoutImpostazioni;
     private SwitchCompat accessibilitaSwitch;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

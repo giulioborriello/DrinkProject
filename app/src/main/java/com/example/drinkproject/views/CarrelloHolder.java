@@ -16,7 +16,7 @@ public class CarrelloHolder extends RecyclerView.ViewHolder {
     public ImageView immagine;
     public TextView nome, descrizione, prezzo, quantita, totale;
     public Button aggiungiUnDrink, rimuoviUnDrink;
-
+    public String id;
     public CarrelloHolder(@NonNull View itemView) {
         super(itemView);
         nome = (TextView) itemView.findViewById(R.id.nomeDrink);

@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
     private  boolean doubleBackToExitPressedOnce=false;
+    private Executor executor;
     public static boolean isAccessibilityEnabled = false;
 
     @Override
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Ottenere l'executor dell'UI thread
-        Executor executor = ContextCompat.getMainExecutor(this);
+        executor = ContextCompat.getMainExecutor(this);
 
         // Postare un messaggio sulla coda dell'UI thread
         //TODO USARE MEtodo della prof
@@ -59,15 +60,13 @@ public class MainActivity extends AppCompatActivity {
         //}
         executor.execute(() -> {
             // dump dati
-            new Thread(new Runnable() {
-                public void run() {
-                    controller = null;
-                    try {
-                        controller = Controller.getInstance();
-                    } catch (Exception e) {
-                        //TODO: aggiungere fakedump
-                        e.printStackTrace();
-                    }
+            new Thread(() -> {
+                controller = null;
+                try {
+                    controller = Controller.getInstance();
+                } catch (Exception e) {
+                    //TODO: aggiungere fakedump
+                    e.printStackTrace();
                 }
             }).start();
         });
@@ -144,25 +143,34 @@ public class MainActivity extends AppCompatActivity {
         logInButton.setOnClickListener(v -> {
             String username = ((TextView) findViewById(R.id.editTextUsername)).getText().toString();
             String password = ((TextView) findViewById(R.id.editTextPassword)).getText().toString();
-
-            if(controller.login(username, password)) {
-                SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("email", username);
-                editor.putString("password", password);
-                editor.apply();
-                Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
-                startActivity(intent);
-            }
-            else {
-                Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_SHORT).show();
+            Thread loginThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    controller.login(username, password);
+                    SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", username);
+                    editor.putString("password", password);
+                    editor.apply();
+                }
+            });
+            try {
+                loginThread.start();
+                loginThread.join();
+                if(controller.eLoggato()){
+                    Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Credenziali errate", Toast.LENGTH_SHORT).show();
+                }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         });
 
-
-
         View pulsanteImpostazioni = findViewById(R.id.impostazioniPulsanteMain);
-        pulsanteImpostazioni.setOnClickListener(v -> {
+        pulsanteImpostazioni.setOnClickListener(t -> {
             Intent intent = new Intent(getApplicationContext(), ImpostazioniActivity.class);
             startActivity(intent);
         });

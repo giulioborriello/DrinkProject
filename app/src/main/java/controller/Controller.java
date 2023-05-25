@@ -151,10 +151,10 @@ public class Controller {
 
         try {
             utente = Connessione.getInstance().login(username,password);
-            return true;
+            return utente != null;
         } catch (IOException e) {
+            utente = null;
             return false;
-
         }
 
 
@@ -369,5 +369,10 @@ public class Controller {
 
         public void svuotaCarrello () {
             utente.svuotaCarrello();
+        }
+
+
+        public boolean eLoggato(){
+            return utente != null;
         }
 }

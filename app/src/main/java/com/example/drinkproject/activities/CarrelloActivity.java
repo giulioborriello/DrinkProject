@@ -27,6 +27,7 @@ public class CarrelloActivity extends AppCompatActivity {
     CarrelloAdapter myAdapter;
     private View vaiAlPagamentoPulsante;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

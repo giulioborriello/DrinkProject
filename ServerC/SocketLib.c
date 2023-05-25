@@ -77,7 +77,7 @@ void* handle_connection(void* client_socket_input){
     {
     case 0: //"select"
     	printf("Query da svolgere: %s\n",token);
-        PGresult *table;
+        PGresult *table = NULL;
         querySQL(token, conn, &table);
         if (table!= NULL){
         	sendDataTable(table, client_socket);	
@@ -109,10 +109,10 @@ void* handle_connection(void* client_socket_input){
     }
 
     closeSQL(conn);
-	free(SQLrequest);
-	free(message);
-	free(token);
-	free(domanda);
+	//free(SQLrequest);
+	//free(message);
+	//free(token);
+	//free(domanda);
     close(client_socket);
     printf("Closing Connection.\n");
 }

@@ -1,7 +1,7 @@
 package com.example.drinkproject.views;
 
+import android.app.Notification;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,7 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.drinkproject.R;
 import com.example.drinkproject.activities.ImpostazioniActivity;
-import com.example.drinkproject.classiDiSupporto.ImpostazioniAttributi;
+import com.example.drinkproject.classiDiSupporto.CaricatoreImmaginiCarrello;
+import com.example.drinkproject.classiDiSupporto.CaricatoreImmaginiLista;
 import com.example.drinkproject.classiDiSupporto.SwipeToDeleteCallback;
 
 import java.util.List;
@@ -84,8 +85,8 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
         holder.descrizione.setText(description);
         holder.prezzo.setText(String.valueOf(price*quantity));
         holder.quantita.setText(String.valueOf(quantity));
-        holder.immagine.setImageResource(R.drawable.spritz);
-
+        holder.id = drink.getId();
+        caricaImmagini(holder);
         if(PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getBoolean(ImpostazioniActivity.CHIAVE_STATO_SWITCH, false)){
             holder.itemView.setBackgroundColor(context.getResources().getColor(android.R.color.white));
             holder.nome.setTextColor(context.getResources().getColor(android.R.color.black));
@@ -168,5 +169,15 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
     @Override
     public int getItemCount() {
         return drinkOrdines.size();
+    }
+
+
+    private void caricaImmagini(@NonNull CarrelloHolder holder) {
+        try {
+            CaricatoreImmaginiCarrello caricatoreImmagini = new CaricatoreImmaginiCarrello(controller, context, holder);
+            caricatoreImmagini.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

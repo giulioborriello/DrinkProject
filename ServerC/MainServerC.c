@@ -10,7 +10,7 @@
 #include "SocketLib.h"
 #include "PostgreSQLlib.h"
 #include "CodaConnessioni.h"
-
+//gcc -g CodaConnessioni.c SocketLib.c MainServerC.c PostgreSQLlib.c -I/usr/include/postgresql  -lpq -o Server
 void* thread_function(void* args);
 
 

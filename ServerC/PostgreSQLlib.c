@@ -69,7 +69,7 @@ void querySQL (char *query, PGconn *conn, PGresult **res){
       printf("\n");
    	  }
 	}else{
-		res = NULL;
+		*res = NULL;
 	}
    
    printf("Fine tabella\n");

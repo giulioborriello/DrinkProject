@@ -1,9 +1,6 @@
     package com.example.drinkproject.views;
 
-    import android.app.Activity;
     import android.content.Context;
-    import android.graphics.Bitmap;
-    import android.graphics.BitmapFactory;
     import android.preference.PreferenceManager;
     import android.text.Editable;
     import android.text.TextWatcher;
@@ -12,14 +9,13 @@
     import android.view.ViewGroup;
     import android.widget.Filter;
     import android.widget.Filterable;
-    import android.widget.RelativeLayout;
 
     import androidx.annotation.NonNull;
     import androidx.recyclerview.widget.RecyclerView;
 
-    import com.example.drinkproject.MainActivity;
     import com.example.drinkproject.R;
     import com.example.drinkproject.activities.ImpostazioniActivity;
+    import com.example.drinkproject.classiDiSupporto.CaricatoreImmaginiLista;
     import com.example.drinkproject.classiDiSupporto.ImpostazioniAttributi;
 
     import java.util.ArrayList;
@@ -35,6 +31,7 @@
         Controller controller = Controller.getInstance();
         private List<Drink> drinks = controller.getDrinks();
         private final List<Drink> filteredDrinks = new ArrayList<>(drinks);
+
 
         public DrinksAdapter(Context context) {
             this.context = context;
@@ -74,35 +71,14 @@
                 holder.quantita.setTextColor(context.getResources().getColor(android.R.color.white));
             }
 
-            holder.nome.setText(name);
-            holder.descrizione.setText(description);
-            holder.prezzo.setText(price);
-            holder.immagine.setImageResource(R.drawable.spritz);
 
-            new Thread(() -> {
-                try {
-                    byte[] immagineBytes = controller.getImmagineByID(filteredDrinks.get(position).getId());
-                    Bitmap bitmap = null;
-                    if (immagineBytes != null) {
-                        bitmap = BitmapFactory.decodeByteArray(immagineBytes, 0, immagineBytes.length);
-                    }
-
-                    final Bitmap finalBitmap = bitmap;
-                    ((Activity) context).runOnUiThread(() -> {
-                        if (finalBitmap != null) {
-                            holder.immagine.setImageBitmap(finalBitmap);
-                        } else {
-                            holder.immagine.setImageResource(R.drawable.spritz);
-                        }
-                    });
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
 
             holder.id = filteredDrinks.get(position).getId();
             String id = filteredDrinks.get(position).getId();
+
+            settaNomeDescrizionePrezzo(holder, name, description, price);
+            caricaImmagini(holder);
+
             String quantitaOrdinata = controller.getQuantitaOrdinata(id);
             holder.quantita.setText(quantitaOrdinata);
 
@@ -155,9 +131,20 @@
             });
         }
 
+        private static void settaNomeDescrizionePrezzo(@NonNull DrinksHolder holder, String name, String description, String price) {
+            holder.nome.setText(name);
+            holder.descrizione.setText(description);
+            holder.prezzo.setText(price);
+        }
 
-        public interface OnClickListener {
-            void onClick(int position, Drink drink);
+
+        private void caricaImmagini(@NonNull DrinksHolder holder) {
+            try {
+                CaricatoreImmaginiLista caricatoreImmagini = new CaricatoreImmaginiLista(controller, context, holder);
+                caricatoreImmagini.execute();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
 
