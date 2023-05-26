@@ -223,14 +223,27 @@ public class Connessione {
         if (res.get(0).equals(FAILURE)) return  null;
         return (ArrayList<String>) res;
     }
-    public boolean signIn(String name, String surname, String username, String password){
+    public Utente signIn(String name, String surname, String username, String password){
 
         String query= " INSERT INTO utente " +
                 " (nome, cognome email, password) " +
                 " VALUES (" +
                 "'" + name+ "'," + "'" + surname+ "'," + "'" + username+ "'," + "'" + password+"'" +
                 ") ";
-        return sendInsert(query);
+        if( sendInsert(query)){
+            String querySelectID ="SELECT id " +
+                    "FROM utente " +
+                    "WHERE email='"+surname+"' AND password='"+password+"'";
+            List<String> resId= null;
+            try {
+                resId = sendSelect(querySelectID);
+            } catch (IOException e) {
+                return null;
+            }
+            if (resId.get(0).equals(FAILURE)) return null;
+
+            return new Utente(resId.get(0),name,surname,username,password);
+        }else return null;
     }
 
     public boolean effettuaPagamento(Utente utente){

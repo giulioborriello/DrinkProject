@@ -103,22 +103,7 @@ public class Controller {
 
 
 
-/*
-    public byte[] restituisciImmagineFake(String pathImmagine) throws IOException{
-        File file = new File(pathImmagine);
-        byte[] contenutoFile = new byte[(int) file.length()];
-        try (FileInputStream inputStream = new FileInputStream(file)) {
-            //noinspection ResultOfMethodCallIgnored
-            inputStream.read(contenutoFile);
-        }
-        Connessione.getInstance().sendSelect("Select Immagine from drink where id=1");
 
-
-        return contenutoFile;
-
-
-    }
-*/
     public void dumpCategoria (){
         List<String> res = null;
         try {
@@ -199,13 +184,12 @@ public class Controller {
     }
     public boolean signIn(String name, String surname, String username, String password) {
 
-       // try {
-       //     if (Connessione.getInstance().signIn(name,surname,username,password)){
-                utente = new Utente("0", name, surname, username, password);
-       //     }else return false;
-        //} catch (IOException e) {
-        //    throw new RuntimeException(e);
-        //}
+        try {
+            utente= Connessione.getInstance().signIn(name,surname,username,password);
+            if (utente!=null) return false ;
+        } catch (IOException e) {
+            return false;
+        }
         return true;
     }
 
