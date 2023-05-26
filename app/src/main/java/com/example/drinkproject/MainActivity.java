@@ -91,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                         super.onAuthenticationSucceeded(result);
+                        //recupero dati utente
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
+                        String email = sharedPreferences.getString("email", "");
+                        String password = sharedPreferences.getString("password", "");
+
                         Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
                         startActivity(intent);
                     }
