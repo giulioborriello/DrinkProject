@@ -1,6 +1,7 @@
 package com.example.drinkproject.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,10 +18,13 @@ import android.widget.Toast;
 import com.example.drinkproject.R;
 import com.example.drinkproject.classiDiSupporto.CreditCardTextWatcher;
 
+import java.util.concurrent.Executor;
+
 import controller.Controller;
 
 public class PagamentoActivity extends AppCompatActivity {
-    private Controller controller = Controller.getInstance();
+    private Controller controller;
+    private Executor executor;
     private EditText numeroCarta, nomeProprietarioCarta, cognomeProprietarioCarta, cvvCarta;
     private Spinner mesiSpinner, anniSpinner;
     private View pagamentoButton, impostazioniPulsante;
@@ -30,10 +34,35 @@ public class PagamentoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ottieniLaConnessione();
         setContentView(R.layout.activity_pagamento);
         effettuaIlCollegamentoDelleViews();
         numeroCarta.addTextChangedListener(new CreditCardTextWatcher(numeroCarta));
         settaGliSpinner();
+    }
+
+
+    private void ottieniLaConnessione() {
+        executor = ContextCompat.getMainExecutor(this);
+        Thread controllerThread = new Thread(() -> {
+            try {
+                controller = Controller.getInstance();
+            } catch (Exception e) {
+                //TODO: aggiungere fakedump
+                e.printStackTrace();
+            }
+        });
+        attivaIlThreadEAttendi(controllerThread);
+    }
+
+
+    private static void attivaIlThreadEAttendi(Thread controllerThread) {
+        controllerThread.start();
+        try {
+            controllerThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -113,8 +142,6 @@ public class PagamentoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
         View pagamentoButton = findViewById(R.id.pulsanteConfermaDati);
         pagamentoButton.setOnClickListener(new View.OnClickListener() {
             final String nome = ((EditText) findViewById(R.id.nomeProprietarioCarta)).getText().toString();
@@ -125,7 +152,13 @@ public class PagamentoActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                if (controller.effettuaPagamento(nome, cognome, numeroCarta, dataScadenza, cvv)) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        controller.effettuaPagamento(nome, cognome, numeroCarta, dataScadenza, cvv);
+                    }
+                });
+                if (Controller.pagamentoEffettuatoConSuccesso) {
                     controller.svuotaCarrello();
                     Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
                     startActivity(intent);

@@ -2,7 +2,6 @@ package com.example.drinkproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.biometric.BiometricPrompt;
@@ -23,14 +22,13 @@ import com.example.drinkproject.activities.ImpostazioniActivity;
 import com.example.drinkproject.activities.RegistrazioneActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.IOException;
 import java.util.concurrent.Executor;
 
 import controller.Controller;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends AppCompatActivity {
-    private Controller  controller=null;
+    private Controller  controller;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
     private  boolean doubleBackToExitPressedOnce=false;
@@ -41,36 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Ottenere l'executor dell'UI thread
-        executor = ContextCompat.getMainExecutor(this);
-
-        // Postare un messaggio sulla coda dell'UI thread
-        //TODO USARE MEtodo della prof
-        // public void onClick(View v) {
-        //    // Crea un nuovo thread
-        //    new Thread(() -> {
-        //        // Carica un'immagine da una sorgente remota
-        //        final Bitmap b = caricaDaRete();
-        //        // Imposta l'immagine caricata nella ImageView sulla UI thread
-        //        iv.post(() -> {
-        //            iv.setImageBitmap(b);
-        //        });
-        //    }).start();
-        //}
-        executor.execute(() -> {
-            // dump dati
-            new Thread(() -> {
-                controller = null;
-                try {
-                    controller = Controller.getInstance();
-                } catch (Exception e) {
-                    //TODO: aggiungere fakedump
-                    e.printStackTrace();
-                }
-            }).start();
-        });
-
+        ottieniLaConnessione();
         SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
         if (sharedPreferences.contains("email") && sharedPreferences.contains("password")) {
             // Le credenziali dell'utente sono state salvate in precedenza
@@ -97,8 +66,30 @@ public class MainActivity extends AppCompatActivity {
                         String email = sharedPreferences.getString("email", "");
                         String password = sharedPreferences.getString("password", "");
 
-                        Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
-                        startActivity(intent);
+                        Thread loginThread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                controller.login(email, password);
+                                SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("email", email);
+                                editor.putString("password", password);
+                                editor.apply();
+                            }
+                        });
+                        try {
+                            loginThread.start();
+                            loginThread.join();
+                            if(controller.eLoggato()){
+                                Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
+                                startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(), "Credenziali errate", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (InterruptedException e) {
+                            Toast.makeText(getApplicationContext(), "Si è verificato un errore", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -121,6 +112,30 @@ public class MainActivity extends AppCompatActivity {
                 FloatingActionButton biometricLoginButton = findViewById(R.id.biometricLogInButton);
                 biometricLoginButton.setClickable(false);
             }
+        }
+    }
+
+
+    private void ottieniLaConnessione() {
+        executor = ContextCompat.getMainExecutor(this);
+        Thread controllerThread = new Thread(() -> {
+            try {
+                controller = Controller.getInstance();
+            } catch (Exception e) {
+                //TODO: aggiungere fakedump
+                e.printStackTrace();
+            }
+        });
+        attivaIlThreadEAttendi(controllerThread);
+    }
+
+
+    private static void attivaIlThreadEAttendi(Thread controllerThread) {
+        controllerThread.start();
+        try {
+            controllerThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

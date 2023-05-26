@@ -3,6 +3,7 @@ package com.example.drinkproject.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,11 +19,15 @@ import android.widget.Toast;
 
 import com.example.drinkproject.R;
 import com.example.drinkproject.views.CarrelloAdapter;
+import com.example.drinkproject.views.CarrelloAdapter2;
+
+import java.util.concurrent.Executor;
 
 import controller.Controller;
 
 public class CarrelloActivity extends AppCompatActivity {
-    private Controller controller = Controller.getInstance();
+    private Controller controller;
+    private Executor executor;
     RecyclerView recyclerView;
     CarrelloAdapter myAdapter;
     private View vaiAlPagamentoPulsante;
@@ -32,9 +37,33 @@ public class CarrelloActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrello);
+        ottieniLaConnessione();
         effettuaIlCollegamentoDelleViews();
         creaAdapter();
+    }
 
+
+    private void ottieniLaConnessione() {
+        executor = ContextCompat.getMainExecutor(this);
+        Thread controllerThread = new Thread(() -> {
+            try {
+                controller = Controller.getInstance();
+            } catch (Exception e) {
+                //TODO: aggiungere fakedump
+                e.printStackTrace();
+            }
+        });
+        attivaIlThreadEAttendi(controllerThread);
+    }
+
+
+    private static void attivaIlThreadEAttendi(Thread controllerThread) {
+        controllerThread.start();
+        try {
+            controllerThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

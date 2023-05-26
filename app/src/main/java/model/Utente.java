@@ -84,4 +84,8 @@ public class Utente {
     public void svuotaCarrello() {
         this.carrello.svuotaCarrello();
     }
+
+    public void ricompattaArray() {
+        this.carrello.ricompattaArray();
+    }
 }

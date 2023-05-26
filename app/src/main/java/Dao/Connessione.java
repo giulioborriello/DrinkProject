@@ -101,9 +101,8 @@ public class Connessione {
         } catch (IOException e) {
             return false;
         }
-        return risposta.equals(SUCCESS);
-
-
+        boolean b = risposta.equals(SUCCESS);
+        return b;
     }
 
     public boolean sendUpdate(String query) {
@@ -224,26 +223,18 @@ public class Connessione {
         return (ArrayList<String>) res;
     }
     public Utente signIn(String name, String surname, String username, String password){
-
+        String queryMaxIdUtente="( select max(id)+1 from utente )";
         String query= " INSERT INTO utente " +
-                " (nome, cognome email, password) " +
-                " VALUES (" +
+                " (id, nome, cognome, email, password) " +
+                " VALUES (" + queryMaxIdUtente + "," +
                 "'" + name+ "'," + "'" + surname+ "'," + "'" + username+ "'," + "'" + password+"'" +
                 ") ";
-        if( sendInsert(query)){
-            String querySelectID ="SELECT id " +
-                    "FROM utente " +
-                    "WHERE email='"+surname+"' AND password='"+password+"'";
-            List<String> resId= null;
-            try {
-                resId = sendSelect(querySelectID);
-            } catch (IOException e) {
-                return null;
-            }
-            if (resId.get(0).equals(FAILURE)) return null;
 
-            return new Utente(resId.get(0),name,surname,username,password);
-        }else return null;
+
+        if (sendInsert(query))
+            return new Utente(Integer.toString(0),name,surname,username,password);
+        else
+            return null;
     }
 
     public boolean effettuaPagamento(Utente utente){
@@ -259,13 +250,25 @@ public class Connessione {
         }
         int idOrdine = Integer.parseInt(resIdOrdine.get(0)) +1;
 
+        try {
+            Connessione.getInstance().close();
+            Connessione.getInstance();
+        } catch (IOException e) {
+            return false;
+        }
+
         String queryIsertOrdine= " INSERT INTO ordine (id, utente_id) " +
                 " VALUES("+idOrdine+", "+utente.getId()+") ";
         if (!sendInsert(queryIsertOrdine)){
             return false;
         }
 
-
+        try {
+            Connessione.getInstance().close();
+            Connessione.getInstance();
+        } catch (IOException e) {
+            return false;
+        }
 
         String queryClone = "INSERT INTO public.drink_ordine( \n" +
                 "\t drink_id, ordine_id, quantita, prezzo) \n" +

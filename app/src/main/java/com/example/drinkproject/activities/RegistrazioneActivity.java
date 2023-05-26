@@ -2,6 +2,7 @@ package com.example.drinkproject.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,13 +15,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.drinkproject.MainActivity;
 import com.example.drinkproject.R;
+
+import java.util.concurrent.Executor;
 
 import controller.Controller;
 
 public class RegistrazioneActivity extends AppCompatActivity {
-    Controller controller = Controller.getInstance();
+    private Controller controller;
+    private Executor executor;
     private EditText registraIlNome, registraIlCognome, registraUsername, registraLaPassword;
 
 
@@ -28,9 +31,33 @@ public class RegistrazioneActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrazione);
-
+        ottieniLaConnessione();
         effettuaIlCollegamentoDelleViews();
-        settaIListner();
+        settaIlListnerDellaRegisrazione();
+    }
+
+
+    private void ottieniLaConnessione() {
+        executor = ContextCompat.getMainExecutor(this);
+        Thread controllerThread = new Thread(() -> {
+            try {
+                controller = Controller.getInstance();
+            } catch (Exception e) {
+                //TODO: aggiungere fakedump
+                e.printStackTrace();
+            }
+        });
+        attivaIlThreadEAttendi(controllerThread);
+    }
+
+
+    private static void attivaIlThreadEAttendi(Thread controllerThread) {
+        controllerThread.start();
+        try {
+            controllerThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -49,7 +76,7 @@ public class RegistrazioneActivity extends AppCompatActivity {
     }
 
 
-    private void settaIListner() {
+    private void settaIlListnerDellaRegisrazione() {
         View registerButton = findViewById(R.id.submitRegistrationWithUsernameAndPassword);
         registerButton.setOnClickListener(v -> {
             EditText nomeEditText = findViewById(R.id.registraIlNome);
@@ -61,19 +88,29 @@ public class RegistrazioneActivity extends AppCompatActivity {
             String surname = cognomeEditText.getText().toString();
             String username = usernameEditText.getText().toString();
             String password = passwordEditText.getText().toString();
-
-            if(controller.signIn(name, surname, username, password)) {
-                SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("email", username);
-                editor.putString("password", password);
-                editor.apply();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            } else {
-                Toast.makeText(getApplicationContext(), "Username già in uso", Toast.LENGTH_SHORT).show();
+            Thread registrazioneThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    controller.signIn(name, surname, username, password);
+                }
+            });
+            try {
+                registrazioneThread.start();
+                registrazioneThread.join();
+                if(controller.eLoggato()) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", username);
+                    editor.putString("password", password);
+                    editor.apply();
+                    Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Registazione fallita", Toast.LENGTH_SHORT).show();
+                }
+            } catch (InterruptedException e) {
+                Toast.makeText(getApplicationContext(), "Si è verificato un errore", Toast.LENGTH_SHORT).show();
             }
-
         });
     }
 

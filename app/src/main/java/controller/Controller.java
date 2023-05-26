@@ -19,6 +19,7 @@ public class Controller {
     private Utente utente = null;
     private static final ArrayList<Drink> listaDeiDrink = new ArrayList<>();
     private static ArrayList<String> categorie = new ArrayList<>();
+    public static boolean pagamentoEffettuatoConSuccesso = false;
 
     private Controller() {
         dumpEseguito=false;
@@ -131,18 +132,13 @@ public class Controller {
     }
 
 
-    public boolean login(String username, String password) {
+    public void login(String username, String password) {
         //check if username and password are valid
-
         try {
             utente = Connessione.getInstance().login(username,password);
-            return utente != null;
         } catch (IOException e) {
             utente = null;
-            return false;
         }
-
-
     }
 
 
@@ -183,13 +179,21 @@ public class Controller {
         return  listaSuggerita;
     }
     public boolean signIn(String name, String surname, String username, String password) {
-
         try {
             utente= Connessione.getInstance().signIn(name,surname,username,password);
-            if (utente!=null) return false ;
+            if (utente==null)
+                return false;
         } catch (IOException e) {
             return false;
         }
+        String id = null;
+        try {
+            Connessione.getInstance().close();
+            id = Connessione.getInstance().sendSelect("SELECT id FROM utente WHERE email = '" + username + "'").get(0);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        utente.setId(id);
         return true;
     }
 
@@ -265,6 +269,11 @@ public class Controller {
     }
 
 
+    public void ricompattaArray(){
+        utente.ricompattaArray();
+    }
+
+
     public boolean removeDrink(String idDrink, int quantity) {
         //recupera drink
         Drink idDrinkDaRimuovere = getDrinkByID(idDrink);
@@ -298,6 +307,8 @@ public class Controller {
 
 
     private boolean esisteIlDrinkNelCarrello(String idDrink) {
+        if (utente == null) return false;
+        if (utente.getDrinkOrdineList() == null || utente.getDrinkOrdineList().size() == 0) return false;
         for (DrinkOrdine drinkOrdine : utente.getDrinkOrdineList()) {
             if (drinkOrdine.getDrink() == null) break;
             if (drinkOrdine.getDrink().getId().equals(idDrink)) return true;
@@ -315,17 +326,17 @@ public class Controller {
     }
 
 
-    public boolean effettuaPagamento(String nome, String cognome, String numerocarta, String dataScadenza, String cvv) {
+    public void effettuaPagamento(String nome, String cognome, String numerocarta, String dataScadenza, String cvv) {
+        pagamentoEffettuatoConSuccesso = false;
         try {
             if(!Connessione.getInstance().effettuaPagamento(utente)){
-                return false;
+                pagamentoEffettuatoConSuccesso = false;
             }
         } catch (IOException e) {
             //ERROR DI COMUNICAZIONE SERVER
-            return false;
+            pagamentoEffettuatoConSuccesso = false;
         }
-        return true;
-
+        pagamentoEffettuatoConSuccesso = true;
     }
 
 

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.drinkproject.R;
 import com.example.drinkproject.classiDiSupporto.FiltroQuantitaMassima;
+import com.example.drinkproject.classiDiSupporto.FiltroSoloNumeri;
 
 public class DrinksHolder extends RecyclerView.ViewHolder {
     public ImageView immagine;
@@ -30,14 +31,20 @@ public class DrinksHolder extends RecyclerView.ViewHolder {
         descrizione = itemView.findViewById(R.id.descrizioneDrink);
 
         quantita = itemView.findViewById(R.id.quantitaDrinkCarrello);
-        impostaFiltroQuantitaMassima();
+        impostaFiltri();
+
+        InputFilter filtroSoloNumeri = new FiltroSoloNumeri();
+        quantita.setFilters(new InputFilter[]{filtroSoloNumeri});
 
         aggiungiUnDrink = itemView.findViewById(R.id.pulsantePiu);
         rimuoviUnDrink = itemView.findViewById(R.id.pulsanteMeno);
     }
 
-    private void impostaFiltroQuantitaMassima() {
+
+    private void impostaFiltri() {
         InputFilter filtroQuantitaMassima = new FiltroQuantitaMassima();
-        quantita.setFilters(new InputFilter[]{filtroQuantitaMassima});
+        InputFilter filtroSoloNumeri = new FiltroSoloNumeri();
+        InputFilter[] filters = new InputFilter[]{filtroQuantitaMassima, filtroSoloNumeri};
+        quantita.setFilters(filters);
     }
 }

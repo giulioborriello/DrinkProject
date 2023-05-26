@@ -80,7 +80,6 @@
         android:layout_below="@id/descrizioneDrink"
         android:textAlignment="center"
         android:inputType="number"
+        android:digits="0123456789"
         android:textColor="@color/white"/>
-
-
 </RelativeLayout>

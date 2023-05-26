@@ -2,6 +2,7 @@ package com.example.drinkproject.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,15 +25,15 @@ import com.example.drinkproject.R;
 import com.example.drinkproject.views.DrinksAdapter;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
 import controller.Controller;
 import model.Drink;
 
 public class DrinkActivity extends AppCompatActivity {
-    private final Controller controller = Controller.getInstance();
-    List<Drink> drinks = controller.getDrinks();
+    private Controller controller;
+    private Executor executor;
     private  boolean doubleBackToExitPressedOnce = false;
-
     private DrinksAdapter myAdapter;
     private RecyclerView recyclerView;
     private View impostazioniPulsante, pulsanteVaiAlCarrello;
@@ -43,12 +44,38 @@ public class DrinkActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        ottieniLaConnessione();
+        List<Drink> drinks = controller.getDrinks();
         setContentView(R.layout.activity_drink);
         effettuaIlCollegamentoDelleViews();
         //TODO add logic for filter menu and query to db
         settaIListner();
         settaIFiltri();
         settaLaRecyclerView();
+    }
+
+
+    private void ottieniLaConnessione() {
+        executor = ContextCompat.getMainExecutor(this);
+        Thread controllerThread = new Thread(() -> {
+            try {
+                controller = Controller.getInstance();
+            } catch (Exception e) {
+                //TODO: aggiungere fakedump
+                e.printStackTrace();
+            }
+        });
+        attivaIlThreadEAttendi(controllerThread);
+    }
+
+
+    private static void attivaIlThreadEAttendi(Thread controllerThread) {
+        controllerThread.start();
+        try {
+            controllerThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

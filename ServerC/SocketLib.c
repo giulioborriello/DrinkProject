@@ -82,7 +82,7 @@ void* handle_connection(void* client_socket_input){
         if (table!= NULL){
         	sendDataTable(table, client_socket);	
 		}else{
-			message="FAILIURE";
+			message="FAILIURE\n";
 			sendDataString(client_socket, message);
 		}
         
@@ -91,17 +91,17 @@ void* handle_connection(void* client_socket_input){
         break;
     case 1: //"insert"
         insertSQL(token, conn);
-        message="Insert avvenuto con successo.";
+        message="SUCCESS\n";
         sendDataString(client_socket, message);
         break;
     case 2: //"update"
         updateSQL(token, conn);
-        message="Update avvenuto con successo.";
+        message="SUCCESS\n";
         sendDataString(client_socket, message);
         break;
     case 3: //"delete"
         deleteSQL(token, conn);
-        message="Delete avvenuto con successo.";
+        message="SUCCESS\n";
         sendDataString(client_socket, message);
         break;    
     default:

@@ -125,8 +125,15 @@
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if(s!=null && !s.toString().equals(""))
-                        controller.updateDrink(filteredDrinks.get(position).getId(), Integer.parseInt(s.toString()));
+                   // if(s!=null && !s.toString().equals(""))
+                  //      controller.updateDrink(filteredDrinks.get(position).getId(), Integer.parseInt(s.toString()));
+
+                    if (s != null && !s.toString().equals("")) {
+                        int quantity = Integer.parseInt(s.toString());
+                        if (position >= 0 && position < filteredDrinks.size()) {
+                            controller.updateDrink(filteredDrinks.get(position).getId(), quantity);
+                        }
+                    }
                 }
             });
         }

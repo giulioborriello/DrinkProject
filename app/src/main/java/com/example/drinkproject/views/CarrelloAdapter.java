@@ -1,6 +1,5 @@
 package com.example.drinkproject.views;
 
-import android.app.Notification;
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -17,10 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.drinkproject.R;
 import com.example.drinkproject.activities.ImpostazioniActivity;
 import com.example.drinkproject.classiDiSupporto.CaricatoreImmaginiCarrello;
-import com.example.drinkproject.classiDiSupporto.CaricatoreImmaginiLista;
 import com.example.drinkproject.classiDiSupporto.SwipeToDeleteCallback;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import controller.Controller;
 import model.Drink;
@@ -32,7 +33,9 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
     private final Controller controller = Controller.getInstance();
     private final TextView totale;
     private final RecyclerView recyclerView;
-    private List<DrinkOrdine> drinkOrdines = controller.getSummary();
+    private List<DrinkOrdine> listaDeiDrinkOrdinati = controller.getSummary();
+    private Map<String,Integer> positions = new HashMap<>();
+
 
     public CarrelloAdapter(Context context, TextView totale, RecyclerView recyclerView) {
         this.context = context;
@@ -43,8 +46,8 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                DrinkOrdine drinkOrdine = drinkOrdines.get(position);
-                Drink drink = drinkOrdine.getDrink();
+                DrinkOrdine drinkOrdinato = listaDeiDrinkOrdinati.get(position);
+                Drink drink = drinkOrdinato.getDrink();
                 if (drink == null) {
                     return;
                 }
@@ -69,7 +72,7 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CarrelloHolder holder, int position) {
-        DrinkOrdine drinkOrdine = drinkOrdines.get(position);
+        DrinkOrdine drinkOrdine = listaDeiDrinkOrdinati.get(position);
         Drink drink =  drinkOrdine.getDrink();
 
         if (drink == null) {
@@ -78,6 +81,7 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
 
         String name = drink.getNome();
         String description = drink.getDescrizione();
+        String id = drink.getId();
         double price = drink.getPrezzo();
         int quantity = drinkOrdine.getQuantita();
 
@@ -85,7 +89,7 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
         holder.descrizione.setText(description);
         holder.prezzo.setText(String.valueOf(price*quantity));
         holder.quantita.setText(String.valueOf(quantity));
-        holder.id = drink.getId();
+        holder.id = id;
         caricaImmagini(holder);
         if(PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getBoolean(ImpostazioniActivity.CHIAVE_STATO_SWITCH, false)){
             holder.itemView.setBackgroundColor(context.getResources().getColor(android.R.color.white));
@@ -133,25 +137,45 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
         holder.quantita.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 if(s!=null && !s.toString().equals("0") && !s.toString().equals("")) {
-                    controller.updateDrink(drinkOrdines.get(position).getDrink().getId(), Integer.parseInt(s.toString()));
-                    totale.setText(controller.getPrezzoTotale());
+                    if (position >= 0 && position < listaDeiDrinkOrdinati.size()) {
+                        controller.updateDrink(listaDeiDrinkOrdinati.get(position).getDrink().getId(), Integer.parseInt(s.toString()));
+                        totale.setText(controller.getPrezzoTotale());
+                    }
                 }
                 else if (s != null && s.toString().equals("0")) {
-                    controller.removeDrink(drink.getId());
-                    controller.updateDrink(drink.getId(), 0);
-                    removeItem(position);
-                    totale.setText(controller.getPrezzoTotale());
+                    int currentPosition = holder.getAdapterPosition();
+                    if(currentPosition >= 0 && currentPosition < listaDeiDrinkOrdinati.size()) {
+                        controller.removeDrink(drink.getId());
+                        controller.updateDrink(drink.getId(), 0);
+
+                        /*
+                        List<String> idDrinkDaModificareList = new ArrayList<>();
+                        boolean trovato = false;
+                        for (DrinkOrdine drinkOrdine1 : listaDeiDrinkOrdinati) {
+                            if (trovato) {
+                                idDrinkDaModificareList.add(drinkOrdine1.getDrink().getId());
+                            }
+                            else if (id.equals(drinkOrdine1.getDrink().getId())) {
+                                trovato = true;
+                            }
+                        }
+                        for (String idDrinkDaModificare : idDrinkDaModificareList) {
+                            int posizione = positions.get(idDrinkDaModificare);
+                            positions.put(idDrinkDaModificare, posizione-1);
+                        }
+                         */
+                        removeItem(currentPosition);
+                        totale.setText(controller.getPrezzoTotale());
+                    }
                 }
             }
         });
@@ -163,12 +187,13 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
 
     public void removeItem(int position) {
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position, listaDeiDrinkOrdinati.size());
     }
 
 
     @Override
     public int getItemCount() {
-        return drinkOrdines.size();
+        return listaDeiDrinkOrdinati.size();
     }
 
 

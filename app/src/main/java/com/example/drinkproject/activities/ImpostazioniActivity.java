@@ -72,10 +72,10 @@ public class ImpostazioniActivity extends AppCompatActivity {
     });
     }
 
+
     private void setTextColorForAllViews(ViewGroup viewGroup, int color) {
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View view = viewGroup.getChildAt(i);
-
             if (view instanceof ViewGroup) {
                 setTextColorForAllViews((ViewGroup) view, color);
             } else if (view instanceof TextView) {
@@ -83,6 +83,7 @@ public class ImpostazioniActivity extends AppCompatActivity {
             }
         }
     }
+
 
     @Override
     public void onBackPressed() {

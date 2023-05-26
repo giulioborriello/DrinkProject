@@ -94,4 +94,8 @@ public class Carrello {
     public void svuotaCarrello() {
         this.drink_ordineArrayList.clear();
     }
+
+    public void ricompattaArray() {
+        this.drink_ordineArrayList.trimToSize();
+    }
 }
