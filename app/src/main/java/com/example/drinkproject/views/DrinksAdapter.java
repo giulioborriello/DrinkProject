@@ -179,11 +179,11 @@
                 protected void publishResults(CharSequence constraint, FilterResults results) {
                     filteredDrinks.clear();
                     filteredDrinks.addAll((List<Drink>) results.values);
-
                     notifyDataSetChanged();
                 }
             });
         }
+
 
         private void filtraInBaseAllaCategoria(String filterString, List<Drink> filteredList) {
             if (filterString.equalsIgnoreCase("Tutti")) {

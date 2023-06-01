@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.example.drinkproject.R;
 import com.example.drinkproject.views.CarrelloAdapter;
-import com.example.drinkproject.views.CarrelloAdapter2;
 
 import java.util.concurrent.Executor;
 

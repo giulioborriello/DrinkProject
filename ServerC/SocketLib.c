@@ -57,10 +57,10 @@ void* handle_connection(void* client_socket_input){
     buffer[msgsize-1] = 0; //null termina il messaggio e rimuove \name
 
     printf("REQUEST: %s\n", buffer);
-    //printf("Flag 1\n");
+    printf("Flag 1\n");
     strcpy(message,buffer);
 	printf("REQUEST: %s\n", message);
-	//printf("Flag 2\n");
+	printf("Flag 2\n");
     fflush(stdout);
     //char* rest = message;   
  	//SQLrequest = strtok_r(rest, SEPARATOR, &rest);
@@ -130,19 +130,20 @@ void sendDataTable(PGresult *table, int client_socket){
     		char* field = PQgetvalue(table, i, j);
             size_t lunghezza = strlen(field);
             send(client_socket, field, strlen(field), 0);
-    	field = "\n";
-		check(send(client_socket, field, strlen(field), 0);, "Server in avaria, send error");
+            field = "\n";
+            send(client_socket, field, strlen(field), 0);
+		}
 	}
-	//printf("Flag prima del free\n");
+	printf("Flag prima del free\n");
     field=PQgetvalue(table,0,0);
-    check(send(client_socket, field, strlen(field), 0);, "Server in avaria, send error");
+    send(client_socket, field, strlen(field), 0); 
     
-    //TODO sistemare problema free incompatible tipe
     //free(field);
 }
 
 void sendDataString(int client_socket, char* string){
     char buffer[BUFSIZE];
     strcpy(buffer, string);
-    check(write(client_socket,buffer,strlen(string)),"Server in avaria, write error");
+    write(client_socket,buffer,strlen(string));
 }
+

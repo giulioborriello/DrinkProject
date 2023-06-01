@@ -173,6 +173,8 @@ public class Connessione {
 
 
     }
+
+
     public ArrayList<Drink> getListaDrink(){
         String query="SELECT id, nome, categoria, descrizione, prezzo " +
                 " FROM drink " ;
@@ -185,6 +187,7 @@ public class Connessione {
         ArrayList<Drink> listaDrink=new ArrayList<>();
         for (int i=0;i<res.size()-1;i+=5) {
             String id = res.get(i);
+            System.out.println("primo debug: " + id);
             String nome= res.get(i+1);
             String categoria = res.get(i+2);
             String descrizione = res.get(i+3);
@@ -236,9 +239,8 @@ public class Connessione {
         else
             return null;
     }
-
+/*
     public boolean effettuaPagamento(Utente utente){
-
 
         String queryMaxIdOrdine="select max(id) from ordine";
         List<String> resIdOrdine;
@@ -287,5 +289,41 @@ public class Connessione {
 
         return sendInsert(String.valueOf(query));
     }
+*/
+    public boolean effettuaPagamento(Utente utente){
+        //CALL public.salva_ordine(9, ARRAY[3, 5], ARRAY[2, 1]);
+        String query="CALL public.salva_ordine";
+        String idUtente=utente.getId();
+        String stringaPerArrayDeiDrink="Array[";
+        String stringaPerArrayDellaQuantita="Array[";
+        for (DrinkOrdine drinkOrdinato :utente.getDrinkOrdineList() ) {
+            stringaPerArrayDeiDrink+=drinkOrdinato.getDrink().getId()+" ,";
+            stringaPerArrayDellaQuantita+=drinkOrdinato.getQuantita()+" ,";
+        }
+        stringaPerArrayDeiDrink=rimuoviultimaVirgola(stringaPerArrayDeiDrink)+"]";
+        stringaPerArrayDellaQuantita =rimuoviultimaVirgola(stringaPerArrayDellaQuantita)+"]";
+        query+="("+idUtente+","+
+                stringaPerArrayDeiDrink+","+
+                stringaPerArrayDellaQuantita+")";
+        return sendInsert(String.valueOf(query));
+    }
+
+
+    private String rimuoviultimaVirgola(String str) {
+        return str.substring(0,str.lastIndexOf(","));
+    }
+
+
+    public List<String> getSuggerimentiInBaseAlleTendenze(String idUtente){
+        List<String> listaDrinkSuggeriti = new ArrayList<>();
+        try {
+            listaDrinkSuggeriti = sendSelect("SELECT id FROM public.raccomanda_drink(" + idUtente + ") ");
+            if (listaDrinkSuggeriti.get(0).equals(FAILURE)) return null;
+        } catch (IOException e) {
+            return null;
+        }
+        return listaDrinkSuggeriti;
+    }
 }
+
 

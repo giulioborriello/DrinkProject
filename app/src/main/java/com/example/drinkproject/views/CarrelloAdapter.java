@@ -173,6 +173,7 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
                             positions.put(idDrinkDaModificare, posizione-1);
                         }
                          */
+
                         removeItem(currentPosition);
                         totale.setText(controller.getPrezzoTotale());
                     }

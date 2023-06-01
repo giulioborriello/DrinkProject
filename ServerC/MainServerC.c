@@ -66,6 +66,7 @@ int main (int argc , char **argv)
 
 /// @brief funzione che accoda le connessioni per poi essere processate
 /// @param args argomenti della funzione 
+/// @return 
 void* thread_function(void* args){
     while (true)
     {

@@ -110,12 +110,12 @@ public class Controller {
         try {
             res = Connessione.getInstance().getCategoria();
         } catch (IOException ex) {
-            categorie= new ArrayList<>(Arrays.asList("Tutti","Frullati", "Alcolici", "Analcolici","Consigliati in base ai tuoi gusti","Consigliati in base alle tendenze"));
+            categorie= new ArrayList<>(Arrays.asList("Tutti","Frullati", "Alcolici", "Analcolici","Consigliati in base ai tuoi gusti","Consigliati in base alle tue tendenze"));
         }
-        if (res==null) categorie= new ArrayList<>(Arrays.asList("Tutti","Frullati", "Alcolici", "Analcolici","Consigliati in base ai tuoi gusti","Consigliati in base alle tendenze"));
+        if (res==null) categorie= new ArrayList<>(Arrays.asList("Tutti","Frullati", "Alcolici", "Analcolici","Consigliati in base ai tuoi gusti","Consigliati in base alle tue tendenze"));
     else {
         categorie.add("Tutti");
-        categorie.addAll(res); categorie.add("Consigliati in base ai tuoi gusti"); categorie.add("Consigliati in base alle tendenze");
+        categorie.addAll(res); categorie.add("Consigliati in base ai tuoi gusti"); categorie.add("Consigliati in base alle tue tendenze");
     }
 
     }
@@ -124,7 +124,7 @@ public class Controller {
     public void dump() {
         //TODO fare il dump dei drink
         try {
-            listaDeiDrink.addAll( Connessione.getInstance().getListaDrink());
+            listaDeiDrink.addAll(Connessione.getInstance().getListaDrink());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -167,17 +167,20 @@ public class Controller {
 
 
     public ArrayList<Drink> getSuggerimentiInBaseAlleTendenze(){
-        //funzione di Rai
-        int idUtente= Integer.parseInt(utente.getId());
-        /*
-            SELECT public.raccomada_drink(<id_utente integer>)
-         */
-        //fake
         ArrayList<Drink> listaSuggerita=new ArrayList<>();
-        listaSuggerita.add(listaDeiDrink.get(1));
-
+        List<String> listaId = new ArrayList<>();
+        try {
+            listaId = Connessione.getInstance().getSuggerimentiInBaseAlleTendenze(String.valueOf(utente.getId()));
+        } catch (IOException e) {
+            return null;
+        }
+        for (String id : listaId) {
+            listaSuggerita.add(getDrinkByID(id));
+        }
         return  listaSuggerita;
     }
+
+
     public boolean signIn(String name, String surname, String username, String password) {
         try {
             utente= Connessione.getInstance().signIn(name,surname,username,password);
@@ -315,6 +318,7 @@ public class Controller {
         }
         return false;
     }
+
 
     public List<DrinkOrdine> getSummary() {
         return utente.getDrinkOrdineList();

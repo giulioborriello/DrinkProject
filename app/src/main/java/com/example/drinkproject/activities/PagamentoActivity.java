@@ -56,10 +56,10 @@ public class PagamentoActivity extends AppCompatActivity {
     }
 
 
-    private static void attivaIlThreadEAttendi(Thread controllerThread) {
-        controllerThread.start();
+    private static void attivaIlThreadEAttendi(Thread thread) {
         try {
-            controllerThread.join();
+            thread.start();
+            thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -142,6 +142,7 @@ public class PagamentoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         View pagamentoButton = findViewById(R.id.pulsanteConfermaDati);
         pagamentoButton.setOnClickListener(new View.OnClickListener() {
             final String nome = ((EditText) findViewById(R.id.nomeProprietarioCarta)).getText().toString();
@@ -158,6 +159,7 @@ public class PagamentoActivity extends AppCompatActivity {
                         controller.effettuaPagamento(nome, cognome, numeroCarta, dataScadenza, cvv);
                     }
                 });
+                attivaIlThreadEAttendi(thread);
                 if (Controller.pagamentoEffettuatoConSuccesso) {
                     controller.svuotaCarrello();
                     Intent intent = new Intent(getApplicationContext(), DrinkActivity.class);
