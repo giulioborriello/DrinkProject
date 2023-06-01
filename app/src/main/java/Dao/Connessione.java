@@ -134,7 +134,7 @@ public class Connessione {
        String querySelectUtente = "SELECT * " +
                "FROM utente " +
                "WHERE email='"+ username + "' AND " +
-               "password ='" + password + "'";
+               "password ='" + password + "' ORDER BY id";
 
        List<String> utenteRes;
 
@@ -160,7 +160,7 @@ public class Connessione {
     public byte[] getImmagineByID(String id ){
         String query ="SELECT immagine " +
                 "FROM drink " +
-                "WHERE id= "+id;
+                "WHERE id= "+id + " ORDER BY id";
 
         try {
             List<String> res=sendSelect(query);
@@ -177,7 +177,7 @@ public class Connessione {
 
     public ArrayList<Drink> getListaDrink(){
         String query="SELECT id, nome, categoria, descrizione, prezzo " +
-                " FROM drink " ;
+                " FROM drink ORDER BY nome" ;
         List<String> res;
         try {
             res = sendSelect(query);
@@ -200,7 +200,7 @@ public class Connessione {
 
     public ArrayList<String> getCategoria(){
         String query="SELECT DISTINCT categoria " +
-                " FROM drink ";
+                " FROM drink ORDER BY categoria" ;
         List<String> res;
         try {
             res = sendSelect(query);
@@ -215,7 +215,7 @@ public class Connessione {
 
     public ArrayList<String> getIDDrinkSuggeritiDiRaimondo(){
         String query="SELECT id " +
-                " FROM raccomanda_drink ";
+                " FROM raccomanda_drink ORDER BY id" ;
         List<String> res;
         try {
             res = sendSelect(query);

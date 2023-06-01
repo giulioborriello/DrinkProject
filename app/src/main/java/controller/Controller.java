@@ -192,7 +192,7 @@ public class Controller {
         String id = null;
         try {
             Connessione.getInstance().close();
-            id = Connessione.getInstance().sendSelect("SELECT id FROM utente WHERE email = '" + username + "'").get(0);
+            id = Connessione.getInstance().sendSelect("SELECT id FROM utente WHERE email = '" + username + "' ORDER BY id").get(0);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
