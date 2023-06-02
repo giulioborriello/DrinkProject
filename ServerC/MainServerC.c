@@ -31,6 +31,8 @@ int main (int argc , char **argv)
     }
     
     check((server_socket = socket(AF_INET , SOCK_STREAM , 0)), "Failed to create socket");
+     int option=1;
+        setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
 
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = INADDR_ANY;
