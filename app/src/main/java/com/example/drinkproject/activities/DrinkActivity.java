@@ -160,10 +160,12 @@ public class DrinkActivity extends AppCompatActivity {
         RelativeLayout drinkLayout = findViewById(R.id.drinkLayout);
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ImpostazioniActivity.CHIAVE_STATO_SWITCH, false)) {
             drinkLayout.setBackgroundColor(getResources().getColor(android.R.color.black));
+            barraDiRicerca.setBackgroundColor(getResources().getColor(android.R.color.white));
             setTextColorForAllViews(drinkLayout, getResources().getColor(android.R.color.white));
         }
         else {
             drinkLayout.setBackgroundColor(getResources().getColor(R.color.brick_red));
+            barraDiRicerca.setBackgroundColor(getResources().getColor(R.color.brick_red));
             setTextColorForAllViews(drinkLayout, getResources().getColor(android.R.color.white));
         }
     }
