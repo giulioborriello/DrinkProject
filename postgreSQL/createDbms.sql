@@ -8,7 +8,7 @@ CREATE TABLE drink (
     categoria VARCHAR(50) NOT NULL,
     descrizione TEXT,
     prezzo DECIMAL(5,2) NOT NULL,
-    immagine BYTEA NOT NULL
+    immagine varchar NOT NULL
 );
 -- Inserimento di un record nella tabella "drink"
 -- INSERT INTO drink (nome, categoria, descrizione, immagine)
@@ -68,7 +68,7 @@ order by storico.quantita;
 
 CREATE OR REPLACE FUNCTION public.raccomanda_drink(
 	id_utente integer)
-    RETURNS TABLE(id integer, nome character varying, categoria character varying, descrizione text, prezzo numeric, immagine bytea, punteggio bigint ) 
+    RETURNS TABLE(id integer, nome character varying, categoria character varying, descrizione text, prezzo numeric, immagine varchar, punteggio bigint ) 
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
