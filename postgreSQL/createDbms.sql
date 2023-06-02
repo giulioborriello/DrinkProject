@@ -8,7 +8,7 @@ CREATE TABLE drink (
     categoria VARCHAR(50) NOT NULL,
     descrizione TEXT,
     prezzo DECIMAL(5,2) NOT NULL,
-    immagine BYTEA NOT NULL
+    immagine VARCHAR NOT NULL
 );
 -- Inserimento di un record nella tabella "drink"
 -- INSERT INTO drink (nome, categoria, descrizione, immagine)
@@ -110,18 +110,53 @@ ALTER FUNCTION public.raccomanda_drink(integer)
     OWNER TO postgres;
 
 
-CREATE OR REPLACE FUNCTION public.racconada_drink_Ingrediente(IN id_utente integer)
-    RETURNS setof frequenza_ingredienti
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
-    ROWS 1000
+-- Create a function to recommend a drink based on the most ordered ingredient for a specific user
+CREATE OR REPLACE FUNCTION raccomanda_drink_ingredienti(user_id_input INTEGER) RETURNS SETOF drink AS
+$$
+DECLARE
+    most_ordered_ingredient ingredienti%ROWTYPE;
+    random_drink drink;
+BEGIN
+    -- Find the most ordered ingredient for the specific user
+    SELECT i.*
+    INTO most_ordered_ingredient
+    FROM ingredienti i
+    JOIN Composizione c ON i.nome = c.ingrediente
+    JOIN drink d ON c.drink_ID = d.id
+    JOIN drink_ordine d_o ON d.id = d_o.drink_id
+    JOIN ordine o ON d_o.ordine_id = o.id
+    JOIN utente u ON o.utente_id = u.id
+    WHERE u.id = raccomanda_drink_ingredienti.user_id_input -- Use the input parameter
+    GROUP BY i.nome
+    HAVING COUNT(*) = (
+        SELECT MAX(order_count)
+        FROM (
+            SELECT i.nome AS ingredient_name, COUNT(*) AS order_count
+            FROM ingredienti i
+            JOIN Composizione c ON i.nome = c.ingrediente
+            JOIN drink d ON c.drink_ID = d.id
+            JOIN drink_ordine d_o ON d.id = d_o.drink_id
+            JOIN ordine o ON d_o.ordine_id = o.id
+            JOIN utente u ON o.utente_id = u.id
+            WHERE u.id = raccomanda_drink_ingredienti.user_id_input -- Use the input parameter
+            GROUP BY i.nome
+        ) AS ingredient_counts
+    )
+    LIMIT 1;
 
-    as $BODY$
-    DECLARE 
-        ingrediente_Candidato character varying;
-    BEGIN
-        SELECT nome_ingrediente INTO ingrediente_Candidato FROM frequenza_ingredienti WHERE compratore_id=id_utente;
-        RETURN QUery select * from drink join composizione on drink.id=composizione.drink_id order by random() limit 1;
-    END;
-    $BODY$;
+    -- Select a random drink that contains the most ordered ingredient
+    SELECT d.*
+    INTO random_drink
+    FROM drink d
+    JOIN Composizione c ON d.id = c.drink_ID
+    WHERE c.ingrediente = most_ordered_ingredient.nome
+    ORDER BY RANDOM()
+    LIMIT 5;
+
+    -- Return the randomly selected drink
+    RETURN NEXT random_drink;
+
+    RETURN;
+END;
+$$
+LANGUAGE plpgsql;
