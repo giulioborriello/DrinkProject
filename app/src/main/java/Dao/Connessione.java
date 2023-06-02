@@ -31,17 +31,13 @@ public class Connessione {
     private final String CONNECTION_ERROR = "CONNECTION_ERROR";
 
 
-
-
-    // Costruttore privato per impedire la creazione di oggetti Connessione
-
     private Connessione() throws IOException {
         socket = new Socket(indirizzoServer, portaServer);
         out = new PrintWriter(socket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 
-    // Metodo pubblico per accedere all'istanza singleton di Connessione
+
     public static Connessione getInstance() throws IOException {
         if (istanza == null) {
             istanza = new Connessione();
@@ -50,19 +46,16 @@ public class Connessione {
     }
 
 
-    // Metodo per inviare un messaggio al server
     public void sendMessage(String message) {
         out.println(message);
     }
 
 
-    // Metodo per leggere la risposta del server
     public String readResponse() throws IOException {
         return in.readLine();
     }
 
 
-    // Metodo per leggere tutti i messaggi inviati dal server
     public List<String> readAllResponses() throws IOException {
         List<String> responses = new ArrayList<>();
         String response;
@@ -74,7 +67,6 @@ public class Connessione {
     }
 
 
-    // Metodo per chiudere la connessione al server
     public void close() throws IOException {
         in.close();
         out.close();
@@ -82,16 +74,12 @@ public class Connessione {
         istanza = null;
     }
 
-   /*
-    0 SELECT
-    1 INSERT
-    2 UPDATE
-    3 delete
-*/
+
     public List<String> sendSelect(String query) throws IOException {
         sendMessage("0" + SEPARATORE + query);
         return readAllResponses();
     }
+
 
     public boolean sendInsert(String query) {
         sendMessage("1" + SEPARATORE + query);
@@ -105,6 +93,7 @@ public class Connessione {
         return b;
     }
 
+
     public boolean sendUpdate(String query) {
         sendMessage("2" + SEPARATORE + query);
         String risposta;
@@ -116,6 +105,7 @@ public class Connessione {
         return risposta.equals(SUCCESS);
 
     }
+
 
     public boolean sendDelete(String query) {
         sendMessage("3" + SEPARATORE + query);
@@ -129,6 +119,7 @@ public class Connessione {
 
 
     }
+
 
    public  Utente login(String username, String password) {
        String querySelectUtente = "SELECT * " +
@@ -213,6 +204,7 @@ public class Connessione {
         return (ArrayList<String>) res;
     }
 
+
     public ArrayList<String> getIDDrinkSuggeritiDiRaimondo(){
         String query="SELECT id " +
                 " FROM raccomanda_drink ORDER BY id" ;
@@ -225,6 +217,8 @@ public class Connessione {
         if (res.get(0).equals(FAILURE)) return  null;
         return (ArrayList<String>) res;
     }
+
+
     public Utente signIn(String name, String surname, String username, String password){
         String queryMaxIdUtente="( select max(id)+1 from utente )";
         String query= " INSERT INTO utente " +
@@ -239,57 +233,8 @@ public class Connessione {
         else
             return null;
     }
-/*
-    public boolean effettuaPagamento(Utente utente){
 
-        String queryMaxIdOrdine="select max(id) from ordine";
-        List<String> resIdOrdine;
-        try {
-            resIdOrdine = sendSelect(queryMaxIdOrdine);
-            if(resIdOrdine.get(0).equals(FAILURE)) return false;
-        } catch (IOException e) {
-            return false;
-        }
-        int idOrdine = Integer.parseInt(resIdOrdine.get(0)) +1;
 
-        try {
-            Connessione.getInstance().close();
-            Connessione.getInstance();
-        } catch (IOException e) {
-            return false;
-        }
-
-        String queryIsertOrdine= " INSERT INTO ordine (id, utente_id) " +
-                " VALUES("+idOrdine+", "+utente.getId()+") ";
-        if (!sendInsert(queryIsertOrdine)){
-            return false;
-        }
-
-        try {
-            Connessione.getInstance().close();
-            Connessione.getInstance();
-        } catch (IOException e) {
-            return false;
-        }
-
-        String queryClone = "INSERT INTO public.drink_ordine( \n" +
-                "\t drink_id, ordine_id, quantita, prezzo) \n" +
-                "\t  VALUES \n";
-        //"\tVALUES ( ?, ?, ?, ?) "
-        StringBuilder query = new StringBuilder();
-        ArrayList<DrinkOrdine> carello = (ArrayList<DrinkOrdine>) utente.getDrinkOrdineList();
-        for (DrinkOrdine drinkOrdinato : carello) {
-            String drink_id = drinkOrdinato.getDrink().getId();
-            String ordine_id = Integer.toString(idOrdine);
-            int quantita = drinkOrdinato.getQuantita();
-            double prezzo = drinkOrdinato.getPrezzo();
-            String value = "\t (" + drink_id + "," + ordine_id + "," + quantita + "," + prezzo + ");\n";
-            query.append(queryClone).append(value);
-        }
-
-        return sendInsert(String.valueOf(query));
-    }
-*/
     public boolean effettuaPagamento(Utente utente){
         //CALL public.salva_ordine(9, ARRAY[3, 5], ARRAY[2, 1]);
         String query="CALL public.salva_ordine";
