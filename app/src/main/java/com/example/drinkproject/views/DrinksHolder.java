@@ -33,9 +33,6 @@ public class DrinksHolder extends RecyclerView.ViewHolder {
         quantita = itemView.findViewById(R.id.quantitaDrinkCarrello);
         impostaFiltri();
 
-        InputFilter filtroSoloNumeri = new FiltroSoloNumeri();
-        quantita.setFilters(new InputFilter[]{filtroSoloNumeri});
-
         aggiungiUnDrink = itemView.findViewById(R.id.pulsantePiu);
         rimuoviUnDrink = itemView.findViewById(R.id.pulsanteMeno);
     }

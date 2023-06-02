@@ -322,6 +322,7 @@ public class Connessione {
         } catch (IOException e) {
             return null;
         }
+        listaDrinkSuggeriti.remove(listaDrinkSuggeriti.size()-1);
         return listaDrinkSuggeriti;
     }
 }

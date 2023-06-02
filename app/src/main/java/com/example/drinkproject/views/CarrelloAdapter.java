@@ -18,6 +18,7 @@ import com.example.drinkproject.activities.ImpostazioniActivity;
 import com.example.drinkproject.classiDiSupporto.CaricatoreImmaginiCarrello;
 import com.example.drinkproject.classiDiSupporto.SwipeToDeleteCallback;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +88,8 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
 
         holder.nome.setText(name);
         holder.descrizione.setText(description);
-        holder.prezzo.setText(String.valueOf(price*quantity));
+        DecimalFormat df = new DecimalFormat("0.00");
+        holder.prezzo.setText(df.format(price*quantity));
         holder.quantita.setText(String.valueOf(quantity));
         holder.id = id;
         caricaImmagini(holder);
@@ -156,33 +158,15 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
                     if(currentPosition >= 0 && currentPosition < listaDeiDrinkOrdinati.size()) {
                         controller.removeDrink(drink.getId());
                         controller.updateDrink(drink.getId(), 0);
-
-                        /*
-                        List<String> idDrinkDaModificareList = new ArrayList<>();
-                        boolean trovato = false;
-                        for (DrinkOrdine drinkOrdine1 : listaDeiDrinkOrdinati) {
-                            if (trovato) {
-                                idDrinkDaModificareList.add(drinkOrdine1.getDrink().getId());
-                            }
-                            else if (id.equals(drinkOrdine1.getDrink().getId())) {
-                                trovato = true;
-                            }
-                        }
-                        for (String idDrinkDaModificare : idDrinkDaModificareList) {
-                            int posizione = positions.get(idDrinkDaModificare);
-                            positions.put(idDrinkDaModificare, posizione-1);
-                        }
-                         */
-
                         removeItem(currentPosition);
-                        totale.setText(controller.getPrezzoTotale());
+                        String prezzoTotale = controller.getPrezzoTotale();
+                        if ((prezzoTotale != null) && (!prezzoTotale.equals(""))) {
+                            totale.setText(df.format(Double.parseDouble(prezzoTotale)));
+                        }
                     }
                 }
             }
         });
-
-
-
     }
 
 
