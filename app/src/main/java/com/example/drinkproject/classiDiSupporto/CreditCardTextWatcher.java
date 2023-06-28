@@ -33,7 +33,6 @@ public class CreditCardTextWatcher implements TextWatcher {
             inputFormattato.append(soloNumeri.charAt(i));
         }
 
-        // Set the formatted text back to the EditText
         editText.removeTextChangedListener(this);
         editText.setText(inputFormattato.toString());
         editText.setSelection(inputFormattato.length());

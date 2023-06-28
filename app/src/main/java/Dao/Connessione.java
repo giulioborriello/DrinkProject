@@ -84,12 +84,16 @@ public class Connessione {
     public boolean sendInsert(String query) {
         sendMessage("1" + SEPARATORE + query);
         String risposta;
+        boolean b;
         try {
             risposta = readResponse();
+            if (risposta == null) {
+                return false;
+            }
+            b = risposta.equals(SUCCESS);
         } catch (IOException e) {
             return false;
         }
-        boolean b = risposta.equals(SUCCESS);
         return b;
     }
 

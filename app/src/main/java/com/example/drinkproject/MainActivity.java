@@ -66,16 +66,13 @@ public class MainActivity extends AppCompatActivity {
                         String email = sharedPreferences.getString("email", "");
                         String password = sharedPreferences.getString("password", "");
 
-                        Thread loginThread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                controller.login(email, password);
-                                SharedPreferences sharedPreferences = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("email", email);
-                                editor.putString("password", password);
-                                editor.apply();
-                            }
+                        Thread loginThread = new Thread(() -> {
+                            controller.login(email, password);
+                            SharedPreferences sharedPreferences1 = getSharedPreferences("Credenziali", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences1.edit();
+                            editor.putString("email", email);
+                            editor.putString("password", password);
+                            editor.apply();
                         });
                         try {
                             loginThread.start();

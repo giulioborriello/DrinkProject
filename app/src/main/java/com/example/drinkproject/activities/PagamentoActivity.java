@@ -48,7 +48,6 @@ public class PagamentoActivity extends AppCompatActivity {
             try {
                 controller = Controller.getInstance();
             } catch (Exception e) {
-                //TODO: aggiungere fakedump
                 e.printStackTrace();
             }
         });

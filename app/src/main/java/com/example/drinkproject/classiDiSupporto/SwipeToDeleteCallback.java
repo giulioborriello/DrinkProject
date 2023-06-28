@@ -50,16 +50,13 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
             paint.setColor(Color.parseColor("#f44336"));
 
             if (dX > 0) {
-                // Swiping to the right
                 RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
                 c.drawRect(background, paint);
             } else {
-                // Swiping to the left
                 RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
                 c.drawRect(background, paint);
             }
             if (isCurrentlyActive) {
-                // Esegui l'animazione solo se lo swipe è attualmente attivo
                 getDefaultUIUtil().onDraw(c, recyclerView, itemView, dX, dY, actionState, isCurrentlyActive);
                 float alpha = 1.0f - Math.abs(dX) / (float) viewHolder.itemView.getWidth();
                 viewHolder.itemView.setAlpha(alpha);

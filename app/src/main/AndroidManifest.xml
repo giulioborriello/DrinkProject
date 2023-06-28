@@ -23,12 +23,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.PaymentActivity"
-            android:exported="false"
-            android:label="@string/title_activity_payment"
-            android:theme="@style/Theme.DrinkProject"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.CarrelloActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

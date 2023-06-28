@@ -105,14 +105,13 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
             if(holder.quantita.getText().toString().equals("")) {
                 holder.quantita.setText("1");
             }
-            else {
+            else if (!holder.quantita.getText().toString().equals("30")){
                 int newQuantity = Integer.parseInt(holder.quantita.getText().toString());
                 newQuantity++;
                 holder.quantita.setText(String.valueOf(newQuantity));
                 holder.prezzo.setText(String.valueOf(price * newQuantity));
-
-                //controller.updateDrink(drink.getId(), newQuantity);
-                //totale.setText(controller.getPrezzoTotale());
+                controller.updateDrink(drink.getId(), newQuantity);
+                totale.setText(controller.getPrezzoTotale());
             }
         });
 
@@ -120,53 +119,23 @@ public class CarrelloAdapter extends RecyclerView.Adapter<CarrelloHolder> {
             String quantitaInput = holder.quantita.getText().toString();
             if(!quantitaInput.equals("")) {
                 int newQuantity = Integer.parseInt(quantitaInput);
-                if (newQuantity >= 1) {
+                if (newQuantity > 1) {
                     newQuantity--;
                     holder.quantita.setText(String.valueOf(newQuantity));
                     holder.prezzo.setText(String.valueOf(price*newQuantity));
-
-                    //controller.updateDrink(drink.getId(), newQuantity);
-                    //totale.setText(controller.getPrezzoTotale());
+                    controller.updateDrink(drink.getId(), newQuantity);
+                    totale.setText(controller.getPrezzoTotale());
                 }
                 else if (newQuantity == 1) {
                     controller.removeDrink(drink.getId());
-                    //controller.updateDrink(drink.getId(), 0);
-                    //removeItem(position);
+                    removeItem(holder.getAdapterPosition());
+                    totale.setText(controller.getPrezzoTotale());
                 }
             }
         });
 
-        holder.quantita.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s!=null && !s.toString().equals("0") && !s.toString().equals("")) {
-                    if (position >= 0 && position < listaDeiDrinkOrdinati.size()) {
-                        controller.updateDrink(listaDeiDrinkOrdinati.get(position).getDrink().getId(), Integer.parseInt(s.toString()));
-                        totale.setText(controller.getPrezzoTotale());
-                    }
-                }
-                else if (s != null && s.toString().equals("0")) {
-                    int currentPosition = holder.getAdapterPosition();
-                    if(currentPosition >= 0 && currentPosition < listaDeiDrinkOrdinati.size()) {
-                        controller.removeDrink(drink.getId());
-                        controller.updateDrink(drink.getId(), 0);
-                        removeItem(currentPosition);
-                        String prezzoTotale = controller.getPrezzoTotale();
-                        if ((prezzoTotale != null) && (!prezzoTotale.equals(""))) {
-                            totale.setText(df.format(Double.parseDouble(prezzoTotale)));
-                        }
-                    }
-                }
-            }
-        });
+        holder.quantita.setFocusable(false);
+        holder.quantita.setEnabled(false);
     }
 
 
