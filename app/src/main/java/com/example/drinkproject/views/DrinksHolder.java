@@ -2,6 +2,7 @@ package com.example.drinkproject.views;
 
 import android.content.Context;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,9 +17,8 @@ import com.example.drinkproject.classiDiSupporto.FiltroSoloNumeri;
 
 public class DrinksHolder extends RecyclerView.ViewHolder {
     public ImageView immagine;
-    public TextView nome, descrizione, prezzo;
+    public TextView nome, descrizione, prezzo, quantita;
     public Context context;
-    public EditText quantita;
     public Button aggiungiUnDrink, rimuoviUnDrink;
     public String id;
 

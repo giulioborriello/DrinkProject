@@ -93,15 +93,24 @@
             holder.aggiungiUnDrink.setOnClickListener(v -> {
                 String quantitaInput = holder.quantita.getText().toString();
                 if(quantitaInput.equals("")) {
-                    holder.quantita.setText("1");
+                    if (position >= 0 && position < filteredDrinks.size()) {
+                        controller.updateDrink(filteredDrinks.get(position).getId(), 1);
+                        holder.quantita.setText(String.valueOf(1));
+                    }
                 }
                 else if (quantitaInput.equals("30")) {
-                    holder.quantita.setText("0");
+                    if (position >= 0 && position < filteredDrinks.size()) {
+                        controller.updateDrink(filteredDrinks.get(position).getId(), 0);
+                        holder.quantita.setText(String.valueOf(0));
+                    }
                 }
                 else {
                     int quantity = Integer.parseInt(quantitaInput);
                     quantity++;
-                    holder.quantita.setText(String.valueOf(quantity));
+                    if (position >= 0 && position < filteredDrinks.size()) {
+                        controller.updateDrink(filteredDrinks.get(position).getId(), quantity);
+                        holder.quantita.setText(String.valueOf(quantity));
+                    }
                 }
             });
 
@@ -111,31 +120,22 @@
                     int quantity = Integer.parseInt(quantitaInput);
                     if (quantity > 0) {
                         quantity--;
-                        holder.quantita.setText(String.valueOf(quantity));
-                    }
-                }
-            });
-
-            holder.quantita.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                   // if(s!=null && !s.toString().equals(""))
-                  //      controller.updateDrink(filteredDrinks.get(position).getId(), Integer.parseInt(s.toString()));
-
-                    if (s != null && !s.toString().equals("")) {
-                        int quantity = Integer.parseInt(s.toString());
                         if (position >= 0 && position < filteredDrinks.size()) {
                             controller.updateDrink(filteredDrinks.get(position).getId(), quantity);
+                            holder.quantita.setText(String.valueOf(quantity));
+                        }
+                    }
+                    else {
+                        if (position >= 0 && position < filteredDrinks.size()) {
+                            controller.updateDrink(filteredDrinks.get(position).getId(), 30);
+                            holder.quantita.setText(String.valueOf(30));
                         }
                     }
                 }
             });
+
+            holder.quantita.setFocusable(false);
+            holder.quantita.setEnabled(false);
         }
 
         private static void settaNomeDescrizionePrezzo(@NonNull DrinksHolder holder, String name, String description, String price) {
