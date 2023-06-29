@@ -17,7 +17,7 @@ import model.Utente;
 @SuppressWarnings("unused")
 public class Connessione {
     private static Connessione istanza = null;
-    private static final String indirizzoServer = "37.179.181.184"; // Indirizzo IP o nome del server
+    private static final String indirizzoServer = "37.183.219.125"; // Indirizzo IP o nome del server
     private static final int portaServer = 8080; // Porta del server
     private final Socket socket;
     private final PrintWriter out;

@@ -1,4 +1,4 @@
-package com.example.drinkproject;
+package com.example.drinkproject.registrazioneTest;
 
 
 import static androidx.test.espresso.Espresso.onView;
@@ -17,12 +17,17 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import com.example.drinkproject.MainActivity;
+import com.example.drinkproject.R;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,16 +35,16 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class RegistrazioneSuccessoTest {
+public class RegistrazioneEffettuataConSuccessoTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void registrazioneTest() {
+    public void registrazioneEffettuataConSuccesso() {
         ViewInteraction materialButton = onView(
-                allOf(withId(R.id.registerUsernamePasswordButton), withText("Registrati"),
+                Matchers.allOf(ViewMatchers.withId(R.id.registerUsernamePasswordButton), withText("Registrati"),
                         childAtPosition(
                                 allOf(withId(R.id.mainLayout),
                                         childAtPosition(

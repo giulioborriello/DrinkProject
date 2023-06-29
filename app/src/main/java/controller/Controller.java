@@ -332,6 +332,10 @@ public class Controller {
 
     public void effettuaPagamento(String nome, String cognome, String numerocarta, String dataScadenza, String cvv) {
         pagamentoEffettuatoConSuccesso = false;
+        if (numerocarta.length() < 16 || cvv.length() < 3)
+            return;
+        if (nome.equals("") || cognome.equals(""))
+            return;
         try {
             if(!Connessione.getInstance().effettuaPagamento(utente)){
                 pagamentoEffettuatoConSuccesso = false;

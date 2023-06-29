@@ -142,16 +142,16 @@ public class PagamentoActivity extends AppCompatActivity {
             }
         });
 
+
         View pagamentoButton = findViewById(R.id.pulsanteConfermaDati);
         pagamentoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
             final String nome = ((EditText) findViewById(R.id.nomeProprietarioCarta)).getText().toString();
             final String cognome = ((EditText) findViewById(R.id.cognomeProprietarioCarta)).getText().toString();
             final String numeroCarta = ((EditText) findViewById(R.id.numeroCarta)).getText().toString().replaceAll(" ", "");
             final String cvv = ((EditText) findViewById(R.id.cvvCarta)).getText().toString();
             final String dataScadenza = ((Spinner) findViewById(R.id.meseScadenza)).getSelectedItem().toString() + "/" + ((Spinner) findViewById(R.id.annoScadenza)).getSelectedItem().toString();
-
-            @Override
-            public void onClick(View v) {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {

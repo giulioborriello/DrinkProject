@@ -24,6 +24,9 @@ import android.widget.Toast;
 import com.example.drinkproject.R;
 import com.example.drinkproject.views.DrinksAdapter;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -153,6 +156,10 @@ public class DrinkActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         settaIColori();
+        if(Controller.pagamentoEffettuatoConSuccesso){
+            Toast.makeText(getApplicationContext(), "Pagamento effettuato con successo", Toast.LENGTH_SHORT).show();
+            Controller.pagamentoEffettuatoConSuccesso = false;
+        }
     }
 
 
