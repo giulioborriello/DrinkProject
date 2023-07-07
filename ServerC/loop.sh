@@ -1,8 +1,10 @@
 #!/bin/bash
-
-while true
+SERVICE="Server"
+while [ 1 ]
 do
-    ./Server &
-    sleep 1
+    if ! pgrep -x "$SERVICE" >/dev/null
+    then
+        echo "$SERVICE era fermo, avvio"
+        ./Server
+    fi
 done
-
